@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import Tensorflow_chatbot_model
-import Tensorflow_chatbot_response
+import Trainer
+import Response
 ###usarlo en cada caso que se use tildes o ñ###
 import json
 #*obser = unicode(self.edit_observ.toPlainText())*
@@ -16,29 +16,30 @@ class ChatBotProcessor:
         self.mode = 'chatbot'
         self.currentAction = ''
         self.context = ''
-        self.chatbotModel = Tensorflow_chatbot_model.Model()
-        self.chatbotResponse = Tensorflow_chatbot_response.Response()
+        #self.chatbotModel = Trainer.Model()
+        self.chatbotResponse = Response.Response()
 
-
-    def preparateModel(self,chatbotName,jsonFile):
+    """
+    def preparateModel(self,chatbotName,jsonFile,pathModel):
 
         if chatbotName in self.intens:
-            self.chatbotModel.setPropertiesJSON(jsonFile,chatbotName)
-            self.chatbotModel.readJSON()
+            self.chatbotModel.readJSON(jsonFile,chatbotName)
             self.chatbotModel.createElementsToModel()
-            self.chatbotModel.trainingModel()
+            self.chatbotModel.trainingModel(pathModel)
             self.chatbotModel.doPickle()
-            #self.chatbotResponse = Tensorflow_chatbot_response.Response()
+
         else:
             print('El chatbot no existe en la lista de chatbots (intens)')
+    """
+
+    def preparateResponse(self,chatbotName,jsonFile,pathModel):
 
 
-    def preparateResponse(self,nameIntent):
-        if self.intens == {} :
-            print('Se necesita tener al menos una intención guardada. ')
+        if not ('.json' in jsonFile)  or (chatbotName == ''):
+            print('Se necesita especificar la ruta del fichero JSON.')
         else:
-            self.chatbotResponse.setIntens(self.intens[nameIntent])
-            self.chatbotResponse.buildNetwork()
+            self.chatbotResponse.setIntens(chatbotName,jsonFile)
+            self.chatbotResponse.buildNetwork(pathModel)
             self.chatbotResponse.loadModel()
 
 

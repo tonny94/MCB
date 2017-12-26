@@ -1,12 +1,23 @@
 from ChatBotProcessor import *
+from Trainer import  *
 
 print('dentro del main')
 
+
+entrenador = Model()
+
+entrenador.readJSON('chatbotprocessor.json','chatbotprocessor')
+entrenador.createElementsToModel()
+entrenador.trainingModel('prueba1_mcb')
+entrenador.doPickle()
+
+
+
+
 processor = ChatBotProcessor()
 
-processor.setInten('lista_compra','lista_compra.json')
-#processor.preparateModel('lista_compra','lista_compra.json')
-processor.preparateResponse('lista_compra')
+#processor.setInten('chatbotprocessor','chatbotprocessor.json')
+processor.preparateResponse('chatbotprocessor','chatbotprocessor.json','prueba1_mcb')
 
 processor.classify('Hola')
 processor.classify('Quiero introducir un item')
