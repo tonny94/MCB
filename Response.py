@@ -18,32 +18,38 @@ import json
 
 
 class Response:
-    def __init__(self):
+    def __init__(self,pathModel):
         self.model = None
-        self.data = pickle.load(open("training_data", "rb"))
+        self.data = pickle.load(open(pathModel+"training_data", "rb"))
         self.words = self.data['words']
         self.classes = self.data['classes']
         self.train_x = self.data['train_x']
         self.train_y = self.data['train_y']
         self.ERROR_THRESHOLD = 0.25
         self.context = {}
-        self.intens = {}#listIntens
+        self.intents = {}#listIntens
         self.action = ''
-        self.pathModel = ''
+
+        self.pathModel = pathModel
+        self.jsonFile = ''
+        self.chatbotName = ''
 
     """
     def setIntens(self,json):
         self.intens = json
 
     """
-    def setIntens(self,listIntens, intentName):
-        with open(listIntens[intentName]) as json_data:
-            self.intens = json.load(json_data)
+    def readJSON(self,jsonFile,chatbotName):
+        if not ('.json' in jsonFile)  or (chatbotName == ''):
+            print('Se necesita especificar la ruta del fichero JSON.')
+        else:
+            self.jsonFile = jsonFile
+            self.chatbotName = chatbotName
+            with open(self.jsonFile) as json_data:
+                self.intents = json.load(json_data)
 
 
-    def buildNetwork(self,pathModel):
-
-        self.pathModel = pathModel
+    def buildNetwork(self):
 
         net = tflearn.input_data(shape=[None, len(self.train_x[0])])
         net = tflearn.fully_connected(net, 8)
@@ -52,7 +58,7 @@ class Response:
         net = tflearn.regression(net)
 
         # Define model and setup tensorboard
-        self.model = tflearn.DNN(net, tensorboard_dir=pathModel)
+        self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
 
 
     def loadModel(self):
@@ -102,7 +108,7 @@ class Response:
         if results:
             # loop as long as there are matches to process
             while results:
-                for i in self.intens['lista_compra']:
+                for i in self.intents[self.chatbotName]:
                     # find a tag matching the first result
                     if i['tag'] == results[0][0]:
 

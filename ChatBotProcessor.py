@@ -9,7 +9,7 @@ import json
 
 class ChatBotProcessor:
     """Son class"""
-    def __init__(self):
+    def __init__(self,pathModel):
         self.intens = {}
         self.sentence = ''
         self.actions = {'añadirItem' : self.añadirItem, 'eliminarItem' : self.eliminarItem}
@@ -17,7 +17,7 @@ class ChatBotProcessor:
         self.currentAction = ''
         self.context = ''
         #self.chatbotModel = Trainer.Model()
-        self.chatbotResponse = Response.Response()
+        self.chatbotResponse = Response.Response(pathModel)
 
     """
     def preparateModel(self,chatbotName,jsonFile,pathModel):
@@ -32,14 +32,14 @@ class ChatBotProcessor:
             print('El chatbot no existe en la lista de chatbots (intens)')
     """
 
-    def preparateResponse(self,chatbotName,jsonFile,pathModel):
+    def preparateResponse(self,chatbotName,jsonFile):
 
 
         if not ('.json' in jsonFile)  or (chatbotName == ''):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
-            self.chatbotResponse.setIntens(chatbotName,jsonFile)
-            self.chatbotResponse.buildNetwork(pathModel)
+            self.chatbotResponse.readJSON(jsonFile,chatbotName)
+            self.chatbotResponse.buildNetwork()
             self.chatbotResponse.loadModel()
 
 
@@ -63,7 +63,7 @@ class ChatBotProcessor:
 
 
 
-
+    """
     def setInten(self,chatbotName,jsonFile):
         if '.json' in jsonFile:
             if chatbotName in self.intens:
@@ -74,6 +74,8 @@ class ChatBotProcessor:
                 #self.intens[chatbotName] = jsonFile
         else:
             return print('Se necesita introducir un fichero en formato JSON')
+    """
+
 
     #def addAction(self,clave, valor):
 

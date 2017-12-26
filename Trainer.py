@@ -148,7 +148,7 @@ class Model:
     def doPickle(self):
         import pickle
         pickle.dump({'words': self.words, 'classes': self.classes, 'train_x': self.train_x, 'train_y': self.train_y},
-                    open("training_data", "wb"))
+                    open(self.pathModel+"training_data", "wb"))
 
 
 """
