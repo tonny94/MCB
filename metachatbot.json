@@ -1,0 +1,25 @@
+{"metachatbot": [
+        {"tag": "borrarChatBot",
+         "patterns": ["Quiero borrar un chatbot","Quiero eliminar un chatbot","Borrar chatbot","Eliminar chatbot"],
+         "responses": ["Digame que chatbot quiere borrar","Digame que chatbot quiere eliminar"],
+         "context_set": "",
+         "action": "borrarChatBot"
+        },
+        {"tag": "crearChatBot",
+         "patterns": ["Añadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero añadir un chatbot"],
+         "responses": ["Digame el nombre del chatbot","Qué chatbot quiere crear?","Qué chatbot quiere añadir?"],
+         "action": "crearChatBot"
+        },
+        {"tag": "borrarIntent",
+         "patterns": ["Quiero borrar una intención","Eliminar una intención","Borrar intención","Eliminar intención"],
+         "responses": ["Digame el nombre de la intención","Qué intención quiere eliminar?","Qué intención quiere borrar?"],
+         "action": "borrarIntent"
+        },
+        {"tag": "crearIntent",
+         "patterns": ["Quiero crear una intención","Crear una intención","Añadir intención","Crear intención"],
+         "responses": ["Digame el nombre de la intención","Qué intención quiere crear?","Qué intención quiere añadir?"],
+         "action" : "crearIntent"
+        }
+   ]
+}
+

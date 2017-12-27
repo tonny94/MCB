@@ -12,7 +12,7 @@ class ChatBotProcessor:
     def __init__(self,pathModel):
         self.intens = {}
         self.sentence = ''
-        self.actions = {'añadirItem' : self.añadirItem, 'eliminarItem' : self.eliminarItem}
+        #self.actions = {'añadirItem' : self.añadirItem, 'eliminarItem' : self.eliminarItem}
         self.mode = 'chatbot'
         self.currentAction = ''
         self.context = ''
@@ -59,9 +59,13 @@ class ChatBotProcessor:
 
         else: # ha encontrado una accion
             self.mode = 'chatbot' #reinicia el valor
-            self.actions[self.currentAction](sentence)
+            #self.actions[self.currentAction](sentence)
 
+    def getAction(self):
+        return self.currentAction
 
+    def resetAction(self):
+        self.currentAction = ''
 
     """
     def setInten(self,chatbotName,jsonFile):

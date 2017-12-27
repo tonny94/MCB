@@ -1,12 +1,18 @@
 from ChatBot import ChatBot
+from ChatBotProcessor import *
 
-class MetaChatBot:
+class MetaChatBot(ChatBotProcessor):
     """Father class"""
     def __init__(self):
         self.dicChatBots = {}
         self.currentChatBot = None
+        self.actions = {'crearChatBot' : self.crearChatBot, 'borrarChatBot' : self.borrarChatBot}
 
-
+    def MCBResponse(self,sentence):
+    	ChatBotProcessor.response(sentence)
+    	action = ChatBotProcessor.getAction()
+    	self.actions[action](sentence)
+    	ChatBotProcessor.resetAction()
 
     def addChatBot(self, nameChatBot):
         myChatBot = ChatBot()
@@ -25,8 +31,6 @@ class MetaChatBot:
         if nameChatBot is self.currentChatBot:
             self.currentChatBot = None
 
-        return myChatBot
-
 
     def selectChatBot(self, nameChatBot):
         if nameChatBot in self.dicChatBots:
@@ -34,3 +38,12 @@ class MetaChatBot:
             return self.dicChatBots[nameChatBot]
 
         return None
+
+    def crearChatBot(self,sentence):
+    	addChatBot(sentence)
+        return print('El ChatBot '+sentence+' se ha añadido correctamente.')
+
+
+    def borrarChatBot(self,sentence):
+    	removeChatBot(sentence)
+        return print('El ChatBot '+sentence+' se ha eliminado correctamente .')
