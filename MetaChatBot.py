@@ -1,7 +1,8 @@
 from ChatBot import ChatBot
-from ChatBotProcessor import *
+import ChatBotProcessor
 
-class MetaChatBot(ChatBotProcessor):
+
+class MetaChatBot():
     """Father class"""
     def __init__(self):
         self.dicChatBots = {}
@@ -9,10 +10,10 @@ class MetaChatBot(ChatBotProcessor):
         self.actions = {'crearChatBot' : self.crearChatBot, 'borrarChatBot' : self.borrarChatBot}
 
     def MCBResponse(self,sentence):
-    	ChatBotProcessor.response(sentence)
-    	action = ChatBotProcessor.getAction()
-    	self.actions[action](sentence)
-    	ChatBotProcessor.resetAction()
+        ChatBotProcessor.CBProcessor.response(sentence)
+        action = ChatBotProcessor.CBProcessor.getAction()
+        self.actions[action](sentence)
+        ChatBotProcessor.CBProcessor.resetAction()
 
     def addChatBot(self, nameChatBot):
         myChatBot = ChatBot()
@@ -40,10 +41,10 @@ class MetaChatBot(ChatBotProcessor):
         return None
 
     def crearChatBot(self,sentence):
-    	addChatBot(sentence)
+    	#addChatBot(sentence)
         return print('El ChatBot '+sentence+' se ha añadido correctamente.')
 
 
     def borrarChatBot(self,sentence):
-    	removeChatBot(sentence)
+    	#removeChatBot(sentence)
         return print('El ChatBot '+sentence+' se ha eliminado correctamente .')

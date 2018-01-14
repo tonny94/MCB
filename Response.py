@@ -12,7 +12,7 @@ import tensorflow as tf
 import random
 
 # import the class actions for modify the chatbots
-from MetaChatBot import MetaChatBot
+
 import pickle
 import json
 

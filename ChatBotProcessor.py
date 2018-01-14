@@ -1,15 +1,9 @@
-# -*- coding: utf-8 -*-
-import Trainer
 import Response
-###usarlo en cada caso que se use tildes o ñ###
-import json
-#*obser = unicode(self.edit_observ.toPlainText())*
-#* obser1 = obser.encode('utf-8')*
+#import Trainer
 
+class CBProcessor:
 
-class ChatBotProcessor:
-    """Son class"""
-    def __init__(self,pathModel):
+    def __init__(self):
         self.intens = {}
         self.sentence = ''
         #self.actions = {'añadirItem' : self.añadirItem, 'eliminarItem' : self.eliminarItem}
@@ -17,27 +11,29 @@ class ChatBotProcessor:
         self.currentAction = ''
         self.context = ''
         #self.chatbotModel = Trainer.Model()
-        self.chatbotResponse = Response.Response(pathModel)
+        self.chatbotResponse = None
 
     """
     def preparateModel(self,chatbotName,jsonFile,pathModel):
-
-        if chatbotName in self.intens:
-            self.chatbotModel.readJSON(jsonFile,chatbotName)
-            self.chatbotModel.createElementsToModel()
-            self.chatbotModel.trainingModel(pathModel)
-            self.chatbotModel.doPickle()
-
-        else:
-            print('El chatbot no existe en la lista de chatbots (intens)')
-    """
-
-    def preparateResponse(self,chatbotName,jsonFile):
 
 
         if not ('.json' in jsonFile)  or (chatbotName == ''):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
+            self.chatbotModel.readJSON(jsonFile,chatbotName)
+            self.chatbotModel.createElementsToModel()
+            self.chatbotModel.trainingModel(pathModel)
+            self.chatbotModel.doPickle()
+
+    """
+
+    def preparateResponse(self,chatbotName,jsonFile,pathModel):
+
+
+        if not ('.json' in jsonFile)  or (chatbotName == ''):
+            print('Se necesita especificar la ruta del fichero JSON.')
+        else:
+            self.chatbotResponse = Response.Response(pathModel)
             self.chatbotResponse.readJSON(jsonFile,chatbotName)
             self.chatbotResponse.buildNetwork()
             self.chatbotResponse.loadModel()
