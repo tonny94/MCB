@@ -1,64 +1,58 @@
+# -*- coding: utf-8 -*-
+
 # things we need for NLP
 import nltk
 from nltk.stem import SnowballStemmer
 stemmer = SnowballStemmer('spanish')
-#from nltk.stem.lancaster import LancasterStemmer
-#stemmer = LancasterStemmer()
-
 # things we need for Tensorflow
 import numpy as np
 import tflearn
-import tensorflow as tf
 import random
-
-# import the class actions for modify the chatbots
-
 import pickle
 import json
-
+#*obser = unicode(self.edit_observ.toPlainText())*
+#* obser1 = obser.encode('utf-8')*
 
 class Response:
-    def __init__(self,pathModel):
+    def __init__(self):
         self.model = None
-        self.data = pickle.load(open(pathModel+"training_data", "rb"))
+        self.data = None
+        self.words = []
+        self.classes = []
+        self.train_x = []
+        self.train_y = []
+        self.ERROR_THRESHOLD = 0.25
+        self.context = {}
+        self.intents = {}
+        self.action = ''
+        self.pathModel = ''
+        self.jsonFile = ''
+        self.chatbotName = ''
+
+
+    def cargarArrays(self,pathModel):
+        self.data = pickle.load(open(pathModel + "training_data", "rb"))
         self.words = self.data['words']
         self.classes = self.data['classes']
         self.train_x = self.data['train_x']
         self.train_y = self.data['train_y']
-        self.ERROR_THRESHOLD = 0.25
-        self.context = {}
-        self.intents = {}#listIntens
-        self.action = ''
-
         self.pathModel = pathModel
-        self.jsonFile = ''
-        self.chatbotName = ''
 
-    """
-    def setIntens(self,json):
-        self.intens = json
-
-    """
     def readJSON(self,jsonFile,chatbotName):
-        if not ('.json' in jsonFile)  or (chatbotName == ''):
-            print('Se necesita especificar la ruta del fichero JSON.')
-        else:
-            self.jsonFile = jsonFile
-            self.chatbotName = chatbotName
-            with open(self.jsonFile) as json_data:
-                self.intents = json.load(json_data)
+        self.jsonFile = jsonFile
+        self.chatbotName = chatbotName
+        with open(self.jsonFile) as json_data:
+            self.intents = json.load(json_data)
 
 
     def buildNetwork(self):
-
         net = tflearn.input_data(shape=[None, len(self.train_x[0])])
         net = tflearn.fully_connected(net, 8)
         net = tflearn.fully_connected(net, 8)
         net = tflearn.fully_connected(net, len(self.train_y[0]), activation='softmax')
         net = tflearn.regression(net)
-
         # Define model and setup tensorboard
-        self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
+        self.model = tflearn.DNN(net, tensorboard_dir = self.pathModel)
 
 
     def loadModel(self):

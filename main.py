@@ -1,25 +1,19 @@
-
-
+# -*- coding: utf-8 -*-
 import ChatBotProcessor
-#from Trainer import *
-#import Trainer
+#*obser = unicode(self.edit_observ.toPlainText())*
+#* obser1 = obser.encode('utf-8')*
 
 print('dentro del main')
-
-"""
-entrenador = ChatBotProcessor.CBProcessor()
-entrenador.preparateModel('metachatbot','metachatbot.json','prueba1_mcb_')
-# entrenador.readJSON('metachatbot.json','metachatbot')
-# entrenador.createElementsToModel()
-# entrenador.trainingModel('prueba1_mcb_')
-# entrenador.doPickle()
-
-"""
 processor = ChatBotProcessor.CBProcessor()
 
-#processor.setInten('metachatbot','metachatbot.json')
-processor.preparateResponse('metachatbot','metachatbot.json','prueba1_mcb_')
 
+
+#GENERA EL MODELO-TRAINER
+# processor.preparateModel('metachatbot','metachatbot.json','prueba')
+
+#GENERA EL RESPONSE
+processor.preparateResponse('metachatbot','metachatbot.json','prueba')
+#
 processor.classify('Hola')
-
+#
 processor.response('Quiero añadir un chatbot')

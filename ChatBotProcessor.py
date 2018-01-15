@@ -1,39 +1,41 @@
+#!/usr/bin/python
+# -*- coding: cp1252 -*-
+
 import Response
-#import Trainer
+import Trainer
 
 class CBProcessor:
 
     def __init__(self):
         self.intens = {}
         self.sentence = ''
-        #self.actions = {'añadirItem' : self.añadirItem, 'eliminarItem' : self.eliminarItem}
         self.mode = 'chatbot'
         self.currentAction = ''
         self.context = ''
-        #self.chatbotModel = Trainer.Model()
+        self.chatbotModel = None
         self.chatbotResponse = None
 
-    """
+    #"""
     def preparateModel(self,chatbotName,jsonFile,pathModel):
-
-
-        if not ('.json' in jsonFile)  or (chatbotName == ''):
+        if not ('.json' in jsonFile) or (chatbotName == ''):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
+            self.chatbotModel = Trainer.Model()
             self.chatbotModel.readJSON(jsonFile,chatbotName)
             self.chatbotModel.createElementsToModel()
             self.chatbotModel.trainingModel(pathModel)
             self.chatbotModel.doPickle()
 
-    """
+    #"""
 
     def preparateResponse(self,chatbotName,jsonFile,pathModel):
-
-
-        if not ('.json' in jsonFile)  or (chatbotName == ''):
+        # if self.chatbotModel == None:
+        #     print('Se necesita crear el Modelo primero.')
+        if not ('.json' in jsonFile) or (chatbotName == ''):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
-            self.chatbotResponse = Response.Response(pathModel)
+            self.chatbotResponse = Response.Response()
+            self.chatbotResponse.cargarArrays(pathModel)
             self.chatbotResponse.readJSON(jsonFile,chatbotName)
             self.chatbotResponse.buildNetwork()
             self.chatbotResponse.loadModel()
@@ -81,10 +83,10 @@ class CBProcessor:
 
     #def dispatchAction(self):
 
-    def añadirItem(self,sentence):
-        return print('El item '+sentence+' se ha anhadido correctamente a la cesta.')
+    # def a�adirItem(self,sentence):
+    #     return print('El item '+sentence+' se ha anhadido correctamente a la cesta.')
 
 
-    def eliminarItem(self,sentence):
-        return print('El item '+sentence+' se ha anhadido correctamente a la cesta.')
+    # def eliminarItem(self,sentence):
+    #     return print('El item '+sentence+' se ha anhadido correctamente a la cesta.')
 

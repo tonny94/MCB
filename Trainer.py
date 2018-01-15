@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # things we need for NLP
 import nltk
 from nltk.stem import SnowballStemmer
@@ -12,6 +14,8 @@ import tensorflow as tf
 import random
 import json
 import os
+#*obser = unicode(self.edit_observ.toPlainText())*
+#* obser1 = obser.encode('utf-8')*
 
 ############################################
 
@@ -35,13 +39,10 @@ class Model:
 
 
     def readJSON(self,jsonFile,chatbotName):
-        if not ('.json' in jsonFile)  or (chatbotName == ''):
-            print('Se necesita especificar la ruta del fichero JSON.')
-        else:
-            self.jsonFile = jsonFile
-            self.chatbotName = chatbotName
-            with open(self.jsonFile) as json_data:
-                self.intents = json.load(json_data)
+        self.jsonFile = jsonFile
+        self.chatbotName = chatbotName
+        with open(self.jsonFile) as json_data:
+            self.intents = json.load(json_data)
 
     def createElementsToModel(self):
 
