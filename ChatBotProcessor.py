@@ -1,26 +1,28 @@
 #!/usr/bin/python
-# -*- coding: cp1252 -*-
+# -*- coding: UTF-8 -*-
 
 import Response
 import Trainer
+import curses
 
-class CBProcessor:
+class CBProcessor(object):
 
     def __init__(self):
         self.intens = {}
         self.sentence = ''
         self.mode = 'chatbot'
         self.currentAction = ''
+        self.actions = {}
         self.context = ''
-        self.chatbotModel = None
-        self.chatbotResponse = None
+        self.chatbotModel = Trainer.Model()
+        self.chatbotResponse = Response.Response()
 
     #"""
     def preparateModel(self,chatbotName,jsonFile,pathModel):
         if not ('.json' in jsonFile) or (chatbotName == ''):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
-            self.chatbotModel = Trainer.Model()
+
             self.chatbotModel.readJSON(jsonFile,chatbotName)
             self.chatbotModel.createElementsToModel()
             self.chatbotModel.trainingModel(pathModel)
@@ -34,7 +36,7 @@ class CBProcessor:
         if not ('.json' in jsonFile) or (chatbotName == ''):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
-            self.chatbotResponse = Response.Response()
+
             self.chatbotResponse.cargarArrays(pathModel)
             self.chatbotResponse.readJSON(jsonFile,chatbotName)
             self.chatbotResponse.buildNetwork()
@@ -50,14 +52,19 @@ class CBProcessor:
 
     def response(self,sentence):
         if self.mode == 'chatbot':
-            print(self.chatbotResponse.response(sentence))
+            respuesta = self.chatbotResponse.response(sentence)
             if not (self.chatbotResponse.action == ''): # ha encontrado una accion
-                self.mode = 'modoTexto'
                 self.currentAction = self.chatbotResponse.action
+                self.mode = 'modoTexto'
+                #self.currentAction = self.chatbotResponse.action
+
+            return respuesta
 
         else: # ha encontrado una accion
             self.mode = 'chatbot' #reinicia el valor
-            #self.actions[self.currentAction](sentence)
+            self.actions[self.currentAction](sentence)
+            self.currentAction=''
+            #se reinicia en METACHATBOT, AQUI NO
 
     def getAction(self):
         return self.currentAction
@@ -83,7 +90,7 @@ class CBProcessor:
 
     #def dispatchAction(self):
 
-    # def añadirItem(self,sentence):
+    # def aÃ±adirItem(self,sentence):
     #     return print('El item '+sentence+' se ha anhadido correctamente a la cesta.')
 
 

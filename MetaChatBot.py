@@ -1,19 +1,30 @@
 from ChatBot import ChatBot
-import ChatBotProcessor
+from ChatBotProcessor import CBProcessor
+import curses
 
-
-class MetaChatBot():
+class MetaChatBot(CBProcessor):
     """Father class"""
     def __init__(self):
+
         self.dicChatBots = {}
         self.currentChatBot = None
-        self.actions = {'crearChatBot' : self.crearChatBot, 'borrarChatBot' : self.borrarChatBot}
 
+
+
+    def iniciarResponseClass(self,chatbotName,jsonFile,pathModel):
+        CBProcessor.__init__(self)
+        self.preparateResponse(chatbotName, jsonFile, pathModel)
+        self.actions = {'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot}
+
+
+
+    """
     def MCBResponse(self,sentence):
-        ChatBotProcessor.CBProcessor.response(sentence)
-        action = ChatBotProcessor.CBProcessor.getAction()
+        self.response(sentence)
+        action = self.getAction()
         self.actions[action](sentence)
-        ChatBotProcessor.CBProcessor.resetAction()
+        self.resetAction()
+    """
 
     def addChatBot(self, nameChatBot):
         myChatBot = ChatBot()
@@ -32,7 +43,6 @@ class MetaChatBot():
         if nameChatBot is self.currentChatBot:
             self.currentChatBot = None
 
-
     def selectChatBot(self, nameChatBot):
         if nameChatBot in self.dicChatBots:
             self.currentChatBot = nameChatBot
@@ -41,10 +51,9 @@ class MetaChatBot():
         return None
 
     def crearChatBot(self,sentence):
-    	#addChatBot(sentence)
+        self.addChatBot(sentence)
         return print('El ChatBot '+sentence+' se ha añadido correctamente.')
 
-
     def borrarChatBot(self,sentence):
-    	#removeChatBot(sentence)
+        self.removeChatBot(sentence)
         return print('El ChatBot '+sentence+' se ha eliminado correctamente .')

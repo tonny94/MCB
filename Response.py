@@ -44,7 +44,6 @@ class Response:
         with open(self.jsonFile) as json_data:
             self.intents = json.load(json_data)
 
-
     def buildNetwork(self):
         net = tflearn.input_data(shape=[None, len(self.train_x[0])])
         net = tflearn.fully_connected(net, 8)
@@ -53,7 +52,6 @@ class Response:
         net = tflearn.regression(net)
         # Define model and setup tensorboard
         self.model = tflearn.DNN(net, tensorboard_dir = self.pathModel)
-
 
     def loadModel(self):
         self.model.load(self.pathModel+'model.tflearn')
@@ -93,7 +91,6 @@ class Response:
         # return tuple of intent and probability
         return return_list
 
-
     def response(self,sentence, userID='123', show_details=False):
 
         results = self.classify(sentence)
@@ -120,7 +117,7 @@ class Response:
                             if show_details: print('tag:', i['tag'])
 
                         # a random response from the intent
-                        return (random.choice(i['responses']))
+                        return print( (random.choice(i['responses'])) )
 
                 results.pop(0)
 
