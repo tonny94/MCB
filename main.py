@@ -7,8 +7,6 @@ import curses
 
 import MetaChatBot
 
-
-print('dentro del main')
 #processor = ChatBotProcessor.CBProcessor()
 
 
@@ -34,8 +32,8 @@ metacb.iniciarResponseClass('metachatbot','metachatbot.json','prueba')
 #metacb.MCBResponse('Hola')
 #metacb.MCBResponse('Quiero añadir un chatbot')
 
-
-
+"""
+"""
 sentence = ''
 while not (sentence=='s'):
     sentence = input()
@@ -60,6 +58,19 @@ pasar a JSON una clase:
 clase chatbot tiene metodo "toJSON"
 en la clase INTENS(hay que recorrerlo)
 se llamara al toJSON del chatbot que recorrerá todos los itents y cada intent tendrá su toJSON
+
+-> ver todos los chatbots
+Backend Qt5Agg is interactive backend. Turning interactive mode on.
+Chatbots: ]
+-> crear chatbot
+Que chatbot quiere crear?
+-> Lista_Compra
+El ChatBot Lista_Compra se ha añadido correctamente.
+-> ver todos los chatbots
+Chatbots: [Lista_Compra]
+-> Listar intenciones
+Intents: ]
+-> Que patterns  hay creados
 """
 
 

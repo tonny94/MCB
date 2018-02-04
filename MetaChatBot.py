@@ -59,11 +59,14 @@ class MetaChatBot(CBProcessor):
         return None
 
     def listar(self,lista,nombreLista):
-        cadena = nombreLista+': ['
-        for elem in lista:
-            cadena += elem + ','
-        cadena = cadena[:-1]
-        cadena += ']'
+        cadena = nombreLista+': [ '
+        if lista == {}:
+            cadena += ']'
+        else:
+            for elem in lista:
+                cadena += elem + ','
+            cadena = cadena[:-1]
+            cadena += ' ]'
         print(cadena)
 
 
@@ -119,7 +122,11 @@ class MetaChatBot(CBProcessor):
             return print('El Intent ' + sentence + ' no existe .')
 
     def listarIntent(self):
-        self.listar(self.currentChatBot.dicIntents,'Intents')
+        if not (self.currentChatBot == None):
+            self.listar(self.currentChatBot.dicIntents,'Intents')
+        else:
+            self.mode = 'chatbot'
+            print('No hay chatbot actual')
 
 
     ##PATTERNS METODOS
@@ -143,7 +150,11 @@ class MetaChatBot(CBProcessor):
             return print('El Pattern ' + sentence + ' no existe .')
 
     def mostrarPattern(self):
-        self.listar(self.currentChatBot.currentIntent.patterns,'Pattern')
+        if not (self.currentChatBot.currentIntent == None):
+            self.listar(self.currentChatBot.currentIntent.patterns,'Pattern')
+        else:
+            self.mode = 'chatbot'
+            print('No hay intencion actual')
 
 
     ##RESPONSES METODOS
@@ -167,4 +178,8 @@ class MetaChatBot(CBProcessor):
             return print('El Pattern ' + sentence + ' no existe .')
 
     def mostrarResponse(self):
-        self.listar(self.currentChatBot.currentIntent.responses, 'Responses')
+        if not (self.currentChatBot.currentIntent == None):
+            self.listar(self.currentChatBot.currentIntent.responses, 'Responses')
+        else:
+            self.mode = 'chatbot'
+            print('No hay intencion actual')

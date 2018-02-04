@@ -119,6 +119,8 @@ class Response:
                         # a random response from the intent - si no hay respuestas no se imprime nada
                         if not len(i['responses']) == 0:
                             return print( (random.choice(i['responses'])) )
+                        else:
+                            return
 
                 results.pop(0)
 
