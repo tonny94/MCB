@@ -52,13 +52,15 @@ class CBProcessor(object):
 
     def response(self,sentence):
         if self.mode == 'chatbot':
-            respuesta = self.chatbotResponse.response(sentence)
-            if not (self.chatbotResponse.action == ''): # ha encontrado una accion
+            self.chatbotResponse.response(sentence)
+            if not (self.chatbotResponse.action == '') and not ('listar' in self.chatbotResponse.action): # ha encontrado una accion
                 self.currentAction = self.chatbotResponse.action
                 self.mode = 'modoTexto'
                 #self.currentAction = self.chatbotResponse.action
 
-            return respuesta
+            if 'listar' in self.chatbotResponse.action:
+                self.actions[self.currentAction]()
+            #return respuesta
 
         else: # ha encontrado una accion
             self.mode = 'chatbot' #reinicia el valor

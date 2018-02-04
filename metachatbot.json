@@ -6,9 +6,62 @@
          "action": "borrarChatBot"
         },
         {"tag": "crearChatBot",
-         "patterns": ["Añadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero añadir un chatbot"],
-         "responses": ["Digame el nombre del chatbot","Qué chatbot quiere crear?","Qué chatbot quiere añadir?"],
+         "patterns": ["Anhadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero anhadir un chatbot"],
+         "responses": ["Digame el nombre del chatbot","Que chatbot quiere crear?","Que chatbot quiere anhadir?"],
          "action": "crearChatBot"
+        },
+        {"tag": "listarChatBot",
+         "patterns": ["Listar chatbots","Ver todos los chatbots","Que chatbots  hay creados","Quiero ver todos los chatbots"],
+         "responses": [],
+         "action": "listarChatBot"
+        },
+        {"tag": "crearIntent",
+         "patterns": ["Anhadir una intencion","Crear una nueva intencion","Quiero crear una intencion","Nueva intencion","Crear intencion"],
+         "responses": ["Digame el nombre de la intencion","Que intencion quiere crear?","Que intencion quiere anhadir?"],
+         "action": "crearIntent"
+        },
+        {"tag": "borrarIntent",
+         "patterns": ["Quiero borrar una intencion","Quiero eliminar una intencion","Borrar intencion","Eliminar intencion"],
+         "responses": ["Digame que intencion quiere borrar","Digame que intencion quiere eliminar"],
+         "context_set": "",
+         "action": "borrarIntent"
+        },
+        {"tag": "listarIntent",
+         "patterns": ["Listar intenciones","Ver todos los intenciones","Que intenciones  hay creados","Quiero ver todos las intenciones"],
+         "responses": [],
+         "action": "listarIntent"
+        },
+        {"tag": "crearPattern",
+         "patterns": ["Anhadir pattern","Crear pattern","Quiero crear un pattern","Quiero anhadir un pattern","Nuevo pattern"],
+         "responses": ["Digame el nombre del pattern","Que pattern quiere crear?","Que pattern quiere anhadir?"],
+         "action": "crearPattern"
+        },
+        {"tag": "borrarPattern",
+         "patterns": ["Quiero borrar un pattern","Quiero eliminar un pattern","Borrar pattern","Eliminar pattern"],
+         "responses": ["Digame que pattern quiere borrar","Digame que pattern quiere eliminar"],
+         "context_set": "",
+         "action": "borrarPattern"
+        },
+        {"tag": "mostrarPattern",
+         "patterns": ["Listar patterns","Ver todos los patterns","Que patterns  hay creados","Quiero ver todos los patterns"],
+         "responses": [],
+         "action": "mostrarPattern"
+        },
+        {"tag": "crearResponse",
+         "patterns": ["Anhadir response","Crear response","Quiero crear un response","Quiero anhadir un response","Nuevo response"],
+         "responses": ["Digame el nombre del response","Que response quiere crear?","Que response quiere anhadir?"],
+         "action": "crearResponse"
+        },
+        {"tag": "borrarResponse",
+         "patterns": ["Quiero borrar un response","Quiero eliminar un response","Borrar response","Eliminar response"],
+         "responses": ["Digame que response quiere borrar","Digame que response quiere eliminar"],
+         "context_set": "",
+         "action": "borrarResponse"
+        },
+        {"tag": "mostrarResponse",
+         "patterns": ["Listar responses","Ver todos los responses","Que responses  hay creados","Quiero ver todos los responses"],
+         "responses": [],
+         "action": "mostrarResponse"
         }
    ]
 }

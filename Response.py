@@ -116,8 +116,9 @@ class Response:
                         if (userID in self.context and 'context_filter' in i and i['context_filter'] == self.context[userID]):
                             if show_details: print('tag:', i['tag'])
 
-                        # a random response from the intent
-                        return print( (random.choice(i['responses'])) )
+                        # a random response from the intent - si no hay respuestas no se imprime nada
+                        if not len(i['responses']) == 0:
+                            return print( (random.choice(i['responses'])) )
 
                 results.pop(0)
 
