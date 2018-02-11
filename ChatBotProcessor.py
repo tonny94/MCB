@@ -51,17 +51,25 @@ class CBProcessor(object):
     ## Genera la respuesta ##
 
     def response(self,sentence):
+
         if self.mode == 'chatbot':
             self.chatbotResponse.response(sentence)
-            if not (self.chatbotResponse.action == '') and not ('listar' in self.chatbotResponse.action)and not ('mostrar' in self.chatbotResponse.action): # ha encontrado una accion
-                self.currentAction = self.chatbotResponse.action
-                self.mode = 'modoTexto'
-                #self.currentAction = self.chatbotResponse.action
-
-            if 'listar' in self.chatbotResponse.action or 'mostrar' in self.chatbotResponse.action:
+            if 'toJSON' in self.chatbotResponse.action:
+                self.actions[self.chatbotResponse.action]()
+                return True
+            elif 'listar' in self.chatbotResponse.action or 'mostrar' in self.chatbotResponse.action:
                 self.currentAction = self.chatbotResponse.action
                 self.actions[self.currentAction]()
                 self.currentAction = ''
+                return True
+            elif not (self.chatbotResponse.action == '') : # ha encontrado una accion
+                self.currentAction = self.chatbotResponse.action
+                self.mode = 'modoTexto'
+                return True
+                #self.currentAction = self.chatbotResponse.action
+
+
+
             #return respuesta
 
         else: # ha encontrado una accion

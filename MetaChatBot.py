@@ -15,8 +15,9 @@ class MetaChatBot(CBProcessor):
     def iniciarResponseClass(self,chatbotName,jsonFile,pathModel):
         CBProcessor.__init__(self)
         self.preparateResponse(chatbotName, jsonFile, pathModel)
-        self.actions = {'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot, 'listarChatBot':self.listarChatBot,
-                        'crearIntent':self.crearIntent,'borrarIntent':self.borrarIntent, 'listarIntent':self.listarIntent,
+        self.actions = {'toJSON':self.toJSON,
+                        'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot, 'listarChatBot':self.listarChatBot, 'cambiarChatBot':self.cambiarChatBot,'mostrarActualChatBot':self.mostrarActualChatBot,
+                        'crearIntent':self.crearIntent,'borrarIntent':self.borrarIntent, 'listarIntent':self.listarIntent, 'cambiarIntent':self.cambiarIntent,'mostrarActualIntent':self.mostrarActualIntent,
                         'crearPattern':self.crearPattern,'borrarPattern':self.borrarPattern,'mostrarPattern':self.mostrarPattern,
                         'crearResponse':self.crearResponse,'borrarResponse':self.borrarResponse,'mostrarResponse':self.mostrarResponse}
 
@@ -51,6 +52,23 @@ class MetaChatBot(CBProcessor):
             self.currentChatBot = None
     """
 
+    def dicToJSON(self,dicc):
+        if len(dicc) > 0:
+            i = 0
+            strJSON = '[\n\t'
+            for chatbot in dicc:
+                if i == len(dicc) - 1:
+                    strJSON += dicc[chatbot].toJSON() + '\n]'
+                else:
+                    strJSON += dicc[chatbot].toJSON() + ',\n\t'
+                i += 1
+            return strJSON
+        else:
+            return '[]'
+
+    def toJSON(self):
+        print (self.dicToJSON(self.dicChatBots) )
+
     def selectChatBot(self, nameChatBot):
         if nameChatBot in self.dicChatBots:
             self.currentChatBot = nameChatBot
@@ -60,7 +78,7 @@ class MetaChatBot(CBProcessor):
 
     def listar(self,lista,nombreLista):
         cadena = nombreLista+': [ '
-        if lista == {}:
+        if lista == {} or lista == []:
             cadena += ']'
         else:
             for elem in lista:
@@ -69,6 +87,21 @@ class MetaChatBot(CBProcessor):
             cadena += ' ]'
         print(cadena)
 
+    #metodo que crea a estructura de una intencion para un chatbot
+    def crearIntentSalir(self,chatbot):
+
+        #crea la intencion
+        intent = Intent()
+        intent.setTag('salirChatbot')
+        intent.setAction('salirChatbot')
+        intent.addPattern('Salir del chatbot')
+        intent.addPattern('Finalizar chatbot')
+        intent.addPattern('Salir del chatbot')
+        intent.addPattern('Dejar de ejecutar chatbot')
+        intent.responses = []
+
+        chatbot.dicIntents['salirChatbot'] = intent
+
 
     ##CHATBOT METODOS
     def crearChatBot(self,sentence):
@@ -76,6 +109,10 @@ class MetaChatBot(CBProcessor):
         if not sentence in self.dicChatBots:
             myChatBot = ChatBot()
             myChatBot.setName(sentence)
+
+            #crea la intencion de salir para cada chatbot que se cree
+            self.crearIntentSalir(myChatBot)
+
             self.dicChatBots[sentence] = myChatBot
             self.currentChatBot = myChatBot
             return print('El ChatBot '+sentence+' se ha añadido correctamente.')
@@ -96,6 +133,19 @@ class MetaChatBot(CBProcessor):
 
     def listarChatBot(self):
         self.listar(self.dicChatBots,'Chatbots')
+
+    def cambiarChatBot(self,sentence):
+        if not sentence in self.dicChatBots:
+            print('El chatbot no exsite')
+        else:
+            self.currentChatBot = self.dicChatBots[sentence]
+            print('Chatbot actual: '+self.currentChatBot.name)
+
+    def mostrarActualChatBot(self):
+        if self.currentChatBot == None:
+            print ('No hay chatbot creado')
+        else:
+            print('Chatbot activado: '+self.currentChatBot.name)
 
     ##INTENTS METODOS
     def crearIntent(self,sentence):
@@ -128,6 +178,18 @@ class MetaChatBot(CBProcessor):
             self.mode = 'chatbot'
             print('No hay chatbot actual')
 
+    def cambiarIntent(self, sentence):
+        if not sentence in self.currentChatBot.dicIntents:
+            print('La intencion no exsite')
+        else:
+            self.currentChatBot.currentIntent = self.currentChatBot.dicIntents[sentence]
+            print('Intencion actual: '+self.currentChatBot.currentIntent.tag)
+
+    def mostrarActualIntent(self):
+        if self.currentChatBot.currentIntent == None:
+            print ('No hay intencion creado')
+        else:
+            print('Intencion activada: '+self.currentChatBot.currentIntent.tag)
 
     ##PATTERNS METODOS
     def crearPattern(self,sentence):

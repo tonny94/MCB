@@ -47,3 +47,23 @@ class ChatBot:
             self.currentIntent = nameIntent
         elif nameIntent is None:
             self.currentIntent = None
+
+    def dicToJSON(self,dicc):
+        if len(dicc) > 0:
+            i = 0
+            strJSON = '\n\t\t[\n\t\t\t'
+            for intent in dicc:
+                if i == len(dicc)-1:
+                    strJSON += dicc[intent].toJSON()+'\n\t\t]'
+                else:
+                    strJSON += dicc[intent].toJSON()+',\n\t\t\t'
+                i += 1
+            return strJSON
+        else:
+            return '[]'
+
+    def toJSON(self):
+        strJson = '{"' + self.name + '":'
+        strJson += self.dicToJSON(self.dicIntents)+'\n\t'
+        strJson += '}'
+        return strJson

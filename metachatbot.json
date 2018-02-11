@@ -1,8 +1,12 @@
 {"metachatbot": [
+        {"tag": "toJSON",
+         "patterns": ["JSON","generar json","crear json","pasar a json"],
+         "responses": [],
+         "action": "toJSON"
+        },
         {"tag": "borrarChatBot",
          "patterns": ["Quiero borrar un chatbot","Quiero eliminar un chatbot","Borrar chatbot","Eliminar chatbot"],
          "responses": ["Digame que chatbot quiere borrar","Digame que chatbot quiere eliminar"],
-         "context_set": "",
          "action": "borrarChatBot"
         },
         {"tag": "crearChatBot",
@@ -14,6 +18,16 @@
          "patterns": ["Listar chatbots","Ver todos los chatbots","Que chatbots  hay creados","Quiero ver todos los chatbots"],
          "responses": [],
          "action": "listarChatBot"
+        },
+        {"tag": "cambiarChatBot",
+         "patterns": ["Cambiar de chatbot","Otro chatbot","Quiero cambiar de chatbot"],
+         "responses": ["Seleccione el nombre del chatbot"],
+         "action": "cambiarChatBot"
+        },
+        {"tag": "mostrarActualChatBot",
+         "patterns": ["Ver chatbot actual","Actual chatbot","Quiero ver el chatbot actual","que chatbot esta activo?"],
+         "responses": [],
+         "action": "mostrarActualChatBot"
         },
         {"tag": "crearIntent",
          "patterns": ["Anhadir una intencion","Crear una nueva intencion","Quiero crear una intencion","Nueva intencion","Crear intencion"],
@@ -30,6 +44,16 @@
          "patterns": ["Listar intenciones","Ver todos los intenciones","Que intenciones  hay creados","Quiero ver todos las intenciones"],
          "responses": [],
          "action": "listarIntent"
+        },
+        {"tag": "cambiarIntent",
+         "patterns": ["Cambiar de intencion","Otra intencion","Quiero cambiar de intencion"],
+         "responses": ["Seleccione el nombre de la intencion"],
+         "action": "cambiarIntent"
+        },
+        {"tag": "mostrarActualIntent",
+         "patterns": ["Ver intencion actual","Actul intencion","Quiero ver la intencion actual","que intencion esta activo?"],
+         "responses": [],
+         "action": "mostrarActualIntent"
         },
         {"tag": "crearPattern",
          "patterns": ["Anhadir pattern","Crear pattern","Quiero crear un pattern","Quiero anhadir un pattern","Nuevo pattern"],
