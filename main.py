@@ -3,31 +3,37 @@ import ChatBotProcessor
 #*obser = unicode(self.edit_observ.toPlainText())*
 #* obser1 = obser.encode('utf-8')*
 import curses
+import os
+from chatbotResolverErrores.Resolutor import Resolutor
 
 
 import MetaChatBot
 
-processor = ChatBotProcessor.CBProcessor()
+
 
 #GENERA EL MODELO-TRAINER
-#processor.preparateModel('metachatbot','metachatbot.json','prueba')
+#processor = ChatBotProcessor.CBProcessor()
+#processor.preparateModel('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
 
-#GENERA EL RESPONSE
-#processor.preparateResponse('metachatbot','metachatbot.json','prueba')
-#
-#processor.classify('Hola')
-#
-#processor.response('Quiero añadir un chatbot')
+#GENERAR MODELO - RESOLUTOR
+# resolutor = Resolutor()
+# resolutor.iniciarTRainerClass()#'resolutor','/chatbotResolverErrores/chatbotresolvererrores.json')
+
+
 
 
 
 #METACHATBOT
 
-"""
-"""
-metacb = MetaChatBot.MetaChatBot()
-metacb.iniciarResponseClass('metachatbot','metachatbot.json','prueba')
 
+
+"""
+"""
+print (os.getcwd()+'\\metachatbot')
+metacb = MetaChatBot.MetaChatBot()
+#metacb.iniciarTRainerClass('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
+metacb.iniciarResponseClass('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
+#
 sentence = ''
 while not (sentence=='s'):
     sentence = input()
@@ -39,30 +45,25 @@ while not (sentence=='s'):
 
 
 
+
+
+
+
+
 """
-si no entiende la frase:
+las acciones no son iguales -> algunas reciben parámetros, otras no
 
- 1.- que lo guarde y luego lo liste para guardarlo en intens -> accion: resolver
- 2.- que diga que no lo reconocio y de opciones de guardarlo -> "no lo reconozco, diga que es {intent,acciont,pattern}"
- 3.- "no lo he reconocido" (opciones):->"guardar, olvidar, esperar a que diga lo que es (con aciones : definir_insercion)"
+
+1.- Intenciones por defecto: error
+2.- intencion ejecutar chatbot
+3.- generar chatbot: ficheros de modelo y response
+4.- terminar chatbot de ayuda
+5.- 
+
  
-cada chatbot tiene que tener una intetncion: SALIR  - Listo - Problema: la clase no tiene esa accion por defecto, habra que 
-ponerla a mano por cada chatbot que se cree. Si se ejecuta un chatbot se tendrá que tener YA CREADA las acciones correspondientes...
-como se hace?????
-
-4.- poder cambiar de chatbot, intencion - Listo
-5.- mostrar chatbot, intencion actual   - Listo
-6.- metodos toJSON
+**Posible fallo: se empieza a ejecutar el Response antes de que termine de ejecutarse el Trainer(modelo)
 
 #########
-pasar a JSON una clase:  -  Listo
-clase chatbot tiene metodo "toJSON"
-en la clase INTENS(hay que recorrerlo)
-se llamara al toJSON del chatbot que recorrerá todos los itents y cada intent tendrá su toJSON
-
-
-
-
 
 nuevo chatbot
 
@@ -163,6 +164,80 @@ crear json
 
 
 
+
+
+
+
+nuevo chatbot
+Backend Qt5Agg is interactive backend. Turning interactive mode on.
+[('crearChatBot', 0.97326082)]
+Que chatbot quiere anhadir?
+
+Lista_Compra
+[('error', 0.34604287)]
+El ChatBot Lista_Compra se ha añadido correctamente.
+
+chatbot actual
+[('mostrarActualChatBot', 0.99797946)]
+Chatbot activado: Lista_Compra
+
+crear chatbot
+[('crearChatBot', 0.98794109)]
+Que chatbot quiere anhadir?
+
+Compra_Online
+[('error', 0.34604287)]
+El ChatBot Compra_Online se ha añadido correctamente.
+
+actual chatbot
+[('mostrarActualChatBot', 0.99797946)]
+Chatbot activado: Compra_Online
+
+cambiarChatBot
+[('error', 0.34604287)]
+No se ha reconocido la frase.
+Que queire hacer: 
+G -> guardar la frase 
+N -> no hacer nada 
+
+G
+[('error', 0.34604287)]
+Se ha anhadido la sentencia a la lista de error
+
+Otro chatbot
+[('cambiarChatBot', 0.99061567)]
+Seleccione el nombre del chatbot
+
+Lista_Compra
+[('error', 0.34604287)]
+Chatbot actual: Lista_Compra
+
+nueva intencion
+[('crearIntent', 0.99181807)]
+Digame el nombre de la intencion
+
+anhadirItem
+[('error', 0.34604287)]
+El Intent anhadirItem se ha añadido correctamente.
+
+nuevo pattern
+[('crearPattern', 0.99282128)]
+Que pattern quiere crear?
+
+nuevo item de la compra
+[('error', 0.83908486)]
+El Pattern nuevo item de la compra se ha añadido correctamente.
+
+nuevo response
+[('crearResponse', 0.9969427)]
+Que response quiere crear?
+
+digame el item que desea anhadir
+[('crearIntent', 0.44244176), ('crearPattern', 0.27432156)]
+El Response digame el item que desea anhadir se ha añadido correctamente.
+
+generar json
+[('toJSON', 0.999345)]
 
 """
 

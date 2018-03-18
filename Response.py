@@ -14,6 +14,7 @@ import json
 #* obser1 = obser.encode('utf-8')*
 
 class Response:
+
     def __init__(self):
         self.model = None
         self.data = None
@@ -28,7 +29,6 @@ class Response:
         self.pathModel = ''
         self.jsonFile = ''
         self.chatbotName = ''
-
 
     def cargarArrays(self,pathModel):
         self.data = pickle.load(open(pathModel + "training_data", "rb"))
@@ -124,9 +124,9 @@ class Response:
 
                 results.pop(0)
 
+
+
 """
-
-
 if __name__ == "__main__":
     intens = {}
     def setInten(chatbotName, jsonFile):

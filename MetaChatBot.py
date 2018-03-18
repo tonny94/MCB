@@ -1,25 +1,39 @@
 from ChatBot import ChatBot
 from ChatBotProcessor import CBProcessor
 from Intent import Intent
+import os
+
+from chatbotResolverErrores.Resolutor import Resolutor
 import curses
 
 class MetaChatBot(CBProcessor):
     """Father class"""
     def __init__(self):
-
+        self.listaSentenciasNoReconocidas = []
+        self.sentenciaParaResolver = ''
         self.dicChatBots = {}
         self.currentChatBot = None
+        self.name = ''
 
+
+    def iniciarTRainerClass(self,chatbotName,jsonFile,pathModel):
+        CBProcessor.__init__(self)
+        self.preparateModel(chatbotName, jsonFile, pathModel)
+        self.name = chatbotName
 
 
     def iniciarResponseClass(self,chatbotName,jsonFile,pathModel):
         CBProcessor.__init__(self)
         self.preparateResponse(chatbotName, jsonFile, pathModel)
-        self.actions = {'toJSON':self.toJSON,
+        self.name = chatbotName
+        self.actions.update({'toJSON':self.toJSON,'salirChatbot':self.salirChatbot,'crearJSON':self.crearJSON,
+                        #'reconocerSentencia':self.reconocerSentencia,'resolverSentencia':self.resolverSentencia, #construirchatbot -> genera ficheros de los chatbots
+                        'resolverError':self.resolverError,
                         'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot, 'listarChatBot':self.listarChatBot, 'cambiarChatBot':self.cambiarChatBot,'mostrarActualChatBot':self.mostrarActualChatBot,
                         'crearIntent':self.crearIntent,'borrarIntent':self.borrarIntent, 'listarIntent':self.listarIntent, 'cambiarIntent':self.cambiarIntent,'mostrarActualIntent':self.mostrarActualIntent,
                         'crearPattern':self.crearPattern,'borrarPattern':self.borrarPattern,'mostrarPattern':self.mostrarPattern,
                         'crearResponse':self.crearResponse,'borrarResponse':self.borrarResponse,'mostrarResponse':self.mostrarResponse}
+                        )
 
 
 
@@ -52,6 +66,57 @@ class MetaChatBot(CBProcessor):
             self.currentChatBot = None
     """
 
+    def resolverError(self,nombChatbot):
+        objResolutor = Resolutor()
+        #objResolutor.preparateModel()
+        objResolutor.preparateResponse()
+        objResolutor.setParametters(nombChatbot,self.dicPattersnNoReconocidos)
+
+        sentence = ''
+        while not (sentence == 's'):
+            sentence = input()
+            if not (sentence is 's'):
+                objResolutor.classify(sentence)
+                objResolutor.response(sentence)
+
+    def salirChatbot(self):
+        #cancelar ejecucion del chatbot
+        print('chatbot cancelado')
+
+    def reconocerSentencia(self,sentence):
+        self.listaSentenciasNoReconocidas.append(sentence)
+        self.sentenciaParaResolver = sentence
+        print('No se reconocio la sentencia. Quiere eliminarla o anhadirla a: Intenciones, Patterns, Responses')
+
+    def resolverSentencia(self):
+        print('resolver')
+
+
+
+    def toJSON(self,chatbotName):
+        self.crearJSON(chatbotName)
+        #print (self.dicToJSON(self.dicChatBots) )
+
+    def crearJSON(self,chatbotName):
+
+        if chatbotName in self.dicChatBots:
+            cwd = os.getcwd()
+            if not os.path.exists(cwd + '\\'+chatbotName):
+                os.makedirs(cwd + '\\'+chatbotName)
+
+            jsonFile = open(cwd + '\\'+chatbotName+'\\'+chatbotName+'.json', 'w')
+            jsonFile.write(self.chatbotToJson(self.dicChatBots[chatbotName]))
+            # jsonFile.write(self.dicToJSON(self.dicChatBots) )
+            jsonFile.close()
+            print ('json creado')
+        else:
+            print('No existe el chatbot para convertir a json.')
+
+    def chatbotToJson(self,chatbot):
+        strJSON = '[\n\t'
+        strJSON += chatbot.toJSON() + '\n]'
+        return strJSON
+
     def dicToJSON(self,dicc):
         if len(dicc) > 0:
             i = 0
@@ -66,8 +131,6 @@ class MetaChatBot(CBProcessor):
         else:
             return '[]'
 
-    def toJSON(self):
-        print (self.dicToJSON(self.dicChatBots) )
 
     def selectChatBot(self, nameChatBot):
         if nameChatBot in self.dicChatBots:
@@ -103,6 +166,7 @@ class MetaChatBot(CBProcessor):
         chatbot.dicIntents['salirChatbot'] = intent
 
 
+
     ##CHATBOT METODOS
     def crearChatBot(self,sentence):
         #self.addChatBot(sentence)
@@ -115,6 +179,7 @@ class MetaChatBot(CBProcessor):
 
             self.dicChatBots[sentence] = myChatBot
             self.currentChatBot = myChatBot
+            self.currentChatbotName = sentence
             return print('El ChatBot '+sentence+' se ha añadido correctamente.')
         else:
             return print('El ChatBot ' + sentence + ' ya existe.')

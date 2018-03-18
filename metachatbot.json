@@ -4,6 +4,16 @@
          "responses": [],
          "action": "toJSON"
         },
+        {"tag": "error",
+         "patterns": ["ERROR","cancelar","abortar","volver","detener","cancelar accion","volver atras"],
+         "responses": ["accion detenida","se ha cancelado la accion"],
+         "action": "error"
+        },
+        {"tag": "resolverError",
+         "patterns": ["resolver errores","procesar errores"],
+         "responses": ["Ejecutando chatbot resolutor"],
+         "action": "resolverError"
+        },
         {"tag": "borrarChatBot",
          "patterns": ["Quiero borrar un chatbot","Quiero eliminar un chatbot","Borrar chatbot","Eliminar chatbot"],
          "responses": ["Digame que chatbot quiere borrar","Digame que chatbot quiere eliminar"],

@@ -34,9 +34,8 @@ class Model:
         self.output = []
         self.train_x = []
         self.train_y = []
-
+        self.model = None
         self.pathModel = ''
-
 
     def readJSON(self,jsonFile,chatbotName):
         self.jsonFile = jsonFile
@@ -69,13 +68,11 @@ class Model:
         print(len(self.classes), "classes", self.classes)
         print(len(self.words), "unique stemmed words", self.words)
 
-
-
     def trainingModel(self,pathModel):
 
         self.pathModel = pathModel
         if not os.path.isdir(pathModel):
-            os.mkdir(pathModel)
+            os.makedirs(pathModel) #mkdir
 
 
         output_empty = [0] * len(self.classes)
@@ -119,10 +116,11 @@ class Model:
         net = tflearn.regression(net)
 
         # Define model and setup tensorboard
-        model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
+        #tf.reset_default_graph()
+        self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
         # Start training (apply gradient descent algorithm)
-        model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
-        model.save(self.pathModel+'model.tflearn')
+        self.model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
+        self.model.save(self.pathModel+'model.tflearn')
 
     def clean_up_sentence(self,sentence):
         # tokenize the pattern
@@ -151,6 +149,8 @@ class Model:
         pickle.dump({'words': self.words, 'classes': self.classes, 'train_x': self.train_x, 'train_y': self.train_y},
                     open(self.pathModel+"training_data", "wb"))
 
+    def closeResource(self):
+        self.model.session.close()
 
 """
 if __name__ == "__main__":
