@@ -9,20 +9,18 @@ import curses
 class MetaChatBot(CBProcessor):
     """Father class"""
     def __init__(self):
-        self.listaSentenciasNoReconocidas = []
-        self.sentenciaParaResolver = ''
+        self.listUnrecognizedSentences = []
+        self.sentenceToResolve = ''
         self.dicChatBots = {}
         self.currentChatBot = None
         self.name = ''
 
-
-    def iniciarTRainerClass(self,chatbotName,jsonFile,pathModel):
+    def startTrainerClass(self, chatbotName, jsonFile, pathModel):
         CBProcessor.__init__(self)
         self.preparateModel(chatbotName, jsonFile, pathModel)
         self.name = chatbotName
 
-
-    def iniciarResponseClass(self,chatbotName,jsonFile,pathModel):
+    def startResponseClass(self, chatbotName, jsonFile, pathModel):
         CBProcessor.__init__(self)
         self.preparateResponse(chatbotName, jsonFile, pathModel)
         self.name = chatbotName
@@ -36,35 +34,6 @@ class MetaChatBot(CBProcessor):
                         )
 
 
-
-    """
-    def MCBResponse(self,sentence):
-        self.response(sentence)
-        action = self.getAction()
-        self.actions[action](sentence)
-        self.resetAction()
-    """
-
-    """
-    
-    def addChatBot(self, nameChatBot):
-        myChatBot = ChatBot()
-        myChatBot.setName(nameChatBot)
-        self.dicChatBots[nameChatBot] = myChatBot
-        self.currentChatBot = myChatBot
-        #return myChatBot
-    """
-
-    """
-    def removeChatBot(self, nameChatBot):
-        #myChatBot = None
-        if nameChatBot in self.dicChatBots:
-            #myChatBot = self.dicChatBots[nameChatBot]
-            del self.dicChatBots[nameChatBot]
-
-        if nameChatBot is self.currentChatBot:
-            self.currentChatBot = None
-    """
 
     def resolverError(self,nombChatbot):
         objResolutor = Resolutor()
@@ -84,8 +53,8 @@ class MetaChatBot(CBProcessor):
         print('chatbot cancelado')
 
     def reconocerSentencia(self,sentence):
-        self.listaSentenciasNoReconocidas.append(sentence)
-        self.sentenciaParaResolver = sentence
+        self.listUnrecognizedSentences.append(sentence)
+        self.sentenceToResolve = sentence
         print('No se reconocio la sentencia. Quiere eliminarla o anhadirla a: Intenciones, Patterns, Responses')
 
     def resolverSentencia(self):
@@ -100,14 +69,19 @@ class MetaChatBot(CBProcessor):
     def crearJSON(self,chatbotName):
 
         if chatbotName in self.dicChatBots:
-            cwd = os.getcwd()
-            if not os.path.exists(cwd + '\\'+chatbotName):
-                os.makedirs(cwd + '\\'+chatbotName)
+            dirChatbot = os.getcwd()
+            dirChatbot = os.path.join(os.sep,dirChatbot,chatbotName)
+            if not os.path.exists(dirChatbot):
+                os.makedirs(dirChatbot)
 
-            jsonFile = open(cwd + '\\'+chatbotName+'\\'+chatbotName+'.json', 'w')
+            dirJsonFile = os.path.join(os.sep,dirChatbot,chatbotName+'.json')
+            jsonFile = open(dirJsonFile, 'w')
             jsonFile.write(self.chatbotToJson(self.dicChatBots[chatbotName]))
             # jsonFile.write(self.dicToJSON(self.dicChatBots) )
             jsonFile.close()
+
+            self.runTrainer()
+
             print ('json creado')
         else:
             print('No existe el chatbot para convertir a json.')

@@ -7,14 +7,17 @@ class ChatBot:
         self.dicIntents = {}
         self.currentIntent = None
 
+    #para inicializar el atributo 'Name'
     def setName(self, name):
         if self.name == None:
             self.name = name
 
+    #para cambiar el atributo 'Name'
     def changeName(self, name):
         if self.name != None:
             self.name = name
 
+    #añade in intetn a la lista y actualiza el intent actual
     def addIntent(self, nameIntent):
         myIntent = Intent()
         myIntent.setTag(nameIntent)
@@ -22,6 +25,7 @@ class ChatBot:
         self.currentIntent = nameIntent
         return myIntent
 
+    #elimina el intent de la lista, si existe, y si es actual reinicia el atributo 'currentIntent'
     def removeIntent(self, nameIntent):
         myIntent = None
 
@@ -34,36 +38,45 @@ class ChatBot:
 
         return myIntent
 
-
-    def selectIntent(self, nameIntent):
-        if nameIntent in self.dicIntents:
-            self.currentIntent = nameIntent
-            return self.dicIntents[nameIntent]
-
-        return None
-
+    #cambia la intencion actual si existe en la lista
     def setCurrentIntent(self, nameIntent):
         if nameIntent in self.dicIntents:
             self.currentIntent = nameIntent
-        elif nameIntent is None:
-            self.currentIntent = None
+            return self.dicIntents[nameIntent]
+        else:
+            return None
 
-    def dicToJSON(self,dicc):
-        if len(dicc) > 0:
-            i = 0
+    #pasa el diccionario de intenciones en formato JSON
+    def dicToJSON(self,dicIntents):
+        if len(dicIntents) > 0:
+            length = 0
             strJSON = '\n\t\t[\n\t\t\t'
-            for intent in dicc:
-                if i == len(dicc)-1:
-                    strJSON += dicc[intent].toJSON()+'\n\t\t]'
+            for intent in dicIntents:
+                if length == len(dicIntents)-1:
+                    strJSON += dicIntents[intent].toJSON()+'\n\t\t]'
                 else:
-                    strJSON += dicc[intent].toJSON()+',\n\t\t\t'
-                i += 1
+                    strJSON += dicIntents[intent].toJSON()+',\n\t\t\t'
+                length += 1
             return strJSON
         else:
             return '[]'
 
+    #pasa el objeto 'Chatbot' a formato JSON
     def toJSON(self):
         strJson = '{"' + self.name + '":'
         strJson += self.dicToJSON(self.dicIntents)+'\n\t'
         strJson += '}'
         return strJson
+
+
+
+
+
+    #devuelve el intent si existe y actualiza el atributo 'currentIntent'
+    # def selectIntent(self, nameIntent):
+    #     if nameIntent in self.dicIntents:
+    #         self.currentIntent = nameIntent
+    #         return self.dicIntents[nameIntent]
+    #
+    #     return None
+

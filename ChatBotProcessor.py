@@ -72,7 +72,7 @@ class CBProcessor(object):
             print('inicio response')
             self.name = chatbotName
             self.chatbotResponse = Response.Response()
-            self.chatbotResponse.cargarArrays(pathModel)
+            self.chatbotResponse.loadArrays(pathModel)
             self.chatbotResponse.readJSON(jsonFile,chatbotName)
             self.chatbotResponse.buildNetwork()
             self.chatbotResponse.loadModel()

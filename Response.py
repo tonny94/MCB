@@ -10,6 +10,7 @@ import tflearn
 import random
 import pickle
 import json
+import os
 #*obser = unicode(self.edit_observ.toPlainText())*
 #* obser1 = obser.encode('utf-8')*
 
@@ -30,20 +31,26 @@ class Response:
         self.jsonFile = ''
         self.chatbotName = ''
 
-    def cargarArrays(self,pathModel):
-        self.data = pickle.load(open(pathModel + "training_data", "rb"))
+    #carga los atributos de arrays que necesita del modelo de entrenamiento
+    def loadArrays(self,pathModel):
+        self.pathModel = pathModel
+        listSplit = self.pathModel.split(os.sep)
+        pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+
+        self.data = pickle.load(open(pathTrainingData + "training_data", "rb"))
         self.words = self.data['words']
         self.classes = self.data['classes']
         self.train_x = self.data['train_x']
         self.train_y = self.data['train_y']
-        self.pathModel = pathModel
 
+    #lee el fichero json y actualiza el atributo 'intents'
     def readJSON(self,jsonFile,chatbotName):
         self.jsonFile = jsonFile
         self.chatbotName = chatbotName
         with open(self.jsonFile) as json_data:
             self.intents = json.load(json_data)
 
+    #construye la red
     def buildNetwork(self):
         net = tflearn.input_data(shape=[None, len(self.train_x[0])])
         net = tflearn.fully_connected(net, 8)
@@ -53,9 +60,13 @@ class Response:
         # Define model and setup tensorboard
         self.model = tflearn.DNN(net, tensorboard_dir = self.pathModel)
 
+    #carga el objeto 'model'
     def loadModel(self):
-        self.model.load(self.pathModel+'model.tflearn')
+        listSplit = self.pathModel.split(os.sep)
+        pathModelFiles = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+        self.model.load(pathModelFiles+'model.tflearn')
 
+    #
     def clean_up_sentence(self,sentence):
         # tokenize the pattern
         sentence_words = nltk.word_tokenize(sentence)
@@ -78,6 +89,7 @@ class Response:
 
         return (np.array(bag))
 
+    #clasifica una frase
     def classify(self,sentence):
         # generate probabilities from the model
         results = self.model.predict([self.bow(sentence, self.words)])[0]
@@ -91,6 +103,7 @@ class Response:
         # return tuple of intent and probability
         return return_list
 
+    #da una respuesta acorde a la frase introducida
     def response(self,sentence, userID='123', show_details=False):
 
         results = self.classify(sentence)
@@ -123,41 +136,5 @@ class Response:
                             return
 
                 results.pop(0)
-
-
-
-"""
-if __name__ == "__main__":
-    intens = {}
-    def setInten(chatbotName, jsonFile):
-        if '.json' in jsonFile:
-            if chatbotName in intens:
-                return print('El nombre del chatbot ya existe.')
-            else:
-                intens[chatbotName] = jsonFile
-        else:
-            return print('Se necesita introducir un fichero en formato JSON')
-
-
-    myResponse = Response()
-    setInten('lista_compra','lista_compra.json')
-    myResponse.setIntens(intens, 'lista_compra')
-    myResponse.buildNetwork()
-    myResponse.loadModel()
-
-    print(myResponse.classify('Hola'))
-    print(myResponse.classify('Quiero introducir un item'))
-
-    #fallara porque no le paso el json, solo la ruta y el nombre, peo no la estructura JSON
-    print(myResponse.response('Quiero anhadir un item'))
-
-"""
-
-############################################
-
-
-
-
-
 
 

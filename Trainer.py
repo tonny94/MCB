@@ -24,25 +24,30 @@ class Model:
     def __init__(self):
         self.jsonFile = ''
         self.chatbotName = ''
-        self.intents = []
+        self.intents = []#toda la estructura 'metachatbot':{...}
+        self.model = None
+        self.pathModel = ''
 
         self.words = []
         self.classes = []#tag's
         self.documents = []
+
         self.ignore_words = ['?']
         self.training = []
         self.output = []
+
         self.train_x = []
         self.train_y = []
-        self.model = None
-        self.pathModel = ''
 
+
+    #lee el json y inicializa el atributo 'intents'
     def readJSON(self,jsonFile,chatbotName):
         self.jsonFile = jsonFile
         self.chatbotName = chatbotName
         with open(self.jsonFile) as json_data:
             self.intents = json.load(json_data)
 
+    #inicializa las listas que se necesita para el modelo: words,clasees,documents
     def createElementsToModel(self):
 
         for intent in self.intents[self.chatbotName]:  # selecciona el chatbot
@@ -68,6 +73,7 @@ class Model:
         print(len(self.classes), "classes", self.classes)
         print(len(self.words), "unique stemmed words", self.words)
 
+    #entrena el modelo
     def trainingModel(self,pathModel):
 
         self.pathModel = pathModel
@@ -93,7 +99,7 @@ class Model:
             output_row = list(output_empty)
             output_row[self.classes.index(doc[1])] = 1
 
-            self.training.append([bag, output_row])
+            self.training.append([bag,output_row])
 
         # shuffle our features and turn into np.array
         random.shuffle(self.training)
@@ -116,11 +122,13 @@ class Model:
         net = tflearn.regression(net)
 
         # Define model and setup tensorboard
+        listSplit = self.pathModel.split(os.sep)
+        pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
         #tf.reset_default_graph()
         self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
         # Start training (apply gradient descent algorithm)
         self.model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
-        self.model.save(self.pathModel+'model.tflearn')
+        self.model.save(pathTrainingData+'model.tflearn')
 
     def clean_up_sentence(self,sentence):
         # tokenize the pattern
@@ -144,27 +152,14 @@ class Model:
 
         return (np.array(bag))
 
+    #guarda los datos de entrenamiento
     def doPickle(self):
+        list = self.pathModel.split(os.sep)
+        pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
         import pickle
         pickle.dump({'words': self.words, 'classes': self.classes, 'train_x': self.train_x, 'train_y': self.train_y},
-                    open(self.pathModel+"training_data", "wb"))
+                    open(pathTrainingData+"training_data", "wb"))
 
+    #cierra la secion del model
     def closeResource(self):
         self.model.session.close()
-
-"""
-if __name__ == "__main__":
-    myModel = Model()
-    myModel.setPropertiesJSON('lista_compra.json', 'lista_compra')
-    myModel.readJSON()
-    myModel.createElementsToModel()
-    myModel.trainingModel()
-    myModel.doPickle()
-
-"""
-
-
-
-
-
-
