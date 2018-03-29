@@ -1,12 +1,12 @@
-class Action:
+import abc
 
-    def __init__(self):
-        self.actions = {}
+# abc.ABC -> se comporta como subclase de ABCMeta
+# metaclass=abc.ABCMeta -> usar directamente la metaclase
+class IAction(object):
 
-
-
-
-
+    # @abc.abstractmethod
+    def exec(self):
+        pass
 
 #         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}
 #

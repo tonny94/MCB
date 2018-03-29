@@ -5,7 +5,7 @@ import os
 
 from chatbotResolverErrores.Resolutor import Resolutor
 import curses
-
+from CreateChatbot import CCreateChatbot
 class MetaChatBot(CBProcessor):
     """Father class"""
     def __init__(self):
@@ -24,14 +24,21 @@ class MetaChatBot(CBProcessor):
         CBProcessor.__init__(self)
         self.preparateResponse(chatbotName, jsonFile, pathModel)
         self.name = chatbotName
-        self.actions.update({'toJSON':self.toJSON,'salirChatbot':self.salirChatbot,'crearJSON':self.crearJSON,
-                        #'reconocerSentencia':self.reconocerSentencia,'resolverSentencia':self.resolverSentencia, #construirchatbot -> genera ficheros de los chatbots
-                        'resolverError':self.resolverError,
-                        'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot, 'listarChatBot':self.listarChatBot, 'cambiarChatBot':self.cambiarChatBot,'mostrarActualChatBot':self.mostrarActualChatBot,
-                        'crearIntent':self.crearIntent,'borrarIntent':self.borrarIntent, 'listarIntent':self.listarIntent, 'cambiarIntent':self.cambiarIntent,'mostrarActualIntent':self.mostrarActualIntent,
-                        'crearPattern':self.crearPattern,'borrarPattern':self.borrarPattern,'mostrarPattern':self.mostrarPattern,
-                        'crearResponse':self.crearResponse,'borrarResponse':self.borrarResponse,'mostrarResponse':self.mostrarResponse}
+        self.actions.update({
+            'crearChatBot': self.crearCB2
+
+                        # 'toJSON':self.toJSON,'salirChatbot':self.salirChatbot,'crearJSON':self.crearJSON,
+                        # #'reconocerSentencia':self.reconocerSentencia,'resolverSentencia':self.resolverSentencia, #construirchatbot -> genera ficheros de los chatbots
+                        # 'resolverError':self.resolverError,
+                        # 'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot, 'listarChatBot':self.listarChatBot, 'cambiarChatBot':self.cambiarChatBot,'mostrarActualChatBot':self.mostrarActualChatBot,
+                        # 'crearIntent':self.crearIntent,'borrarIntent':self.borrarIntent, 'listarIntent':self.listarIntent, 'cambiarIntent':self.cambiarIntent,'mostrarActualIntent':self.mostrarActualIntent,
+                        # 'crearPattern':self.crearPattern,'borrarPattern':self.borrarPattern,'mostrarPattern':self.mostrarPattern,
+                        # 'crearResponse':self.crearResponse,'borrarResponse':self.borrarResponse,'mostrarResponse':self.mostrarResponse
+                             }
                         )
+
+    def crearCB2(self):
+        CCreateChatbot(self.currentChatBot, self.dicChatBots).exec()
 
 
 

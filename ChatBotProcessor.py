@@ -91,61 +91,63 @@ class CBProcessor(object):
         print('Se ha descartado la sentencia.')
 
     def response(self,sentence):
+        self.chatbotResponse.response(sentence)
+        self.actions[self.chatbotResponse.action]()
 
-        if self.mode == 'modoOpciones':
-            if sentence == 'G':
-                self.opcionGuardar(self.sentenciaAnterior)
-                self.mode = 'chatbot'
-            elif sentence == 'N':
-                self.opcionNada()
-                self.mode = 'chatbot'
-            else:
-                print('No se ha reconocido la opcion escogida')
-
-        elif self.mode == 'chatbot':
-            self.sentenciaAnterior = sentence
-            valorClasificacion = self.chatbotResponse.classify(sentence)
-
-            if valorClasificacion[0][1] >= 0.9:
-
-                self.chatbotResponse.response(sentence)
-                if 'toJSON' in self.chatbotResponse.action:
-                    self.actions[self.chatbotResponse.action](self.currentChatbotName)
-                    return True
-                elif 'listar' in self.chatbotResponse.action or 'mostrar' in self.chatbotResponse.action:
-                    self.currentAction = self.chatbotResponse.action
-                    self.actions[self.currentAction]()
-                    self.currentAction = ''
-                    return True
-                elif 'resolver' in self.chatbotResponse.action:
-                    self.actions[self.chatbotResponse.action]()
-                elif not (self.chatbotResponse.action == '') : # ha encontrado una accion que espera un literal
-                    self.currentAction = self.chatbotResponse.action
-                    self.mode = 'modoTexto'
-                    return True
-
-            else:
-                print('No se ha reconocido la frase.')
-                print('Que queire hacer: \nG -> guardar la frase \nN -> no hacer nada ')
-                self.mode = 'modoOpciones'
-
-
-        elif self.mode == 'modoTexto': # ha encontrado una accion
-            #se hace el response para ver si se ha introducido "error" y ejecutar su respuesta
-            classifyError = self.chatbotResponse.classify(sentence)
-
-            if 'error' in classifyError[0][0] and classifyError[0][1]>=0.9:
-                # se ejecuta la accion del error -> guardar la sentencia
-                self.actions['error'](self.sentenciaAnterior, self.name)
-
-            # si no se ha encontrado la accion de "error" se ejecuta la accion que se había guardado previamente
-            else:
-                # self.actions[self.chatbotResponse.action]()
-                self.actions[self.currentAction](sentence)
-
-            #en cualquier caso se reinicia el modo y la accion actual, la diferencia de controlar la palabra "error" es el de mostrar un mensaje.
-            self.mode = 'chatbot'  # reinicia el valor
-            self.currentAction = ''
+        # if self.mode == 'modoOpciones':
+        #     if sentence == 'G':
+        #         self.opcionGuardar(self.sentenciaAnterior)
+        #         self.mode = 'chatbot'
+        #     elif sentence == 'N':
+        #         self.opcionNada()
+        #         self.mode = 'chatbot'
+        #     else:
+        #         print('No se ha reconocido la opcion escogida')
+        #
+        # elif self.mode == 'chatbot':
+        #     self.sentenciaAnterior = sentence
+        #     valorClasificacion = self.chatbotResponse.classify(sentence)
+        #
+        #     if valorClasificacion[0][1] >= 0.9:
+        #
+        #         self.chatbotResponse.response(sentence)
+        #         if 'toJSON' in self.chatbotResponse.action:
+        #             self.actions[self.chatbotResponse.action](self.currentChatbotName)
+        #             return True
+        #         elif 'listar' in self.chatbotResponse.action or 'mostrar' in self.chatbotResponse.action:
+        #             self.currentAction = self.chatbotResponse.action
+        #             self.actions[self.currentAction]()
+        #             self.currentAction = ''
+        #             return True
+        #         elif 'resolver' in self.chatbotResponse.action:
+        #             self.actions[self.chatbotResponse.action]()
+        #         elif not (self.chatbotResponse.action == '') : # ha encontrado una accion que espera un literal
+        #             self.currentAction = self.chatbotResponse.action
+        #             self.mode = 'modoTexto'
+        #             return True
+        #
+        #     else:
+        #         print('No se ha reconocido la frase.')
+        #         print('Que queire hacer: \nG -> guardar la frase \nN -> no hacer nada ')
+        #         self.mode = 'modoOpciones'
+        #
+        #
+        # elif self.mode == 'modoTexto': # ha encontrado una accion
+        #     #se hace el response para ver si se ha introducido "error" y ejecutar su respuesta
+        #     classifyError = self.chatbotResponse.classify(sentence)
+        #
+        #     if 'error' in classifyError[0][0] and classifyError[0][1]>=0.9:
+        #         # se ejecuta la accion del error -> guardar la sentencia
+        #         self.actions['error'](self.sentenciaAnterior, self.name)
+        #
+        #     # si no se ha encontrado la accion de "error" se ejecuta la accion que se había guardado previamente
+        #     else:
+        #         # self.actions[self.chatbotResponse.action]()
+        #         self.actions[self.currentAction](sentence)
+        #
+        #     #en cualquier caso se reinicia el modo y la accion actual, la diferencia de controlar la palabra "error" es el de mostrar un mensaje.
+        #     self.mode = 'chatbot'  # reinicia el valor
+        #     self.currentAction = ''
 
     def getAction(self):
         return self.currentAction

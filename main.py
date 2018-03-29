@@ -31,17 +31,17 @@ import MetaChatBot
 """
 print (os.getcwd()+'\\metachatbot')
 metacb = MetaChatBot.MetaChatBot()
-metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'metachatbot', 'tmp'))
-# metacb.startResponseClass('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
+# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'metachatbot', 'tmp'))
+metacb.startResponseClass('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
 # os.path.join( os.sep,os.getcwd(),'metachatbot','tmp')
 #os.getcwd()+'\\metachatbot\\tmp'
 #
-# sentence = ''
-# while not (sentence=='s'):
-#     sentence = input()
-#     if not(sentence is 's'):
-#         metacb.classify(sentence)
-#         metacb.response(sentence)
+sentence = ''
+while not (sentence=='s'):
+    sentence = input()
+    if not(sentence is 's'):
+        metacb.classify(sentence)
+        metacb.response(sentence)
 
 
 
