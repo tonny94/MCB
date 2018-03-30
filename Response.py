@@ -34,10 +34,10 @@ class Response:
     #carga los atributos de arrays que necesita del modelo de entrenamiento
     def loadArrays(self,pathModel):
         self.pathModel = pathModel
-        listSplit = self.pathModel.split(os.sep)
-        pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+        # listSplit = self.pathModel.split(os.sep)
+        # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
 
-        self.data = pickle.load(open(pathTrainingData + "training_data", "rb"))
+        self.data = pickle.load(open(os.path.join(os.path.sep,self.pathModel, "training_data"), "rb"))
         self.words = self.data['words']
         self.classes = self.data['classes']
         self.train_x = self.data['train_x']
@@ -62,9 +62,9 @@ class Response:
 
     #carga el objeto 'model'
     def loadModel(self):
-        listSplit = self.pathModel.split(os.sep)
-        pathModelFiles = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-        self.model.load(pathModelFiles+'model.tflearn')
+        # listSplit = self.pathModel.split(os.sep)
+        # pathModelFiles = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+        self.model.load(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
 
     #
     def clean_up_sentence(self,sentence):

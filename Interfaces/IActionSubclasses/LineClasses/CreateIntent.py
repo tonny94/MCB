@@ -1,24 +1,26 @@
-from ActionLine import ActionLine
+from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 from Intent import Intent
 
 
 class CCreateIntent(ActionLine):
 
-    def __init__(self,chatbot,sentence):
+    def __init__(self,chatbot):
         self.chatbot = chatbot
-        self.sentence = sentence
 
     def exec(self):
-        # self.addChatBot(sentence)
-        if not self.sentence in self.chatbot.dicIntents:
-            myIntent = Intent()
-            myIntent.setTag(self.sentence)
-            self.chatbot.dicIntents[self.sentence] = myIntent
-            self.chatbot.currentIntent = myIntent
-            print('El Intent ' + self.sentence + ' se ha añadido correctamente.')
+        if self.chatbot is None:
+            print('No existe ningun chatbot para asociarle un Intent.')
         else:
-            print('El Intent ' + self.sentence + ' ya existe.')
+            sentence = input('=>')
+            if not sentence in self.chatbot.dicIntents:
+                myIntent = Intent()
+                myIntent.setTag(sentence)
+                self.chatbot.dicIntents[sentence] = myIntent
+                self.chatbot.currentIntent = myIntent
+                print('El Intent "' + sentence + '" se ha añadido correctamente.')
+            else:
+                print('El Intent "' + sentence + '" ya existe.')
 
     def createExitIntent(self,chatbot):
         # crea la intencion

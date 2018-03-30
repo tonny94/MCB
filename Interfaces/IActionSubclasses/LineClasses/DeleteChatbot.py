@@ -1,33 +1,26 @@
 #Clases de acciones
-from ActionLine import ActionLine
-from CreateIntent import CCreateIntent
+from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
-from ChatBot import ChatBot
 
 
-class CCreateChatbot(ActionLine):
+class CDeleteChatbot(ActionLine):
 
     def __init__(self,currentCB,diccCB):
-        self.chatbot = None
         self.currentCB = currentCB
         self.diccChatbots = diccCB
 
     def exec(self,):
-        sentence = input()
-        # self.addChatBot(sentence)
-        if not sentence in self.diccChatbots:
-            myChatBot = ChatBot()
-            myChatBot.setName(sentence)
+        sentence = input('=>')
+        if sentence in self.diccChatbots:
+            # myChatBot = self.dicChatBots[nameChatBot]
+            del self.diccChatbots[sentence]
 
-            # crea la intencion de salir para cada chatbot que se cree
-            CCreateIntent(self.chatbot,sentence).createExitIntent(myChatBot)
-
-            self.diccChatbots[sentence] = myChatBot
-            self.currentCB = myChatBot
-            print('El ChatBot ' + sentence + ' se ha añadido correctamente.')
+            if sentence is self.currentCB.name:
+                self.currentCB = None
+            print('El ChatBot "' + sentence + '" se ha eliminado correctamente .')
         else:
-            print('El ChatBot ' + sentence + ' ya existe.')
+            print('El ChatBot "' + sentence + '" no existe .')
 
     # def setChatbot(self,chatbot,dicc):
     #     self.chatbot = chatbot

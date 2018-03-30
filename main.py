@@ -1,12 +1,7 @@
+#! /bin/bash
 # -*- coding: utf-8 -*-
-import ChatBotProcessor
-#*obser = unicode(self.edit_observ.toPlainText())*
-#* obser1 = obser.encode('utf-8')*
-import curses
+
 import os
-from chatbotResolverErrores.Resolutor import Resolutor
-
-
 import MetaChatBot
 
 
@@ -31,14 +26,12 @@ import MetaChatBot
 """
 print (os.getcwd()+'\\metachatbot')
 metacb = MetaChatBot.MetaChatBot()
-# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'metachatbot', 'tmp'))
-metacb.startResponseClass('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
-# os.path.join( os.sep,os.getcwd(),'metachatbot','tmp')
-#os.getcwd()+'\\metachatbot\\tmp'
-#
+# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'metachatbot'))
+metacb.startResponseClass('metachatbot','metachatbot.json',os.path.join(os.sep, os.getcwd(), 'metachatbot'))
+
 sentence = ''
 while not (sentence=='s'):
-    sentence = input()
+    sentence = input('=>')
     if not(sentence is 's'):
         metacb.classify(sentence)
         metacb.response(sentence)

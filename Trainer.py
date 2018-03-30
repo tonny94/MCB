@@ -122,13 +122,13 @@ class Model:
         net = tflearn.regression(net)
 
         # Define model and setup tensorboard
-        listSplit = self.pathModel.split(os.sep)
-        pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+        # listSplit = self.pathModel.split(os.sep)
+        # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
         #tf.reset_default_graph()
         self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
         # Start training (apply gradient descent algorithm)
         self.model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
-        self.model.save(pathTrainingData+'model.tflearn')
+        self.model.save(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
 
     def clean_up_sentence(self,sentence):
         # tokenize the pattern
@@ -154,11 +154,11 @@ class Model:
 
     #guarda los datos de entrenamiento
     def doPickle(self):
-        list = self.pathModel.split(os.sep)
-        pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
+        # list = self.pathModel.split(os.sep)
+        # pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
         import pickle
         pickle.dump({'words': self.words, 'classes': self.classes, 'train_x': self.train_x, 'train_y': self.train_y},
-                    open(pathTrainingData+"training_data", "wb"))
+                    open(os.path.join(os.path.sep,self.pathModel,"training_data"), "wb"))
 
     #cierra la secion del model
     def closeResource(self):

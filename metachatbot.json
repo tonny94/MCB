@@ -1,8 +1,8 @@
 {"metachatbot": [
-        {"tag": "toJSON",
-         "patterns": ["JSON","generar json","crear json","pasar a json"],
+        {"tag": "buildChatBot",
+         "patterns": ["construir chatbot","generar chatbot"],
          "responses": [],
-         "action": "toJSON"
+         "action": "buildChatBot"
         },
         {"tag": "error",
          "patterns": ["ERROR","cancelar","abortar","volver","detener","cancelar accion","volver atras"],
@@ -20,7 +20,7 @@
          "action": "borrarChatBot"
         },
         {"tag": "crearChatBot",
-         "patterns": ["Anhadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero anhadir un chatbot"],
+         "patterns": ["Anhadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero anhadir un chatbot","nuevo chatbot"],
          "responses": ["Digame el nombre del chatbot","Que chatbot quiere crear?","Que chatbot quiere anhadir?"],
          "action": "crearChatBot"
         },

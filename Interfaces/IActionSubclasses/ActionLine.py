@@ -1,4 +1,4 @@
-from IAction import IAction
+from Interfaces.IAction import IAction
 
 class ActionLine(IAction):
 

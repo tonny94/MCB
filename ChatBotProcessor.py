@@ -1,9 +1,11 @@
+#! /bin/bash
+# -*- coding: utf-8 -*-
+"""
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
+"""
 import Response
 import Trainer
-import curses
 
 class CBProcessor(object):
 
