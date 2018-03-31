@@ -6,48 +6,47 @@
 """
 import Response
 import Trainer
+from Interfaces.IActionSubclasses.NotLineClasses.SaveSentenceAfirmative import CSaveSentenceAfirmative
 
 class CBProcessor(object):
 
     def __init__(self):
-        #self.intens = {}
+        #para guardar sentencia no reconocida
+        self.errorSentence = ''
+        self.dictSentences = {}
+
+        self.pathChildrenChatbots = ''
+        self.currentChatbotChild = None
+        self.currentChatbotFather = ''
+
         self.sentence = ''
         self.mode = 'chatbot'
         self.currentAction = ''
-        self.actions = {'error':self.error ,
-                        'listarError':self.listarError#,'listarErrorProcesados':self.listarErrorProcesados
+        self.actions = {'saveSentence':self.updateErrorSentence,'saveSentenceAfirmative':self.saveSentenceAfirmativeMetachatbot
+
                         }
-        self.dicPattersnNoReconocidos = {}
+
         self.context = ''
         self.chatbotModel = None
         self.chatbotResponse = None #Response.Response()
 
         self.name = ''
         self.sentenciaAnterior = ''
-        self.currentChatbotName = None
 
 
-    def error(self,sentence,nombChatbot):
-        if self.dicPattersnNoReconocidos is {}:
-            #la primera lista es para los NO reconoidos, la sengunda es para los que YA han sido reconocidos
-            self.dicPattersnNoReconocidos = {nombChatbot:[[],[]]}
-        elif not nombChatbot in self.dicPattersnNoReconocidos:
-            self.dicPattersnNoReconocidos = {nombChatbot: [[], []]}
+    """
+        Metodos para guardar las sentencias no reconocidas
+    """
+    def updateErrorSentence(self):
+        if not self.errorSentence is '':
+            print('Desea guardar la sentencia "',self.errorSentence,'" ?.')
+        else:
+            print('Hubo un error con la sentencia no reconocida.')
 
-        self.addNoReconocido(nombChatbot,sentence)
+    def saveSentenceAfirmativeMetachatbot(self):
+        CSaveSentenceAfirmative(self.currentChatbotFather, self.errorSentence, self.dictSentences).exec()
 
-    def addNoReconocido(self,nombChatbot,sentence):
-        listNoRec = self.dicPattersnNoReconocidos[nombChatbot][0]
-        listNoRec.append(sentence)
-        print('Se ha anhadido la sentencia a la lista de error')
 
-    def addYaReconocido(self,nombChatbot,sentence):
-        listNoRec = self.dicPattersnNoReconocidos[nombChatbot][0]
-        listNoRec.remove(sentence)
-        listYaRec = self.dicPattersnNoReconocidos[nombChatbot][1]
-
-    def listarError(self):
-        print(self.dicPattersnNoReconocidos)
 
 
     #"""
@@ -72,7 +71,7 @@ class CBProcessor(object):
             print('Se necesita especificar la ruta del fichero JSON.')
         else:
             print('inicio response')
-            self.name = chatbotName
+            self.currentChatbotFather = chatbotName
             self.chatbotResponse = Response.Response()
             self.chatbotResponse.loadArrays(pathModel)
             self.chatbotResponse.readJSON(jsonFile,chatbotName)
@@ -84,17 +83,28 @@ class CBProcessor(object):
     def classify(self,sentence):
         print(self.chatbotResponse.classify(sentence))
 
-    ## Genera la respuesta ##
-
-    def opcionGuardar(self,sentencia):
-        self.error(sentencia,self.name)
-
-    def opcionNada(self):
-        print('Se ha descartado la sentencia.')
-
     def response(self,sentence):
-        self.chatbotResponse.response(sentence)
-        self.actions[self.chatbotResponse.action]()
+
+        valorClasificacion = self.chatbotResponse.classify(sentence)
+        if  (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:
+            self.chatbotResponse.response(sentence)
+            self.currentAction = self.chatbotResponse.action
+
+            #guarda la sentencia que no se reconocio
+            #if self.currentAction == 'saveSentence': self.errorSentence = sentence
+
+            #comprueba que tenga una accion para ejecutar
+            if not self.currentAction == '':
+                self.actions[self.chatbotResponse.action]()
+
+            #reinicia el atributo
+            self.chatbotResponse.action = ''
+        else:
+            # guarda la sentencia que no se reconocio
+            self.errorSentence = sentence
+            print('No se ha reconocido la frase "',sentence,'".')
+
+
 
         # if self.mode == 'modoOpciones':
         #     if sentence == 'G':

@@ -51,28 +51,27 @@ class MetaChatBot(CBProcessor):
 
             'buildChatBot':self.buildCB,
 
-            'crearChatBot': self.createCB, 'borrarChatBot': self.deleteCB,'listarChatBot': self.listCB,'cambiarChatBot': self.changeCB , 'mostrarActualChatBot': self.showcurrentCB,
+            'createChatBot': self.createCB, 'deleteChatBot': self.deleteCB,'listChatBot': self.listCB,'changeChatBot': self.changeCB , 'showcurrentChatBot': self.showcurrentCB,
             # 'crearChatBot': self.crearChatBot, 'borrarChatBot': self.borrarChatBot, 'listarChatBot':self.listarChatBot, 'cambiarChatBot':self.cambiarChatBot,'mostrarActualChatBot':self.mostrarActualChatBot,
 
-            'crearIntent':self.createIntent,'borrarIntent':self.deleteIntent, 'listarIntent':self.listIntent, 'cambiarIntent':self.changeIntent,'mostrarActualIntent':self.showcurrentIntent,
+            'createIntent':self.createIntent,'deleteIntent':self.deleteIntent, 'listIntent':self.listIntent, 'changeIntent':self.changeIntent,'showcurrentIntent':self.showcurrentIntent,
             # 'crearIntent':self.crearIntent,'borrarIntent':self.borrarIntent, 'listarIntent':self.listarIntent, 'cambiarIntent':self.cambiarIntent,'mostrarActualIntent':self.mostrarActualIntent,
 
-            'crearPattern':self.createPattern,'borrarPattern':self.deletePattern,'mostrarPattern':self.listPattern,
+            'createPattern':self.createPattern,'deletePattern':self.deletePattern,'listPattern':self.listPattern,
             # 'crearPattern':self.crearPattern,'borrarPattern':self.borrarPattern,'mostrarPattern':self.listPattern,
 
-            'crearResponse':self.createResponse,'borrarResponse':self.deleteResponse,'mostrarResponse':self.listResponse
+            'createResponse':self.createResponse,'deleteResponse':self.deleteResponse,'listResponse':self.listResponse
             # 'crearResponse':self.crearResponse,'borrarResponse':self.borrarResponse,'mostrarResponse':self.mostrarResponse
 
-            # 'toJSON':self.toJSON,'salirChatbot':self.salirChatbot,'crearJSON':self.crearJSON,
+            # salirChatbot':self.salirChatbot
                         # #'reconocerSentencia':self.reconocerSentencia,'resolverSentencia':self.resolverSentencia, #construirchatbot -> genera ficheros de los chatbots
                         # 'resolverError':self.resolverError,
                              }
                         )
 
     """
-        Métodos para controlar la creación de CHATBOTS
+        Métodos para CONSTRUIR chatbots
     """
-
     def buildCB(self):
         path = os.path.join(os.path.sep,os.getcwd(),'CreatedChatbots')
         CBuildChatbot(self.currentChatBot, path).exec()
@@ -97,7 +96,7 @@ class MetaChatBot(CBProcessor):
         CChangeObject(self.currentChatBot,self.dicChatBots).exec()
 
     def showcurrentCB(self):
-        CShowObject(self.currentChatBot).exec()
+        CShowObject(self.currentChatBot,'ChatBot').exec()
 
 
     """
@@ -125,7 +124,7 @@ class MetaChatBot(CBProcessor):
         if self.currentChatBot is None:
             print('No existe ningun chatbot para mostrar su Intent actual.')
         else:
-            CShowObject(self.currentChatBot.currentIntent).exec()
+            CShowObject(self.currentChatBot.currentIntent,'Intent').exec()
 
 
     """

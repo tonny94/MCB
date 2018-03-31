@@ -120,20 +120,32 @@ class Response:
                             # myAction.selectOption(sentence, i['tag'])
                             self.action = i['action']
 
-                        # set context for this intent if necessary
-                        if 'context_set' in i:
-                            if show_details: print('context:', i['context_set'])
-                            self.context[userID] = i['context_set']
 
-                        # check if this intent is contextual and applies to this user's conversation
-                        if (userID in self.context and 'context_filter' in i and i['context_filter'] == self.context[userID]):
-                            if show_details: print('tag:', i['tag'])
+                        if self.context == {}:
+                            # set context for this intent if necessary
+                            if 'context_set' in i:
+                                if show_details: print('context:', i['context_set'])
+                                self.context[userID] = i['context_set']
 
-                        # a random response from the intent - si no hay respuestas no se imprime nada
-                        if not len(i['responses']) == 0:
-                            return print( (random.choice(i['responses'])) )
-                        else:
-                            return
+                            # check if this intent is contextual and applies to this user's conversation
+                            # if (not 'context_filter' in i) or (userID in self.context and 'context_filter' in i and i['context_filter'] == self.context[userID]):
+                            #     if show_details: print('tag:', i['tag'])
+
+                            # a random response from the intent - si no hay respuestas no se imprime nada
+                            if not len(i['responses']) == 0:
+                                return print( (random.choice(i['responses'])) )
+                            else:
+                                return
+                        #comprobacion de que la intencion, si tiene context_filter, concuerde con el context_set
+                        elif 'context_filter' in i and self.context[userID] == i['context_filter']:
+                            #reinicia en contexto
+                            self.context = {}
+
+                            # a random response from the intent - si no hay respuestas no se imprime nada
+                            if not len(i['responses']) == 0:
+                                return print((random.choice(i['responses'])))
+                            else:
+                                return
 
                 results.pop(0)
 

@@ -38,6 +38,22 @@ while not (sentence=='s'):
 
 
 
+"""
+PROBLEMAS:
+1.- si supera el umbral y es erroneo: no puedo reconocer la siguiente sentencia (ERROR) como si fuese un intent ya que 
+se ejecuta el input en una clase aparte.
+2.- ejecutar chatbots hijos: trainer y response a la vez
+
+
+DUDAS:
+1.- Intenciones por defecto: saveSentences (afirmativo, negative) ???? , 
+2.- la lista de reconocidos es para cada chatbot o está en una variable del CBProcessor?????
+
+
+FALTA:
+2.- intencion ejecutar chatbot
+4.- terminar chatbot resolutor
+"""
 
 
 
@@ -46,14 +62,6 @@ while not (sentence=='s'):
 
 
 """
-las acciones no son iguales -> algunas reciben parámetros, otras no
-
-
-1.- Intenciones por defecto: error
-2.- intencion ejecutar chatbot
-3.- generar chatbot: ficheros de modelo y response
-4.- terminar chatbot de ayuda
-5.- 
 
  
 **Posible fallo: se empieza a ejecutar el Response antes de que termine de ejecutarse el Trainer(modelo)

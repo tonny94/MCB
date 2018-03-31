@@ -7,22 +7,18 @@ from Intent import Intent
 
 class CShowObject(ActionNotLine):
 
-    def __init__(self,object):
+    def __init__(self,object,type = None):
         self.currentObject = object
-        self.name = ''
-        self.objectType = ''
-        if isinstance(self.currentObject, ChatBot):
-            self.name = self.currentObject.name
-            self.objectType = 'Chatbot'
-        elif isinstance(self.currentObject, Intent):
-            self.name = self.currentObject.tag
-            self.objectType = 'Intent'
+        self.objectType = type
 
     def exec(self,):
         if self.currentObject is None:
             print('No se ha creado ningun ',self.objectType,'.')
         else:
-            print('"',self.name,'"')
+            if self.objectType == 'ChatBot':
+                print('"',self.currentObject.name,'"')
+            elif self.objectType == 'Intent':
+                print('"',self.currentObject.tag,'"')
 
 
 
