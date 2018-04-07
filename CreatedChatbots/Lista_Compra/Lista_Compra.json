@@ -1,0 +1,9 @@
+{"Lista_Compra":
+		[
+			{"tag":"salirChatbot",
+			"patterns":["Salir del chatbot","Finalizar chatbot","Salir del chatbot","Dejar de ejecutar chatbot"],
+			"responses":[],
+			"action":"salirChatbot"
+			}
+		]
+	}

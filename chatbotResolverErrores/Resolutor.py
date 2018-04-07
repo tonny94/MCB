@@ -14,7 +14,7 @@ class Resolutor(CBProcessor):
         self.intents = []
         self.chatbotName = ''
 
-    def iniciarTRainerClass(self, chatbotName='resolutor', jsonFile=os.getcwd()+'\\chatbotResolverErrores\\chatbotresolvererrores.json', pathModel=os.getcwd()+'\\chatbotResolverErrores\\tmp'):
+    def iniciarTrainerClass(self, chatbotName='resolutor', jsonFile=os.getcwd()+'\\chatbotResolverErrores\\chatbotresolvererrores.json', pathModel=os.getcwd()+'\\chatbotResolverErrores\\tmp'):
         CBProcessor.__init__(self)
         self.preparateModel(chatbotName, jsonFile, pathModel)
 
@@ -40,3 +40,17 @@ class Resolutor(CBProcessor):
 
     def listarErrorProcesados(self):
         print(self.listaSentenciasYaReconocidas)
+
+    """
+    para editar json
+    
+    with open('pruebaEdicionJSON.json','r+') as f:
+    data = json.load(f)
+    intents = data['chatbotprocessor']        
+    intent = intents[0]
+    intent['patterns'].append('123asd123')
+    f.seek(0)
+    json.dump(data,f,indent=4)
+    f.truncate() 
+    
+    """

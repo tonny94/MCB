@@ -5,26 +5,19 @@
          "action": "buildChatBot"
         },
         {"tag": "saveSentence",
-         "patterns": ["ERROR","cancelar","abortar","volver","detener","cancelar accion","volver atras"],
+         "patterns": ["guardar sentencia","guardar","salvar","salvar sentencia","salvar frase","guardar frase"],
          "responses": [],
-         "action":"saveSentence",
-         "context_set":"savePhrase"
+         "action":"saveSentence"
         },
-        {"tag": "saveSentenceAfirmative",
-         "patterns": ["salvar frase","guardar sentencia","si","claro","adelante","por supuesto"],
+        {"tag": "dontSaveSentence",
+         "patterns": ["no guardar sentencia","no guardar","no salvar","no salvar sentencia","no salvar frase","no guardar frase"],
          "responses": [],
-         "context_filter":"savePhrase",
-         "action": "saveSentenceAfirmative"
+         "action":"dontSaveSentence"
         },
-        {"tag": "saveSentenceNegative",
-         "patterns": ["no guardar frase","eliminar sentencia","no","claro que no","para nada","por supuesto que no","en absoluto"],
-         "responses": ["No se ha guardado la sentencia","No se ha salvado la frase"],
-         "context_filter":"savePhrase"
-        },
-        {"tag": "resolverError",
+        {"tag": "runResolutorCB",
          "patterns": ["resolver errores","procesar errores"],
          "responses": ["Ejecutando chatbot resolutor"],
-         "action": "resolverError"
+         "action": "runResolutorCB"
         },
         {"tag": "createChatBot",
          "patterns": ["Anhadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero anhadir un chatbot","nuevo chatbot"],

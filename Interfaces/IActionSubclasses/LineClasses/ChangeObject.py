@@ -9,14 +9,10 @@ from Intent import  Intent
 
 class CChangeObject(ActionLine):
 
-    def __init__(self,currentObject,dict:dict):
+    def __init__(self,currentObject,dict:dict,name):
         self.currentObject = currentObject
         self.dict = dict
-        self.name = ''
-        if isinstance(self.currentObject, ChatBot):
-            self.name=self.currentObject.name
-        elif isinstance(self.currentObject, Intent):
-            self.name = self.currentObject.tag
+        self.name = name
 
     def exec(self,):
         sentence = input('=>')

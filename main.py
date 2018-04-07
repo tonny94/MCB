@@ -26,8 +26,8 @@ import MetaChatBot
 """
 print (os.getcwd()+'\\metachatbot')
 metacb = MetaChatBot.MetaChatBot()
-# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'metachatbot'))
-metacb.startResponseClass('metachatbot','metachatbot.json',os.path.join(os.sep, os.getcwd(), 'metachatbot'))
+# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
+metacb.startResponseClass('metachatbot','metachatbot.json',os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
 
 sentence = ''
 while not (sentence=='s'):
@@ -43,7 +43,8 @@ PROBLEMAS:
 1.- si supera el umbral y es erroneo: no puedo reconocer la siguiente sentencia (ERROR) como si fuese un intent ya que 
 se ejecuta el input en una clase aparte.
 2.- ejecutar chatbots hijos: trainer y response a la vez
-
+3.- al ejecutar un chatbot hay que tener programado todas su lista de acciones (no se puede instanciar un objeto directamente)
+3.1.- el fichero .py de cada chatbot que se quiera ejecutar tiene que 
 
 DUDAS:
 1.- Intenciones por defecto: saveSentences (afirmativo, negative) ???? , 
