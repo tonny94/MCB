@@ -1,6 +1,6 @@
 from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
-from Intent import Intent
+from MetaChatBot.ChatBot.Intent import Intent
 
 
 class CCreateIntent(ActionLine):
@@ -9,15 +9,15 @@ class CCreateIntent(ActionLine):
         self.chatbot = chatbot
 
     def exec(self):
-        if self.chatbot is None:
-            print('No existe ningun chatbot para asociarle un Intent.')
+        if self.chatbot == {}:
+            print('ERROR: No hay un chatbot actual para asociarle un Intent.')
         else:
             sentence = input('=>')
-            if not sentence in self.chatbot.dicIntents:
+            if not sentence in self.chatbot[1].dicIntents:
                 myIntent = Intent()
                 myIntent.setTag(sentence)
-                self.chatbot.dicIntents[sentence] = myIntent
-                self.chatbot.currentIntent = myIntent
+                self.chatbot[1].dicIntents[sentence] = myIntent
+                self.chatbot[1].currentIntent = myIntent
                 print('El Intent "' + sentence + '" se ha añadido correctamente.')
             else:
                 print('El Intent "' + sentence + '" ya existe.')
@@ -32,7 +32,6 @@ class CCreateIntent(ActionLine):
         intent.addPattern('Salir del chatbot')
         intent.addPattern('Dejar de ejecutar chatbot')
         intent.responses = []
-
         chatbot.dicIntents['salirChatbot'] = intent
 
 #         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}

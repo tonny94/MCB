@@ -1,7 +1,5 @@
 from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
-from Intent import Intent
-
 
 class CCreateResponse(ActionLine):
 
@@ -9,15 +7,14 @@ class CCreateResponse(ActionLine):
         self.chatbot = chatbot
 
     def exec(self):
-        if self.chatbot is None:
-            print('No existe ningun Chatbot crear un Response en un Intent.')
-        elif self.chatbot.currentIntent is None :
-            print('No existe ningun Intent para asociarle un Response.')
+        if self.chatbot == {}:
+            print('ERROR: No hay un Chatbot actual para crear un Response en un Intent.')
+        elif self.chatbot[1].currentIntent is None :
+            print('ERROR: No hay un Intent actual para asociarle un Response.')
         else:
             sentence = input('=>')
-            if not sentence in self.chatbot.currentIntent.responses:
-                self.chatbot.currentIntent.addResponse(sentence)
-                print('El Response "' + sentence + '" se ha añadido correctamente.')
+            if not sentence in self.chatbot[1].currentIntent.responses:
+                self.chatbot[1].currentIntent.addResponse(sentence)
             else:
                 print('El Response "' + sentence + '" ya existe.')
 

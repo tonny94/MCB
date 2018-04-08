@@ -3,8 +3,6 @@
 from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
-from ChatBot import ChatBot
-from Intent import  Intent
 
 
 class CDontSaveSentence(ActionLine):

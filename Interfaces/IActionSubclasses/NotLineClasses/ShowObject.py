@@ -2,23 +2,32 @@
 from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
 
 #Clases generales
-from ChatBot import ChatBot
-from Intent import Intent
 
 class CShowObject(ActionNotLine):
 
     def __init__(self,object,type = None):
-        self.currentObject = object
+        self.currentChatbot = object
         self.objectType = type
 
     def exec(self,):
-        if self.currentObject is None:
-            print('No se ha creado ningun ',self.objectType,'.')
+        if self.objectType == 'Intent':
+            if self.currentChatbot == {}:
+                print('ERROR: No se hay ningun ChatBot actual por lo que no se puede mostrar ningun Intent.')
+            else:
+                chatbot = self.currentChatbot[1]
+                if chatbot.currentIntent == None:
+                    print('No hay ningun ', self.objectType, ' actual.')
+                else:
+                    print('"', chatbot.currentIntent.tag, '"')
         else:
-            if self.objectType == 'ChatBot':
-                print('"',self.currentObject.name,'"')
-            elif self.objectType == 'Intent':
-                print('"',self.currentObject.tag,'"')
+            if self.currentChatbot == {}:
+                print('No hay ningun ChatBot actual.')
+            else:
+                print('"', self.currentChatbot[1].name, '"')
+
+
+
+
 
 
 

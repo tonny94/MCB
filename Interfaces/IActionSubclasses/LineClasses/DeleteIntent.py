@@ -10,14 +10,14 @@ class CDeleteIntent(ActionLine):
         self.currentCB = currentCB
 
     def exec(self,):
-        if self.currentCB is None:
-            print('No hay ningun chatbot actual para eliminar algun Intent de su lista.')
+        if self.currentCB == {}:
+            print('ERROR: No hay ningun chatbot actual para eliminar algun Intent de su lista.')
         else:
             sentence = input('=>')
-            if sentence in self.currentCB.dicIntents:
-                del self.currentCB.dicIntents[sentence]
-                if sentence is self.currentCB.currentIntent:
-                    self.currentCB.currentIntent = None
+            if sentence in self.currentCB[1].dicIntents:
+                del self.currentCB[1].dicIntents[sentence]
+                if not(self.currentCB[1].currentIntent == None) and sentence is self.currentCB[1].currentIntent.tag:
+                    self.currentCB[1].currentIntent = None
                 print('El Intent "' + sentence + '" se ha eliminado correctamente .')
             else:
                 print('El Intent "' + sentence + '" no existe .')

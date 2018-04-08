@@ -1,7 +1,5 @@
 from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
-from Intent import Intent
-
 
 class CCreatePattern(ActionLine):
 
@@ -9,15 +7,14 @@ class CCreatePattern(ActionLine):
         self.chatbot = chatbot
 
     def exec(self):
-        if self.chatbot is None:
-            print('No existe ningun Chatbot crear un Pattern en un Intent.')
-        elif self.chatbot.currentIntent is None :
-            print('No existe ningun Intent para asociarle un Pattern.')
+        if self.chatbot == {}:
+            print('ERROR: No hay ningun Chatbot actual para crear un Pattern en un Intent.')
+        elif self.chatbot[1].currentIntent is None :
+            print('ERROR: No hay ningun Intent actual para asociarle un Pattern.')
         else:
             sentence = input('=>')
-            if not sentence in self.chatbot.currentIntent.patterns:
-                self.chatbot.currentIntent.addPattern(sentence)
-                print('El Pattern "' + sentence + '" se ha añadido correctamente.')
+            if not sentence in self.chatbot[1].currentIntent.patterns:
+                self.chatbot[1].currentIntent.addPattern(sentence)
             else:
                 print('El Pattern "' + sentence + '" ya existe.')
 

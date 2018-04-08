@@ -1,25 +1,26 @@
 class Intent:
     """Grandchild class"""
     def __init__(self):
-        self.tag = None
+        self.tag = ''
         self.patterns = []
         self.responses = []
-        self.action = None
+        self.action = ''
 
 
     #inicializa el atributo 'Tag'
     def setTag(self, tag):
-        if self.tag == None:
+        if self.tag == '':
             self.tag = tag
 
     #cambia el 'tag' de la intencion que llama al metodo
     def changeTag(self, tag):
-        if self.tag != None:
+        if self.tag != '':
             self.tag = tag
 
     #añade un 'patter' a la lista
     def addPattern(self, pattern):
         self.patterns.append (pattern)
+        print('El Pattern "' + pattern + '" se ha añadido correctamente.')
 
     #si exite el pattern en la lista lo borra
     def removePattern(self, pattern):
@@ -29,6 +30,7 @@ class Intent:
     #añade un 'response' a la lista
     def addResponse(self, response):
         self.responses.append (response)
+        print('El Response "' + response + '" se ha añadido correctamente.')
 
     # si exite el 'response' en la lista lo borra
     def removeResponse(self, response):
@@ -57,17 +59,11 @@ class Intent:
 
     #pasa a JSON el atributo 'tag'
     def tagToJSON(self):
-        if self.tag == None:
-            return ''
-        else:
-            return self.tag
+        return self.tag
 
     # pasa a JSON el atributo 'action'
     def actionToJSON(self):
-        if self.action == None:
-            return ''
-        else:
-            return self.action
+        return self.action
 
     # pasa el objeto Intent a formato JSON
     def toJSON(self):

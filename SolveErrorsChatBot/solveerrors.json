@@ -1,4 +1,4 @@
-{"resolutor": [
+{"solveErrors": [
         {"tag": "listarErrores",
          "patterns": ["ver lista de errores","listar sentencias de error","listar errores","ver errores"],
          "responses": [],

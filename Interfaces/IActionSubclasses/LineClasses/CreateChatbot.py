@@ -3,29 +3,28 @@ from Interfaces.IActionSubclasses.ActionLine import ActionLine
 from Interfaces.IActionSubclasses.LineClasses.CreateIntent import CCreateIntent
 
 #Clases generales
-from ChatBot import ChatBot
+from MetaChatBot.ChatBot import ChatBot
 
 
 class CCreateChatbot(ActionLine):
 
-    def __init__(self,currentCB,diccCB):
-        self.currentCB = currentCB
+    def __init__(self,currentChatBotB,diccCB):
+        self.currentCB = currentChatBotB
         self.diccChatbots = diccCB
 
     def exec(self,):
         sentence = input('=>')
         # self.addChatBot(sentence)
         if not sentence in self.diccChatbots:
-            myChatBot = ChatBot()
+            myChatBot = ChatBot.ChatBot()
             myChatBot.setName(sentence)
 
             # crea la intencion de salir para cada chatbot que se cree
             CCreateIntent(myChatBot).createExitIntent(myChatBot)
 
             self.diccChatbots[sentence] = myChatBot
-            self.currentCB = myChatBot
+            self.currentCB[1] = myChatBot
             print('El ChatBot "' + sentence + '" se ha añadido correctamente.')
-            return myChatBot
         else:
             print('El ChatBot "' + sentence + '" ya existe.')
 

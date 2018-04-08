@@ -3,8 +3,6 @@
 from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
-from ChatBot import ChatBot
-from Intent import  Intent
 
 
 class CSaveSentence(ActionLine):
@@ -19,7 +17,7 @@ class CSaveSentence(ActionLine):
         #     self.dictionary = {self.chatbotName: [[],[]]} # por cada chatbot se tiene: [listaNoReconocidos,listaYaReconocidos]
         # el
         if self.sentence == '':
-            print('No hay sentencia que guardar.')
+            print('ERROR: No hay sentencia que guardar.')
         else:
             if not self.chatbotName in self.dictionary:
                self.dictionary[self.chatbotName] = [[],[]]

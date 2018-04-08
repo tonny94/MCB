@@ -1,4 +1,4 @@
-from Intent import Intent
+from MetaChatBot.ChatBot.Intent import Intent
 
 class ChatBot:
     """Son class"""

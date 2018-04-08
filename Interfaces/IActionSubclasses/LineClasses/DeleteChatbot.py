@@ -16,8 +16,8 @@ class CDeleteChatbot(ActionLine):
             # myChatBot = self.dicChatBots[nameChatBot]
             del self.diccChatbots[sentence]
 
-            if sentence is self.currentCB.name:
-                self.currentCB = None
+            if sentence is self.currentCB[1].name:
+                self.currentCB = {}
             print('El ChatBot "' + sentence + '" se ha eliminado correctamente .')
         else:
             print('El ChatBot "' + sentence + '" no existe .')

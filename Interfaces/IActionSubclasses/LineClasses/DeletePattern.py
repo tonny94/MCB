@@ -10,14 +10,14 @@ class CDeletePattern(ActionLine):
         self.chatbot = chatbot
 
     def exec(self,):
-        if self.chatbot is None:
-            print('No hay ningun chatbot actual para eliminar algun Pattern de uno de sus Intents.')
-        elif self.chatbot.currentIntent is None:
-            print('No hay ningun Intent para eliminar algun Pattern')
+        if self.chatbot == {}:
+            print('ERROR: No hay ningun chatbot actual para eliminar algun Pattern de uno de sus Intents.')
+        elif self.chatbot[1].currentIntent is None:
+            print('ERROR: No hay ningun Intent para eliminar algun Pattern')
         else:
             sentence = input('=>')
-            if sentence in self.chatbot.currentIntent.patterns:
-                del self.chatbot.currentIntent.patterns[sentence]
+            if sentence in self.chatbot[1].currentIntent.patterns:
+                del self.chatbot[1].currentIntent.patterns[sentence]
                 print('El Pattern "' + sentence + '" se ha eliminado correctamente .')
             else:
                 print('El Pattern "' + sentence + '" no existe .')

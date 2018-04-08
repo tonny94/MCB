@@ -1,29 +1,22 @@
 #Clases de acciones
-
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
-
+from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
 #Clases generales
-from ChatBot import ChatBot
-from Intent import  Intent
+from Interfaces.IActionSubclasses.NotLineClasses.ToList import CToList
 
+class CListResponses(ActionNotLine):
 
-class CChangeObject(ActionLine):
-
-    def __init__(self,currentObject,dict:dict,name):
-        self.currentObject = currentObject
-        self.dict = dict
-        self.name = name
+    def __init__(self,chatbot,message):
+        self.chatbot = chatbot
+        self.mesaage = message
 
     def exec(self,):
-        sentence = input('=>')
-        if sentence in self.dict:
-            self.currentObject = self.dict[sentence]
-            print('Se ha cambiado "',self.name,'" por "', sentence, '".')
+        if self.chatbot == {}:
+            print('No hay ningun ChatBot actual para listar los Responses de su Intent actual.')
+        elif self.chatbot[1].currentIntent == None:
+            print('No hay ningun Intent actual para listar sus Responses')
         else:
-            print('El nombre "' + sentence + '" no existe .')
-
-
-
+            toList = CToList(self.chatbot[1].currentIntent.responses,self.mesaage)
+            toList.exec()
 
 
 

@@ -1,26 +1,22 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
-
+from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
 #Clases generales
+from Interfaces.IActionSubclasses.NotLineClasses.ToList import CToList
 
+class CListPatterns(ActionNotLine):
 
-class CDeleteResponse(ActionLine):
-
-    def __init__(self, chatbot):
+    def __init__(self,chatbot,message):
         self.chatbot = chatbot
+        self.mesaage = message
 
     def exec(self,):
         if self.chatbot == {}:
-            print('ERROR: No hay ningun chatbot actual para eliminar algun Response de uno de sus Intents.')
-        elif self.chatbot[1].currentIntent is None:
-            print('ERROR: No hay ningun Intent para eliminar algun Response')
+            print('No hay ningun ChatBot actual para listar los Patterns de su Intent actual.')
+        elif self.chatbot[1].currentIntent == None:
+            print('No hay ningun Intent actual para listar sus Patterns')
         else:
-            sentence = input('=>')
-            if sentence in self.chatbot[1].currentIntent.responses:
-                del self.chatbot[1].currentIntent.responses[sentence]
-                print('El Response "' + sentence + '" se ha eliminado correctamente .')
-            else:
-                print('El Response "' + sentence + '" no existe .')
+            toList = CToList(self.chatbot[1].currentIntent.patterns,self.mesaage)
+            toList.exec()
 
 
 

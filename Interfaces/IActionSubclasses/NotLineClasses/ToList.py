@@ -1,8 +1,6 @@
 #Clases de acciones
 from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
 #Clases generales
-import ChatBot
-import Intent
 
 class CToList(ActionNotLine):
 
@@ -18,9 +16,9 @@ class CToList(ActionNotLine):
         #diccionario
         elif isinstance(self.iterableObject,dict):
             result = ''
-            if self.objectType is 'Intent':
+            if self.objectType == 'Intent':
                 result = ", ".join(str(value.tag) for key, value in self.iterableObject.items())
-            elif self.objectType is 'ChatBot':
+            elif self.objectType == 'ChatBot':
                 result = ", ".join(str(value.name) for key, value in self.iterableObject.items())
             print(self.mesaage,' [',result,']')
 

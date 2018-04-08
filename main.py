@@ -2,17 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import os
-import MetaChatBot
-
-
+from MetaChatBot.MetaChatBot import MetaChatBot
+from SolveErrorsChatBot.SolveErrors import CSolveError
 
 #GENERA EL MODELO-TRAINER
 #processor = ChatBotProcessor.CBProcessor()
-#processor.preparateModel('metachatbot','metachatbot.json',os.getcwd()+'\\metachatbot\\tmp')
+# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
 
 #GENERAR MODELO - RESOLUTOR
-# resolutor = Resolutor()
-# resolutor.startTrainerClass()#'resolutor','/chatbotResolverErrores/chatbotresolvererrores.json')
+resolutor = CSolveError()
+resolutor.startTrainerClass()#'resolutor','/SolveErrorsChatBot/solveerrors.json')
 
 
 
@@ -25,16 +24,17 @@ import MetaChatBot
 """
 """
 print (os.getcwd()+'\\metachatbot')
-metacb = MetaChatBot.MetaChatBot()
-# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
-metacb.startResponseClass('metachatbot','metachatbot.json',os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
+# metacb = MetaChatBot()
+# metacb.run()
 
-sentence = ''
-while not (sentence=='s'):
-    sentence = input('=>')
-    if not(sentence is 's'):
-        metacb.classify(sentence)
-        metacb.response(sentence)
+# metacb.startResponseClass('metachatbot','metachatbot.json',os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
+#
+# sentence = ''
+# while not (sentence=='s'):
+#     sentence = input('=>')
+#     if not(sentence is 's'):
+#         metacb.classify(sentence)
+#         metacb.response(sentence)
 
 
 
@@ -43,8 +43,8 @@ PROBLEMAS:
 1.- si supera el umbral y es erroneo: no puedo reconocer la siguiente sentencia (ERROR) como si fuese un intent ya que 
 se ejecuta el input en una clase aparte.
 2.- ejecutar chatbots hijos: trainer y response a la vez
-3.- al ejecutar un chatbot hay que tener programado todas su lista de acciones (no se puede instanciar un objeto directamente)
-3.1.- el fichero .py de cada chatbot que se quiera ejecutar tiene que 
+3.- en la lista de acciones las instancias de las clases de acciones ya se crean pero con sus valores uniciales (None, '', {}) por lo que al
+ejecutar "exec()" se ejecutarán con esos valores y no con los valores editados.
 
 DUDAS:
 1.- Intenciones por defecto: saveSentences (afirmativo, negative) ???? , 

@@ -14,10 +14,10 @@
          "responses": [],
          "action":"dontSaveSentence"
         },
-        {"tag": "runResolutorCB",
+        {"tag": "runSolveErrors",
          "patterns": ["resolver errores","procesar errores"],
-         "responses": ["Ejecutando chatbot resolutor"],
-         "action": "runResolutorCB"
+         "responses": [],
+         "action": "runSolveErrors"
         },
         {"tag": "createChatBot",
          "patterns": ["Anhadir chatbot","Crear chatbot","Quiero crear un chatbot","Quiero anhadir un chatbot","nuevo chatbot"],
