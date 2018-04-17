@@ -2,39 +2,41 @@
 # -*- coding: utf-8 -*-
 
 import os
-from MetaChatBot.MetaChatBot import MetaChatBot
-from SolveErrorsChatBot.SolveErrors import CSolveError
-
-#GENERA EL MODELO-TRAINER
-#processor = ChatBotProcessor.CBProcessor()
-# metacb.startTrainerClass('metachatbot', 'metachatbot.json', os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
-
-#GENERAR MODELO - RESOLUTOR
-resolutor = CSolveError()
-resolutor.startTrainerClass()#'resolutor','/SolveErrorsChatBot/solveerrors.json')
+from ChatBotProcessor import CBProcessor
+from Chatbots.MetaChatBot.MetaChatBot import CMetaChatBot
 
 
+# import inspect, os
+# print (inspect.getfile(inspect.currentframe())) # 'C:\GIT\MCB\Chatbots\Lista_Compra\main.py'
+# print (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) ) #'C:\GIT\MCB\Chatbots\Lista_Compra'
+# print (os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) ))
+# print(os.getcwd()) #'C:\GIT\MCB'
 
 
 
 #METACHATBOT
-
+mcb = CMetaChatBot()
+cbp = CBProcessor(mcb)
+cbp.startTrainerAndPredictorClass()
+cbp.run()
+# cbp.doClassification('crear chatbot')
+# cbp.doPrediction('crear chatbot')
 
 
 """
 """
-print (os.getcwd()+'\\metachatbot')
-# metacb = MetaChatBot()
+# print (os.getcwd()+'\\metachatbot')
+# metacb = CMetaChatBot()
 # metacb.run()
 
-# metacb.startResponseClass('metachatbot','metachatbot.json',os.path.join(os.sep, os.getcwd(), 'MetaChatBot'))
+# metacb.startResponseClass('metachatbot','CMetaChatBot.json',os.path.join(os.sep, os.getcwd(), 'CMetaChatBot'))
 #
 # sentence = ''
 # while not (sentence=='s'):
 #     sentence = input('=>')
 #     if not(sentence is 's'):
-#         metacb.classify(sentence)
-#         metacb.response(sentence)
+#         metacb.doClassification(sentence)
+#         metacb.predict(sentence)
 
 
 
@@ -42,18 +44,19 @@ print (os.getcwd()+'\\metachatbot')
 PROBLEMAS:
 1.- si supera el umbral y es erroneo: no puedo reconocer la siguiente sentencia (ERROR) como si fuese un intent ya que 
 se ejecuta el input en una clase aparte.
-2.- ejecutar chatbots hijos: trainer y response a la vez
+2.- ejecutar chatbots hijos: trainer y predict a la vez
 3.- en la lista de acciones las instancias de las clases de acciones ya se crean pero con sus valores uniciales (None, '', {}) por lo que al
 ejecutar "exec()" se ejecutarán con esos valores y no con los valores editados.
 
 DUDAS:
 1.- Intenciones por defecto: saveSentences (afirmativo, negative) ???? , 
 2.- la lista de reconocidos es para cada chatbot o está en una variable del CBProcessor?????
-
+3.- las acciones de las interfaces SOLO son accesibles para el metachatbot???
 
 FALTA:
 2.- intencion ejecutar chatbot
 4.- terminar chatbot resolutor
+5.- añadir LISTAS de patterns, responses al clase de structureIntent
 """
 
 
@@ -77,7 +80,7 @@ Que chatbot quiere crear?
 Lista_Compra
 
 []
-El ChatBot Lista_Compra se ha añadido correctamente.
+El CStructureChatBot Lista_Compra se ha añadido correctamente.
 
 chatbot actual
 
@@ -92,7 +95,7 @@ Que chatbot quiere anhadir?
 Compra_Online
 
 []
-El ChatBot Compra_Online se ha añadido correctamente.
+El CStructureChatBot Compra_Online se ha añadido correctamente.
 
 actual chatbot
 
@@ -107,7 +110,7 @@ Que intencion quiere anhadir?
 anhadirItem
 
 []
-El Intent anhadirItem se ha añadido correctamente.
+El CStructureIntent anhadirItem se ha añadido correctamente.
 
 listar intenciones
 
@@ -134,10 +137,10 @@ que item desea anhadir
 [('mostrarResponse', 0.64883029)]
 El Pattern que item desea anhadir se ha añadido correctamente.
 
-nuevo response
+nuevo predict
 
 [('crearResponse', 0.97977602)]
-Que response quiere crear?
+Que predict quiere crear?
 
 digame el item que desea anhadir
 
@@ -179,7 +182,7 @@ Que chatbot quiere anhadir?
 
 Lista_Compra
 [('error', 0.34604287)]
-El ChatBot Lista_Compra se ha añadido correctamente.
+El CStructureChatBot Lista_Compra se ha añadido correctamente.
 
 chatbot actual
 [('mostrarActualChatBot', 0.99797946)]
@@ -191,7 +194,7 @@ Que chatbot quiere anhadir?
 
 Compra_Online
 [('error', 0.34604287)]
-El ChatBot Compra_Online se ha añadido correctamente.
+El CStructureChatBot Compra_Online se ha añadido correctamente.
 
 actual chatbot
 [('mostrarActualChatBot', 0.99797946)]
@@ -222,7 +225,7 @@ Digame el nombre de la intencion
 
 anhadirItem
 [('error', 0.34604287)]
-El Intent anhadirItem se ha añadido correctamente.
+El CStructureIntent anhadirItem se ha añadido correctamente.
 
 nuevo pattern
 [('crearPattern', 0.99282128)]
@@ -232,9 +235,9 @@ nuevo item de la compra
 [('error', 0.83908486)]
 El Pattern nuevo item de la compra se ha añadido correctamente.
 
-nuevo response
+nuevo predict
 [('crearResponse', 0.9969427)]
-Que response quiere crear?
+Que predict quiere crear?
 
 digame el item que desea anhadir
 [('crearIntent', 0.44244176), ('crearPattern', 0.27432156)]

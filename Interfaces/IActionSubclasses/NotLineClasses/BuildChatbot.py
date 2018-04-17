@@ -3,60 +3,60 @@ from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
 
 #Clases generales
 import os
-from Response import Response
-from Trainer import Model
+from TrainerPredictor import CTrainerPredictor
 
 
 class CBuildChatbot(ActionNotLine):
 
-    def __init__(self,chatbot,path):
+    def __init__(self,chatbot):
         self.chatbot = chatbot
-        self.generalPath = path
-        self.chatbotPath = ''
-        self.dirJsonFile = ''
+        self.structureChatbot = self.chatbot.currentStructureChatBot
+        self.generalPath = os.path.join(os.path.sep,os.getcwd(),'Chatbots')
+        self.structureChatbotPath = ''
+        self.structureDirJsonFile = ''
 
     def exec(self,):
-        if self.chatbot == {}:
+        if self.structureChatbot is None:
             print('ERROR: No hay un Chatbot actual para construir.')
         else:
-            self.chatbotPath = os.path.join(self.generalPath, self.chatbot[1].name)
-            if not os.path.isdir(self.generalPath):
-                print('La ruta debe ser un directorio(carpeta).')
+            #inicializa las variables
+            self.structureChatbotPath = os.path.join(os.path.sep,self.generalPath,self.structureChatbot.name)
+            self.structureDirJsonFile = os.path.join(os.path.sep,self.structureChatbotPath,self.structureChatbot.name+'.json')
+
+            if os.path.exists(self.generalPath) and not (os.path.isdir(self.generalPath)):
+                print('ERROR: La ruta debe ser un directorio(carpeta).')
             else:
-                if not os.path.isdir(self.chatbotPath):
-                    os.makedirs(self.chatbotPath)
+                if not os.path.isdir(self.structureChatbotPath):
+                    os.makedirs(self.structureChatbotPath)
                 self.crearJSON()
-                print('Se ha construido el chatbot "', self.chatbot[1].name, '" correctamente.')
+                print('Se ha construido el chatbot "',self.structureChatbot.name, '" correctamente.')
 
     def crearJSON(self):
-        self.dirJsonFile = os.path.join(os.sep, self.chatbotPath, self.chatbot[1].name + '.json')
-        jsonFile = open(self.dirJsonFile, 'w')
+        jsonFile = open(self.structureDirJsonFile, 'w')
         jsonFile.write(self.chatbotToJson())
-        # jsonFile.write(self.dicToJSON(self.dicChatBots) )
         jsonFile.close()
         self.startTrainer()
-        #self.startResponse()
 
     def chatbotToJson(self):
         strJSON = self.chatbot[1].toJSON()
         return strJSON
 
     def startTrainer(self):
-        VTrainer = Model()
-        VTrainer.readJSON(self.dirJsonFile,self.chatbot[1].name)
+        VTrainer = CTrainerPredictor()
+        VTrainer.readJSON(self.structureDirJsonFile,self.structureChatbot.name)
         VTrainer.createElementsToModel()
-        VTrainer.trainingModel(self.chatbotPath)
+        VTrainer.trainingModel(self.structureChatbotPath)
         VTrainer.doPickle()
         VTrainer.closeResource()
-        print('Modelo de "',self.chatbot[1].name,'" creado.')
+        print('Modelo de "',self.structureChatbot.name,'" creado.')
 
-    def startResponse(self):
-        VResponse = Response()
-        VResponse.loadArrays(self.chatbotPath)
-        VResponse.readJSON(self.dirJsonFile, self.chatbot[1].name)
-        VResponse.buildNetwork()
-        VResponse.loadModel()
-        print('Response de "',self.chatbot[1].name,'" creado.')
+    # def startResponse(self):
+    #     VResponse = Response()
+    #     VResponse.loadArrays(self.structureChatbotPath)
+    #     VResponse.readJSON(self.structureDirJsonFile,self.structureChatbot.name)
+    #     VResponse.buildNetwork()
+    #     VResponse.loadModel()
+    #     print('Response de "',self.structureChatbot.name,'" creado.')
 
-# print(os.getcwd())
-# print (os.path.abspath(os.path.join(os.getcwd(), os.pardir, os.pardir, os.pardir, 'CreatedChatbots')))
+
+

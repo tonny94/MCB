@@ -6,45 +6,22 @@ from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 class CDeleteIntent(ActionLine):
 
-    def __init__(self,currentCB):
-        self.currentCB = currentCB
+    def __init__(self,chatbot):
+        self.chatbot = chatbot
 
     def exec(self,):
-        if self.currentCB == {}:
-            print('ERROR: No hay ningun chatbot actual para eliminar algun Intent de su lista.')
+        if self.chatbot.currentStructureChatBot is None:
+            print('ERROR: No hay ningun chatbot actual para eliminar algun CStructureIntent de su lista.')
         else:
             sentence = input('=>')
-            if sentence in self.currentCB[1].dicIntents:
-                del self.currentCB[1].dicIntents[sentence]
-                if not(self.currentCB[1].currentIntent == None) and sentence is self.currentCB[1].currentIntent.tag:
-                    self.currentCB[1].currentIntent = None
-                print('El Intent "' + sentence + '" se ha eliminado correctamente .')
-            else:
-                print('El Intent "' + sentence + '" no existe .')
+            if not(self.checkCancellation(sentence)):
+                self.chatbot.currentStructureChatBot.deleteIntent(sentence)
 
-    # def setChatbot(self,chatbot,dicc):
-    #     self.chatbot = chatbot
-    #     self.diccChatbots = dicc
-    #     self.exec()
-    #
-    # def getChatbot(self,chatbot):
-    #     self.chatbot = chatbot
 
-#         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}
-#
-#         def exectAction(self, functionName, *args):
-#             self.actions[functionName](*args)
-#
-#         def saludar(self, a, b):
-#             print('probando ' + str(a) + ' con ' + str(b))
-#
-#         def despedir(self):
-#             print('adios')
-#
-#         def saludar1(self, a):
-#             print('solo 1' + str(a))
-# objAction = Action()
-#
-# objAction.exectAction('saludar','primero',9)
-# objAction.exectAction('despedir')
-# objAction.exectAction('saludar1',4)
+    def checkCancellation(self,sentence):
+        if (sentence.lower() == word.lower() for word in self.listKeysWordsCancelRunning):
+            print('Se ha cancelado la operacion')
+            self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
+            return True
+        else:
+            return False

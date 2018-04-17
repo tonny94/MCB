@@ -3,54 +3,25 @@ from Interfaces.IActionSubclasses.ActionLine import ActionLine
 from Interfaces.IActionSubclasses.LineClasses.CreateIntent import CCreateIntent
 
 #Clases generales
-from MetaChatBot.ChatBot import ChatBot
+from StructureChatBot.StructureChatBot import CStructureChatBot
 
 
 class CCreateChatbot(ActionLine):
 
-    def __init__(self,currentChatBotB,diccCB):
-        self.currentCB = currentChatBotB
-        self.diccChatbots = diccCB
+    def __init__(self,chatbot):
+        self.chatbot = chatbot
 
     def exec(self,):
         sentence = input('=>')
-        # self.addChatBot(sentence)
-        if not sentence in self.diccChatbots:
-            myChatBot = ChatBot.ChatBot()
-            myChatBot.setName(sentence)
+        if not (self.checkCancellation(sentence)):
+            self.chatbot.addStructureChatbotDict(sentence)
 
-            # crea la intencion de salir para cada chatbot que se cree
-            CCreateIntent(myChatBot).createExitIntent(myChatBot)
 
-            self.diccChatbots[sentence] = myChatBot
-            self.currentCB[1] = myChatBot
-            print('El ChatBot "' + sentence + '" se ha añadido correctamente.')
+    def checkCancellation(self,sentence):
+        if any(sentence.lower() == word.lower() for word in self.listKeysWordsCancelRunning):
+            print('Se ha cancelado la operacion')
+            self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
+            self.chatbot.unrecognizeIntent = self.chatbot.currentIntent
+            return True
         else:
-            print('El ChatBot "' + sentence + '" ya existe.')
-
-    # def setChatbot(self,chatbot,dicc):
-    #     self.chatbot = chatbot
-    #     self.diccChatbots = dicc
-    #     self.exec()
-    #
-    # def getChatbot(self,chatbot):
-    #     self.chatbot = chatbot
-
-#         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}
-#
-#         def exectAction(self, functionName, *args):
-#             self.actions[functionName](*args)
-#
-#         def saludar(self, a, b):
-#             print('probando ' + str(a) + ' con ' + str(b))
-#
-#         def despedir(self):
-#             print('adios')
-#
-#         def saludar1(self, a):
-#             print('solo 1' + str(a))
-# objAction = Action()
-#
-# objAction.exectAction('saludar','primero',9)
-# objAction.exectAction('despedir')
-# objAction.exectAction('saludar1',4)
+            return False

@@ -4,24 +4,26 @@
 #Clases de acciones
 
 from Interfaces.IActionSubclasses.ActionLine import ActionLine
-from SolveErrorsChatBot.SolveErrors import CSolveError
+from Chatbots.SolveErrorsChatBot.SolveErrors import CSolveError
+# from ChatBotProcessor import CBProcessor
 #Clases generales
 
 
 class CRunSolveErrors(ActionLine):
 
-    def __init__(self,chatbotName,jsonChatbot,dictErrores):
-        self.chatbotName = chatbotName
-        self.jsonChatbot = jsonChatbot
-        self.dictErrores = dictErrores
+    def __init__(self,chatbotProcessor):
+        self.chatbotProcessor = chatbotProcessor
 
     def exec(self,):
-        if self.dictErrores == {}:
-            print('ERROR: No hay errores que solventar.')
-        elif not self.chatbotName in self.dictErrores:
-            print('ERROR: No hay errores que solventar para el chatbot "',self.chatbotName,'".')
+        if self.chatbotProcessor.currentRunningChatbot.getErrorList() == {}:
+            print('ERROR: No hay errores que arreglar.')
         else:
-            listErrors = self.dictErrores[self.chatbotName][0]
-            listSolved = self.dictErrores[self.chatbotName][1]
-            solveError = CSolveError(self.chatbotName,self.jsonChatbot,listErrors,listSolved)
-            solveError.run()
+            solveError = CSolveError()
+
+            # cbp = CBProcessor()
+
+
+
+
+
+

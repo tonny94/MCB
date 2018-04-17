@@ -6,45 +6,18 @@ from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 class CDeleteChatbot(ActionLine):
 
-    def __init__(self,currentCB,diccCB):
-        self.currentCB = currentCB
-        self.diccChatbots = diccCB
+    def __init__(self,chatbot):
+        self.chatbot = chatbot
 
     def exec(self,):
         sentence = input('=>')
-        if sentence in self.diccChatbots:
-            # myChatBot = self.dicChatBots[nameChatBot]
-            del self.diccChatbots[sentence]
+        if not (self.checkCancellation(sentence)):
+            self.chatbot.deleteStructureChatbotDict(sentence)
 
-            if sentence is self.currentCB[1].name:
-                self.currentCB = {}
-            print('El ChatBot "' + sentence + '" se ha eliminado correctamente .')
+    def checkCancellation(self,sentence):
+        if (sentence.lower() == word.lower() for word in self.listKeysWordsCancelRunning):
+            print('Se ha cancelado la operacion')
+            self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
+            return True
         else:
-            print('El ChatBot "' + sentence + '" no existe .')
-
-    # def setChatbot(self,chatbot,dicc):
-    #     self.chatbot = chatbot
-    #     self.diccChatbots = dicc
-    #     self.exec()
-    #
-    # def getChatbot(self,chatbot):
-    #     self.chatbot = chatbot
-
-#         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}
-#
-#         def exectAction(self, functionName, *args):
-#             self.actions[functionName](*args)
-#
-#         def saludar(self, a, b):
-#             print('probando ' + str(a) + ' con ' + str(b))
-#
-#         def despedir(self):
-#             print('adios')
-#
-#         def saludar1(self, a):
-#             print('solo 1' + str(a))
-# objAction = Action()
-#
-# objAction.exectAction('saludar','primero',9)
-# objAction.exectAction('despedir')
-# objAction.exectAction('saludar1',4)
+            return False

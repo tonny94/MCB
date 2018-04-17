@@ -11,7 +11,4 @@ class CNotRecognizedSentence(ActionLine):
         self.sentence = sentence
 
     def exec(self,):
-        if self.sentence == '':
-            print('No hay una sentencia que guardar.')
-        else:
-            print('No se ha reconocido la sentencia "',self.sentence,'".')
+        print('No se ha reconocido la sentencia "',self.sentence,'".')

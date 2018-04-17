@@ -131,7 +131,7 @@ class Response:
                             # if (not 'context_filter' in i) or (userID in self.context and 'context_filter' in i and i['context_filter'] == self.context[userID]):
                             #     if show_details: print('tag:', i['tag'])
 
-                            # a random response from the intent - si no hay respuestas no se imprime nada
+                            # a random predict from the intent - si no hay respuestas no se imprime nada
                             if not len(i['responses']) == 0:
                                 return print( (random.choice(i['responses'])) )
                             else:
@@ -141,7 +141,7 @@ class Response:
                             #reinicia en contexto
                             self.context = {}
 
-                            # a random response from the intent - si no hay respuestas no se imprime nada
+                            # a random predict from the intent - si no hay respuestas no se imprime nada
                             if not len(i['responses']) == 0:
                                 return print((random.choice(i['responses'])))
                             else:

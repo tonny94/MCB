@@ -1,4 +1,5 @@
-{"metachatbot": [
+{
+  "MetaChatBot": [
         {"tag": "buildChatBot",
          "patterns": ["construir chatbot","generar chatbot"],
          "responses": [],
@@ -98,6 +99,21 @@
          "patterns": ["Listar responses","Ver todos los responses","Que responses  hay creados","Quiero ver todos los responses"],
          "responses": [],
          "action": "listResponse"
+        },
+        {"tag": "createAction",
+         "patterns": ["crear accion","anadir accion","nueva accion","actualizar accion","insertar accion"],
+         "responses": ["Que accion quiere crear ?","Digame la accion que quiere anadir"],
+         "action": "createAction"
+        },
+        {"tag": "deleteAction",
+         "patterns": ["borrar accion","eliminar accion","quiero eliminar la accion","quitar accion"],
+         "responses": [],
+         "action": "deleteAction"
+        },
+        {"tag": "showAction",
+         "patterns": ["Mostrar accion","quiero ver la accion","ver accion","quiero ver la accion"],
+         "responses": [],
+         "action": "showAction"
         }
    ]
 }

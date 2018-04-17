@@ -3,31 +3,28 @@ from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
 
 #Clases generales
 
-class CShowObject(ActionNotLine):
+class CShowIntent(ActionNotLine):
 
-    def __init__(self,object,type = None):
-        self.currentChatbot = object
-        self.objectType = type
+    def __init__(self,chatbot):
+        self.chatbot= chatbot
 
     def exec(self,):
-        if self.objectType == 'Intent':
-            if self.currentChatbot == {}:
-                print('ERROR: No se hay ningun ChatBot actual por lo que no se puede mostrar ningun Intent.')
-            else:
-                chatbot = self.currentChatbot[1]
-                if chatbot.currentIntent == None:
-                    print('No hay ningun ', self.objectType, ' actual.')
-                else:
-                    print('"', chatbot.currentIntent.tag, '"')
+        if self.chatbot.currentStructureChatBot is None:
+            print('ERROR: No hay Chatbot actual para mostrar su Intent actual.')
         else:
-            if self.currentChatbot == {}:
-                print('No hay ningun ChatBot actual.')
-            else:
-                print('"', self.currentChatbot[1].name, '"')
+            self.chatbot.currentStructureChatBot.printCurrentIntent()
 
 
 
-
+        # if self.objectType == 'CStructureIntent':
+        #     if self.currentChatbot == None:
+        #         print('ERROR: No se hay ningun CStructureChatBot actual por lo que no se puede mostrar ningun CStructureIntent.')
+        #     else:
+        #         chatbot = self.currentChatbot
+        #         if chatbot.currentIntent == None:
+        #             print('No hay ningun ', self.objectType, ' actual.')
+        #         else:
+        #             print('"', chatbot.currentIntent.tag, '"')
 
 
 
