@@ -7,12 +7,9 @@ from Interfaces.IActionSubclasses.ActionLine import ActionLine
 
 class CFinishRunningCB(ActionLine):
 
-    def __init__(self,runChatBot,currentChatbotChild):
-        self.runChatBot = runChatBot
-        self.currentChatbotChild = currentChatbotChild
+    def __init__(self,chatbot):
+        self.chatbot = chatbot
 
     def exec(self,):
-        if self.currentChatbotChild == '':
-            print('No hay un chatbot ejecutandose.')
-        else:
-            self.runChatBot = False
+        self.chatbot.runChatBot = False
+        print('Se ha parado de ejecutar el Chatbot "',self.chatbot.name,'".')

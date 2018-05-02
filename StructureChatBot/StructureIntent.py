@@ -48,8 +48,6 @@ class CStructureIntent:
     def setAction(self, action):
         if action == '':
             print('Se ha borrado la accion para el Intent "',self.tag,'". ')
-        else:
-            print('Se ha actualizado la accion para el Intent "',self.tag,'". ')
         self.action = action
 
     def printPatterns(self):

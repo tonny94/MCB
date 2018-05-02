@@ -1,4 +1,5 @@
 from StructureChatBot.StructureIntent import CStructureIntent
+import os
 
 class CStructureChatBot:
     """Son class"""
@@ -80,4 +81,99 @@ class CStructureChatBot:
         strJson += self.dicToJSON(self.dicIntents)+'\n\t'
         strJson += '}'
         return strJson
+
+    def  toCode(self,listGeneralActions,pathAction):
+        lengDict = 1
+        strImports = 'import os,inspect \nfrom Interfaces.IChatBot import CChatBot\nfrom Interfaces.IActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
+        strActions = 'self.actionsCB = {'
+        for tag in self.dicIntents:
+            if not tag in listGeneralActions:
+                intent = self.dicIntents[tag]
+                if not intent.action == '':
+                    nameActionFile = intent.action.title()
+                    nameActionClass = 'C'+intent.action.title()
+
+                    #crea los ficheros .py de cada accion
+                    self.createActions(pathAction,nameActionFile,nameActionClass)
+
+                    #construye el diccionario de acciones
+                    if lengDict == 1:
+                        strActions += '\''+intent.action+'\':'+nameActionClass+'(self)'
+                    else:
+                        strActions += ', \''+intent.action+'\':'+nameActionClass+'(self)'
+
+                    #construye el string de todos los import para las acciones
+                    strImports += 'from Chatbots.'+self.name+'.Actions.'+nameActionFile+' import '+nameActionClass+'\n'
+
+            lengDict += 1
+
+        strActions += ' }'
+        strChatbotClass = 'C'+self.name
+        strChatbotCode = strImports+'\nclass '+strChatbotClass+'(CChatBot):\n'
+        strChatbotCode += '\tdef __init__(self):\n'
+        strChatbotCode += '\t\tsuper('+strChatbotClass+', self).__init__()\n'
+        strChatbotCode += '\t\t'+strActions+'\n'
+        strChatbotCode += '\t\tself.initializePaths()\n\n'
+
+        #initializePaths
+        strChatbotCode +='\tdef initializePaths(self):\n'
+        strChatbotCode += '\t\tstrSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)\n'
+        strChatbotCode += '\t\tself.name = strSplit[len(strSplit)-1]\n'
+        strChatbotCode += '\t\tself.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))\n'
+        strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+\'.json\')\n\n'
+
+        #saveUnrecognizedSentence
+        strChatbotCode += '\tdef saveUnrecognizedSentence(self,key,value):\n'
+        strChatbotCode += '\t\tnewDict = {key:value}\n'
+        strChatbotCode += '\t\tself.errorDict.update(newDict)\n\n'
+
+        #execPrediction
+        strChatbotCode += '\tdef execPrediction(self,sentence):\n'
+        strChatbotCode += '\t\tvalorClasificacion = self.TrainerAndPredictor.classify(sentence)\n'
+        strChatbotCode += '\t\tif (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:\n'
+        strChatbotCode += '\t\t\tself.TrainerAndPredictor.predict(sentence)\n'
+        strChatbotCode += '\t\t\tself.currentAction = self.TrainerAndPredictor.action\n'
+        strChatbotCode += '\t\t\tif not self.currentAction == \'\':\n'
+        strChatbotCode += '\t\t\t\tself.actions[self.currentAction].exec()\n'
+        strChatbotCode += '\t\t\t\tself.TrainerAndPredictor.action = \'\'\n'
+        strChatbotCode += '\t\telse:\n'
+        strChatbotCode += '\t\t\tCNotRecognizedSentence(self.unrecognizedSentence).exec()\n'
+        print(strChatbotCode)
+        return strChatbotCode
+
+
+
+
+
+    def createActions(self,pathAction,nameActionFile,nameActionClass):
+        codeFile = open(os.path.join(os.path.sep,pathAction,nameActionFile+'.py'), 'w')
+        codeFile.write(self.actionToCode(nameActionClass))
+        codeFile.close()
+
+    def actionToCode(self,nameActionClass):
+        str = 'from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine\n'
+        str +='class '+nameActionClass+'(ActionNotLine):\n\n'
+        str += '\tdef __init__(self,chatbot):\n'
+        str += '\t\tself.chatbot = chatbot\n\n'
+        str += '\tdef exec(self,):\n'
+        str += '\t\tpass'
+        return str
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

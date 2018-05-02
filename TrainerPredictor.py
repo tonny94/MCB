@@ -14,6 +14,7 @@ import tensorflow as tf
 import random
 import json
 import os
+import pickle
 #*obser = unicode(self.edit_observ.toPlainText())*
 #* obser1 = obser.encode('utf-8')*
 
@@ -43,6 +44,8 @@ class CTrainerPredictor:
         self.intent = ''
         self.ERROR_THRESHOLD = 0.25
         self.context = {}
+
+
 
 
     #lee el json y inicializa el atributo 'intents'
@@ -168,6 +171,54 @@ class CTrainerPredictor:
     #cierra la secion del model
     def closeResource(self):
         self.model.session.close()
+
+
+
+
+
+
+
+
+
+
+#
+# PARTE DE PPREDICTOR
+#
+
+    def loadArrays(self,pathModel):
+        self.pathModel = pathModel
+        # listSplit = self.pathModel.split(os.sep)
+        # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+
+        self.data = pickle.load(open(os.path.join(os.path.sep,self.pathModel, "training_data"), "rb"))
+        self.words = self.data['words']
+        self.classes = self.data['classes']
+        self.train_x = self.data['train_x']
+        self.train_y = self.data['train_y']
+
+    #lee el fichero json y actualiza el atributo 'intents'
+    # def readJSON(self,jsonFile,chatbotName):
+    #     self.jsonFile = jsonFile
+    #     self.chatbotName = chatbotName
+    #     with open(self.jsonFile) as json_data:
+    #         self.intents = json.load(json_data)
+
+    #construye la red
+    def buildNetwork(self):
+        net = tflearn.input_data(shape=[None, len(self.train_x[0])])
+        net = tflearn.fully_connected(net, 8)
+        net = tflearn.fully_connected(net, 8)
+        net = tflearn.fully_connected(net, len(self.train_y[0]), activation='softmax')
+        net = tflearn.regression(net)
+        # Define model and setup tensorboard
+        self.model = tflearn.DNN(net, tensorboard_dir = self.pathModel)
+
+    #carga el objeto 'model'
+    def loadModel(self):
+        # listSplit = self.pathModel.split(os.sep)
+        # pathModelFiles = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
+        self.model.load(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
+
 
     def classify(self,sentence):
         # generate probabilities from the model

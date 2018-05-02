@@ -1,5 +1,10 @@
 {
   "MetaChatBot": [
+        {"tag": "finishRunningChatbot",
+         "patterns": ["salir","salir del chatbot","parar chatbot","terminar de ejecutar chatbot","parar"],
+         "responses": [],
+         "action": "finishRunningChatbot"
+        },
         {"tag": "buildChatBot",
          "patterns": ["construir chatbot","generar chatbot"],
          "responses": [],

@@ -5,7 +5,7 @@ import os
 from ChatBotProcessor import CBProcessor
 from Chatbots.MetaChatBot.MetaChatBot import CMetaChatBot
 
-
+import json
 # import inspect, os
 # print (inspect.getfile(inspect.currentframe())) # 'C:\GIT\MCB\Chatbots\Lista_Compra\main.py'
 # print (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) ) #'C:\GIT\MCB\Chatbots\Lista_Compra'
@@ -13,11 +13,20 @@ from Chatbots.MetaChatBot.MetaChatBot import CMetaChatBot
 # print(os.getcwd()) #'C:\GIT\MCB'
 
 
+# with open('prueba.json', 'r+') as f:
+#     data = json.load(f)
+# intents = data['MetaChatBot']
+# intent = intents[0]
+# intent['patterns'].append('123asd123')
+# f.seek(0)
+# json.dump(data, f, indent=4)
+# f.truncate()
 
 #METACHATBOT
 mcb = CMetaChatBot()
 cbp = CBProcessor(mcb)
-cbp.startTrainerAndPredictorClass()
+cbp.startModel()
+cbp.startPredictor()
 cbp.run()
 # cbp.doClassification('crear chatbot')
 # cbp.doPrediction('crear chatbot')
@@ -41,12 +50,6 @@ cbp.run()
 
 
 """
-PROBLEMAS:
-1.- si supera el umbral y es erroneo: no puedo reconocer la siguiente sentencia (ERROR) como si fuese un intent ya que 
-se ejecuta el input en una clase aparte.
-2.- ejecutar chatbots hijos: trainer y predict a la vez
-3.- en la lista de acciones las instancias de las clases de acciones ya se crean pero con sus valores uniciales (None, '', {}) por lo que al
-ejecutar "exec()" se ejecutarán con esos valores y no con los valores editados.
 
 DUDAS:
 1.- Intenciones por defecto: saveSentences (afirmativo, negative) ???? , 
@@ -57,6 +60,14 @@ FALTA:
 2.- intencion ejecutar chatbot
 4.- terminar chatbot resolutor
 5.- añadir LISTAS de patterns, responses al clase de structureIntent
+
+
+6.- execPrediction dentro del metachatbot (cada chatbot), en CBP solo lo llama
+
+TrainerandPredictor en ichatbot
+acciones del processor en ichatbot
+metodo de actualizar acciones en el padre
+
 """
 
 

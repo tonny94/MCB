@@ -8,50 +8,52 @@ import inspect
 # Clases generales
 
 
-from Interfaces.IActionSubclasses.NotLineClasses.ShowChatBot import CShowChatBot
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ShowChatBot import CShowChatBot
 
 # Clases chatbot
-from Interfaces.IActionSubclasses.NotLineClasses.ListChatBots import CListChatBots
-from Interfaces.IActionSubclasses.LineClasses.ChangeChatbot import CChangeChatbot
-from Interfaces.IActionSubclasses.LineClasses.CreateChatbot import CCreateChatbot
-from Interfaces.IActionSubclasses.LineClasses.DeleteChatbot import CDeleteChatbot
-from Interfaces.IActionSubclasses.NotLineClasses.BuildChatbot import CBuildChatbot
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ListChatBots import CListChatBots
+from Chatbots.MetaChatBot.Actions.LineClasses.ChangeChatbot import CChangeChatbot
+from Chatbots.MetaChatBot.Actions.LineClasses.CreateChatbot import CCreateChatbot
+from Chatbots.MetaChatBot.Actions.LineClasses.DeleteChatbot import CDeleteChatbot
+from Chatbots.MetaChatBot.Actions.NotLineClasses.BuildChatbot import CBuildChatbot
 
 # Clases intents
-from Interfaces.IActionSubclasses.NotLineClasses.ListIntents import CListIntents
-from Interfaces.IActionSubclasses.LineClasses.ChangeIntent import CChangeIntent
-from Interfaces.IActionSubclasses.LineClasses.CreateIntent import CCreateIntent
-from Interfaces.IActionSubclasses.LineClasses.DeleteIntent import CDeleteIntent
-from Interfaces.IActionSubclasses.NotLineClasses.ShowIntent import CShowIntent
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ListIntents import CListIntents
+from Chatbots.MetaChatBot.Actions.LineClasses.ChangeIntent import CChangeIntent
+from Chatbots.MetaChatBot.Actions.LineClasses.CreateIntent import CCreateIntent
+from Chatbots.MetaChatBot.Actions.LineClasses.DeleteIntent import CDeleteIntent
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ShowIntent import CShowIntent
 
 # Clases patterns
-from Interfaces.IActionSubclasses.LineClasses.CreatePattern import CCreatePattern
-from Interfaces.IActionSubclasses.LineClasses.DeletePattern import CDeletePattern
-from Interfaces.IActionSubclasses.NotLineClasses.ListPatterns import CListPatterns
+from Chatbots.MetaChatBot.Actions.LineClasses.CreatePattern import CCreatePattern
+from Chatbots.MetaChatBot.Actions.LineClasses.DeletePattern import CDeletePattern
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ListPatterns import CListPatterns
 
 # Clases responses
-from Interfaces.IActionSubclasses.LineClasses.CreateResponse import CCreateResponse
-from Interfaces.IActionSubclasses.LineClasses.DeleteResponse import CDeleteResponse
-from Interfaces.IActionSubclasses.NotLineClasses.ListResponses import CListResponses
+from Chatbots.MetaChatBot.Actions.LineClasses.CreateResponse import CCreateResponse
+from Chatbots.MetaChatBot.Actions.LineClasses.DeleteResponse import CDeleteResponse
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ListResponses import CListResponses
 
 # Clases actions
-from Interfaces.IActionSubclasses.LineClasses.CreateAction import CCreateAction
-from Interfaces.IActionSubclasses.NotLineClasses.DeleteAction import CDeleteAction
-from Interfaces.IActionSubclasses.NotLineClasses.ShowAction import CShowAction
+from Chatbots.MetaChatBot.Actions.LineClasses.CreateAction import CCreateAction
+from Chatbots.MetaChatBot.Actions.NotLineClasses.DeleteAction import CDeleteAction
+from Chatbots.MetaChatBot.Actions.NotLineClasses.ShowAction import CShowAction
 
 from Interfaces.IChatBot import CChatBot
 from StructureChatBot.StructureChatBot import CStructureChatBot
+from Chatbots.MetaChatBot.Actions.NotLineClasses.RunSolveErrors import CRunSolveErrors
+from Interfaces.IActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
+
+from Chatbots.MetaChatBot.Actions.NotLineClasses.SaveSentence import CSaveSentence
+from Chatbots.MetaChatBot.Actions.NotLineClasses.DontSaveSentence import CDontSaveSentence
 
 class CMetaChatBot(CChatBot):
     """Father class"""
     def __init__(self):
+        super(CMetaChatBot, self).__init__()
         self.dictChatBots = {}
         self.currentStructureChatBot = None
-        #self.pathNewChatbots = os.getcwd() #os.path.join(os.path.sep, os.getcwd(), 'Chatbots')  # ruta donde estan los chatbots
-        self.name = 'MetaChatBot'
-
-
-        self.actions ={
+        self.actionsCB ={
 
             'buildChatBot': CBuildChatbot(self),
 
@@ -77,18 +79,51 @@ class CMetaChatBot(CChatBot):
 
             'createAction': CCreateAction(self),
             'deleteAction': CDeleteAction(self),
-            'showAction':CShowAction(self)
-        }
-        self.initializePaths(self.name)
+            'showAction':CShowAction(self),
 
-    def initializePaths(self,chatbotName):
-        self.chatbotName = chatbotName
+            'saveSentence': CSaveSentence(self),
+            'dontSaveSentence': CDontSaveSentence(self),
+
+            'runSolveErrors': CRunSolveErrors(self)
+        }
+        self.initializePaths()
+
+
+
+    #Metodos comunes a todos los chatbots
+    def initializePaths(self):
+        strSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)
+        self.name = strSplit[len(strSplit)-1]
         self.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        self.jsonPath = os.path.join(os.path.sep,self.generalPath,chatbotName+'.json')
+        self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+'.json')
+        # self.initializate()
 
     def saveUnrecognizedSentence(self,key,value):
         newDict = {key:value}
         self.errorDict.update(newDict)
+
+    def execPrediction(self,sentence):
+        valorClasificacion = self.TrainerAndPredictor.classify(sentence)
+        if (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:
+            self.TrainerAndPredictor.predict(sentence)
+            self.currentAction = self.TrainerAndPredictor.action
+
+            if not self.currentAction == '':
+                # self.updateActionsCBProcessor(self.actionsMetaCB)
+                self.setCurrentSentence(sentence)
+                self.setCurrentIntent(self.TrainerAndPredictor.intent['tag'])
+                self.actions[self.currentAction].exec()
+                self.TrainerAndPredictor.action = ''
+
+            # reinicia el atributo
+            self.setUnrecognizedSentence(None)
+            self.setUnrecognizedIntent(None)
+        else:
+            # guarda la sentencia que no se reconocio
+            self.setUnrecognizedSentence(sentence)
+            value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
+            self.setUnrecognizedIntent(value)
+            CNotRecognizedSentence(self.unrecognizedSentence).exec()
 
 
     #Metodos propios de la clase METACHATBOT
@@ -140,6 +175,9 @@ class CMetaChatBot(CChatBot):
         result = ", ".join(str(value.tag) for key, value in self.dictChatBots.items())
         print('Los chatbot creados son:', result)
 
+    def printIntents(self):
+        print(self.intents)
+
     def setUnrecognizedSentence(self, sentence):
         self.unrecognizedSentence = sentence
 
@@ -154,9 +192,6 @@ class CMetaChatBot(CChatBot):
 
     def setListIntents(self,list):
         self.intents = list
-
-    def setCurrentIntent(self,intent):
-        self.currentIntent = intent
 
     def setNameChabot(self,name):
         self.name = name
