@@ -1,30 +1,23 @@
-# -*- coding: utf-8 -*-
+import h5py
+from keras.models import load_model
 
-# things we need for NLP
+import json
+import numpy as np
+import os
 import nltk
 from nltk.stem import SnowballStemmer
 stemmer = SnowballStemmer('spanish')
-#from nltk.stem.lancaster import LancasterStemmer
-#stemmer = LancasterStemmer()
-
-# things we need for Tensorflow
-import numpy as np
-import tflearn
-import tensorflow as tf
 import random
-import json
-import os
-import pickle
 
-import h5py
+
+
+import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.optimizers import SGD
-from keras.models import load_model
-#*obser = unicode(self.edit_observ.toPlainText())*
-#* obser1 = obser.encode('utf-8')*
 
-############################################
+
+
 
 class CTrainerPredictor:
 
@@ -83,20 +76,20 @@ class CTrainerPredictor:
         # remove duplicates
         self.classes = sorted(list(set(self.classes)))
 
-        print(len(self.documents), "documents")
+        print(len(self.documents), "documents",self.documents)
         print(len(self.classes), "classes", self.classes)
         print(len(self.words), "unique stemmed words", self.words)
 
     #entrena el modelo
     def trainingModel(self,pathModel):
 
-        self.pathModel = pathModel
-        if not os.path.isdir(pathModel):
-            os.makedirs(pathModel) #mkdir
+        # self.pathModel = pathModel
+        # if not os.path.isdir(pathModel):
+        #     os.makedirs(pathModel) #mkdir
 
-        self.train_x = []
-        self.train_y = []
         output_empty = [0] * len(self.classes)
+        self.train_x=[]
+        self.train_y=[]
 
         # training set, bag of words for each sentence
         for doc in self.documents:
@@ -117,33 +110,18 @@ class CTrainerPredictor:
             self.train_x.append(np.array(bag))
             self.train_y.append(np.array(output_row))
 
-            # shuffle our features and turn into np.array
-            # random.shuffle(self.training)
-            # self.training = np.array(self.training)
+        # shuffle our features and turn into np.array
+        #random.shuffle(self.training)
+        #self.training = np.array(self.training)
 
         # create train and test lists
         self.train_x = np.array(self.train_x)
         self.train_y = np.array(self.train_y)
 
+        print (self.train_x.shape)
+
         ############################################
-        self.model = Sequential()
-        # Dense(64) is a fully-connected layer with 64 hidden units.
-        # in the first layer, you must specify the expected input data shape:
-        # here, 20-dimensional vectors.
-        self.model.add(Dense(25, input_dim=self.train_x.shape[1]))
-        # self.model.add(Dense(8, activation='relu', input_dim=self.train_x.shape[1]   ))
-        self.model.add(Dropout(0.5))
-        self.model.add(Dense(25))
-        self.model.add(Dropout(0.5))
-        self.model.add(Dense(self.train_y.shape[1], activation='softmax'))
 
-        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-        self.model.compile(loss='categorical_crossentropy',
-                           optimizer='rmsprop',
-                           metrics=['accuracy'])
-
-        self.model.fit(self.train_x, self.train_y, epochs=1000, batch_size=8)  # ,validation_split=0.1)
-        self.model.save(os.path.join(os.path.sep,self.pathModel,'model.h5'))
 
         # reset underlying graph data
         # tf.reset_default_graph()
@@ -154,26 +132,48 @@ class CTrainerPredictor:
         # net = tflearn.fully_connected(net, len(self.train_y[0]), activation='softmax')
         # net = tflearn.regression(net)
         #
-        # # Define model and setup tensorboard
-        # # listSplit = self.pathModel.split(os.sep)
-        # # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-        # #tf.reset_default_graph()
+        #
+        #
         # self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
-        # # Start training (apply gradient descent algorithm)
+        #
         # self.model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
         # self.model.save(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
 
-    def clean_up_sentence(self,sentence):
+        self.model = Sequential()
+        # Dense(64) is a fully-connected layer with 64 hidden units.
+        # in the first layer, you must specify the expected input data shape:
+        # here, 20-dimensional vectors.
+        self.model.add(Dense(25, input_dim=self.train_x.shape[1]   ))
+        #self.model.add(Dense(8, activation='relu', input_dim=self.train_x.shape[1]   ))
+        self.model.add(Dropout(0.5))
+        self.model.add(Dense(25))
+        self.model.add(Dropout(0.5))
+        self.model.add(Dense(self.train_y.shape[1], activation='softmax'))
+
+        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+        self.model.compile(loss='categorical_crossentropy',
+                      optimizer='rmsprop',
+                      metrics=['accuracy'])
+
+        self.model.fit(self.train_x, self.train_y,epochs=1000,batch_size=8)#,validation_split=0.1)
+        self.model.save(pathModel)
+        # score = self.model.evaluate(x_test, y_test, batch_size=128)
+
+
+
+
+    def clean_up_sentence(self, sentence):
         # tokenize the pattern
         sentence_words = nltk.word_tokenize(sentence)
         # stem each word
         sentence_words = [stemmer.stem(word.lower()) for word in sentence_words]
         return sentence_words
 
-    # return bag of words array: 0 or 1 for each word in the bag that exists in the sentence
-    def bow(self,sentence, words, show_details=False):
+        # return bag of words array: 0 or 1 for each word in the bag that exists in the sentence
 
-        sentence_words =  self.clean_up_sentence(sentence)
+    def bow(self, sentence, words, show_details=False):
+
+        sentence_words = self.clean_up_sentence(sentence)
         # bag of words
         bag = [0] * len(words)
         for s in sentence_words:
@@ -184,65 +184,6 @@ class CTrainerPredictor:
                         print("found in bag: %s" % w)
 
         return (np.array(bag))
-
-    #guarda los datos de entrenamiento
-    def doPickle(self):
-        # list = self.pathModel.split(os.sep)
-        # pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
-        import pickle
-        pickle.dump({'words': self.words, 'classes': self.classes},
-                    open(os.path.join(os.path.sep,self.pathModel,"training_data"), "wb"))
-
-    #cierra la secion del model
-    def closeResource(self):
-        self.model.session.close()
-
-
-
-
-
-
-
-
-
-
-#
-# PARTE DE PPREDICTOR
-#
-
-    def loadArrays(self,pathModel):
-        self.pathModel = pathModel
-        # listSplit = self.pathModel.split(os.sep)
-        # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-
-        self.data = pickle.load(open(os.path.join(os.path.sep,self.pathModel, "training_data"), "rb"))
-        self.words = self.data['words']
-        self.classes = self.data['classes']
-
-    #lee el fichero json y actualiza el atributo 'intents'
-    # def readJSON(self,jsonFile,chatbotName):
-    #     self.jsonFile = jsonFile
-    #     self.chatbotName = chatbotName
-    #     with open(self.jsonFile) as json_data:
-    #         self.intents = json.load(json_data)
-
-    #construye la red
-    def buildNetwork(self):
-        pass
-        # net = tflearn.input_data(shape=[None, len(self.train_x[0])])
-        # net = tflearn.fully_connected(net, 8)
-        # net = tflearn.fully_connected(net, 8)
-        # net = tflearn.fully_connected(net, len(self.train_y[0]), activation='softmax')
-        # net = tflearn.regression(net)
-        # # Define model and setup tensorboard
-        # self.model = tflearn.DNN(net, tensorboard_dir = self.pathModel)
-
-    #carga el objeto 'model'
-    def loadModel(self):
-        # listSplit = self.pathModel.split(os.sep)
-        # pathModelFiles = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-        # self.model.load(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
-        self.model = load_model(os.path.join(os.path.sep,self.pathModel,'model.h5'))
 
     def classify(self,sentence):
         # generate probabilities from the model
@@ -306,10 +247,14 @@ class CTrainerPredictor:
 
                 results.pop(0)
 
-    def getIntent(self,intent):
-        for i in self.intents[self.chatbotName]:
-            # find a tag matching the first result
-            if i['tag'] == intent:
-                return i
-            else:
-                return None
+jsonPath = os.path.join(os.path.sep,os.getcwd(),'Chatbots','MetaChatBot','MetaChatBot.json')
+name = 'MetaChatBot'
+pathModel = os.path.join(os.path.sep,os.getcwd(),'my_modelKeras.h5')
+TrainerAndPredictor = CTrainerPredictor()
+TrainerAndPredictor.readJSON(jsonPath,name)
+TrainerAndPredictor.createElementsToModel()
+TrainerAndPredictor.trainingModel(pathModel)
+print(TrainerAndPredictor.classify('Hola'))
+print(TrainerAndPredictor.classify('crear chatbot'))
+print(TrainerAndPredictor.classify('crear intent'))
+print(TrainerAndPredictor.classify('crear intencion'))

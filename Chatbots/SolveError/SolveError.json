@@ -25,7 +25,7 @@
        "action": "listResolvedErros"
       },
       {"tag": "listUnresolvedErros",
-       "patterns": ["listar errores resueltos","errores resueltos","ver lista de errores","listar sentencias de error","listar errores","ver errores","ver lista de errores sin procesar","listar sentencias de errores no procesados","listar errores sin procesar","ver errores sin procesar","ver errores no resueltos","listar errores no resueltos","errores sin procesar","errores sin resolver"],
+       "patterns": ["listar errores","ver errores","ver lista de errores","listar sentencias de errores","errores sin procesar","ver errores sin procesar","ver errores no resueltos","listar errores no resueltos","errores sin procesar","errores sin resolver"],
        "responses": [],
        "action": "listUnresolvedErros"
       },

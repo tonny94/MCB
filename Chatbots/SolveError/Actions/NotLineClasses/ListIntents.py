@@ -6,4 +6,4 @@ class CListIntents(ActionNotLine):
         self.chatbot = chatbot
 
     def exec(self, ):
-        self.chatbot.printListResolvedErrors()
+        self.chatbot.printIntents()

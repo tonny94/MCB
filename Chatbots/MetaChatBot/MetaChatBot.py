@@ -121,7 +121,9 @@ class CMetaChatBot(CChatBot):
         else:
             # guarda la sentencia que no se reconocio
             self.setUnrecognizedSentence(sentence)
-            value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
+            value = '"No se encontró intent"'
+            if not valorClasificacion == []:
+               value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
             self.setUnrecognizedIntent(value)
             CNotRecognizedSentence(self.unrecognizedSentence).exec()
 

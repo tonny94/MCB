@@ -27,7 +27,8 @@ class CProcessSolutions(ActionLine):
 
             # Reiniciar la lista de errores resueltos
             listResolvedErrors = []
-            for k in self.chatbot.listResolvedErrors.keys():
+            copyResolvedErrores = self.chatbot.listResolvedErrors.copy()
+            for k in copyResolvedErrores:
                 listResolvedErrors.append(k)
                 del(self.chatbot.listResolvedErrors[k])
 
