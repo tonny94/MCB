@@ -36,7 +36,7 @@ class CTrainerPredictor:
         self.pathModel = ''
 
         self.words = []
-        self.classes = []#tag's
+        self.classes = []#tag's con patterns
         self.documents = []
 
         self.ignore_words = ['?']
@@ -124,27 +124,32 @@ class CTrainerPredictor:
         # create train and test lists
         self.train_x = np.array(self.train_x)
         self.train_y = np.array(self.train_y)
+        print(self.train_y)
 
-        ############################################
-        self.model = Sequential()
-        # Dense(64) is a fully-connected layer with 64 hidden units.
-        # in the first layer, you must specify the expected input data shape:
-        # here, 20-dimensional vectors.
-        self.model.add(Dense(25, input_dim=self.train_x.shape[1]))
-        # self.model.add(Dense(8, activation='relu', input_dim=self.train_x.shape[1]   ))
-        self.model.add(Dropout(0.5))
-        self.model.add(Dense(25))
-        self.model.add(Dropout(0.5))
-        self.model.add(Dense(self.train_y.shape[1], activation='softmax'))
+        #comprueba de que hayan datos de salida > 1
+        if self.train_y.shape[1] == 1:
+            return False
+        else:
+            #################################
+            self.model = Sequential()
+            # Dense(64) is a fully-connected layer with 64 hidden units.
+            # in the first layer, you must specify the expected input data shape:
+            # here, 20-dimensional vectors.
+            self.model.add(Dense(25, input_dim=self.train_x.shape[1]))
+            # self.model.add(Dense(8, activation='relu', input_dim=self.train_x.shape[1]   ))
+            self.model.add(Dropout(0.5))
+            self.model.add(Dense(25))
+            self.model.add(Dropout(0.5))
+            self.model.add(Dense(self.train_y.shape[1], activation='softmax'))
 
-        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-        self.model.compile(loss='categorical_crossentropy',
-                           optimizer='rmsprop',
-                           metrics=['accuracy'])
+            sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+            self.model.compile(loss='categorical_crossentropy',
+                               optimizer='rmsprop',
+                               metrics=['accuracy'])
 
-        self.model.fit(self.train_x, self.train_y, epochs=1000, batch_size=8)  # ,validation_split=0.1)
-        self.model.save(os.path.join(os.path.sep,self.pathModel,'model.h5'))
-
+            self.model.fit(self.train_x, self.train_y, epochs=1000, batch_size=8)  # ,validation_split=0.1)
+            self.model.save(os.path.join(os.path.sep,self.pathModel,'model.h5'))
+            return True
         # reset underlying graph data
         # tf.reset_default_graph()
         # # Build neural network
@@ -162,6 +167,20 @@ class CTrainerPredictor:
         # # Start training (apply gradient descent algorithm)
         # self.model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
         # self.model.save(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
+
+
+    #guarda los datos de entrenamiento
+    def doPickle(self):
+        # list = self.pathModel.split(os.sep)
+        # pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
+        import pickle
+        pickle.dump({'words': self.words, 'classes': self.classes},
+                    open(os.path.join(os.path.sep,self.pathModel,"training_data"), "wb"))
+
+    #cierra la secion del model
+    def closeResource(self):
+        self.model.session.close()
+
 
     def clean_up_sentence(self,sentence):
         # tokenize the pattern
@@ -184,24 +203,6 @@ class CTrainerPredictor:
                         print("found in bag: %s" % w)
 
         return (np.array(bag))
-
-    #guarda los datos de entrenamiento
-    def doPickle(self):
-        # list = self.pathModel.split(os.sep)
-        # pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
-        import pickle
-        pickle.dump({'words': self.words, 'classes': self.classes},
-                    open(os.path.join(os.path.sep,self.pathModel,"training_data"), "wb"))
-
-    #cierra la secion del model
-    def closeResource(self):
-        self.model.session.close()
-
-
-
-
-
-
 
 
 

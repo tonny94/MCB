@@ -49,7 +49,7 @@ class CChatBot(object):
             self.name = self.TrainerAndPredictor.chatbotName
 
     def existModel(self,path):
-        return os.path.exists(os.path.join(os.path.sep,path,'training_data'))
+        return os.path.exists(os.path.join(os.path.sep,path,'model.h5'))
 
     def startModel(self):
         if not (os.path.exists(self.jsonPath)):
@@ -60,9 +60,12 @@ class CChatBot(object):
                 self.TrainerAndPredictor = TrainerPredictor.CTrainerPredictor()
                 self.TrainerAndPredictor.readJSON(self.jsonPath,self.name)
                 self.TrainerAndPredictor.createElementsToModel()
-                self.TrainerAndPredictor.trainingModel(self.generalPath)
-                self.TrainerAndPredictor.doPickle()
-                # self.TrainerAndPredictor.closeResource()
+                value = self.TrainerAndPredictor.trainingModel(self.generalPath)
+                if not value:
+                    print('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
+                else:
+                    self.TrainerAndPredictor.doPickle()
+                    # self.TrainerAndPredictor.closeResource()
                 print('end to train')
             else:
                 print('El modelo ya existe')

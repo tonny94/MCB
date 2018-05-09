@@ -56,17 +56,19 @@ class CBuildChatbot(ActionNotLine):
         codeFile.close()
 
     def chatbotToCode(self):
-        strJSON = self.structureChatbot.toCode(self.chatbot.listGeneralActions,self.structureActionsPath)
-        return strJSON
+        strCode = self.structureChatbot.toCode(self.chatbot.listGeneralActions,self.structureActionsPath)
+        return strCode
 
     def startTrainer(self):
         VTrainer = CTrainerPredictor()
         VTrainer.readJSON(self.structureDirJsonFile,self.structureChatbot.name)
         VTrainer.createElementsToModel()
-        VTrainer.trainingModel(self.structureChatbotPath)
-        VTrainer.doPickle()
-        VTrainer.closeResource()
-        print('Modelo de "',self.structureChatbot.name,'" creado.')
+        value = VTrainer.trainingModel(self.structureChatbotPath)
+        if not value:
+            print('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
+        else:
+            VTrainer.doPickle()
+            print('Modelo de "',self.structureChatbot.name,'" creado.')
 
     # def startResponse(self):
     #     VResponse = Response()

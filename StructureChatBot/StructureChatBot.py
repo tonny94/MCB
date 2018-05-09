@@ -50,8 +50,7 @@ class CStructureChatBot:
     def setCurrentIntent(self, nameIntent):
         if nameIntent in self.dicIntents:
             if not self.currentIntent is None:
-                nameIntent = self.currentIntent.tag
-                print('Se ha cambiado "', nameIntent, '" por "', nameIntent, '".')
+                print('Se ha cambiado "', self.currentIntent.tag, '" por "', nameIntent, '".')
             else:
                 print('Ahora "', nameIntent, '" es el actual Intent.')
             self.currentIntent = self.dicIntents[nameIntent]
@@ -86,24 +85,30 @@ class CStructureChatBot:
         lengDict = 1
         strImports = 'import os,inspect \nfrom Interfaces.IChatBot import CChatBot\nfrom Interfaces.IActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
         strActions = 'self.actionsCB = {'
+
+        #seleccionar acciones que no sean las acciones generales y aquellos intens que si tengan acciones
+        listActions = []
         for tag in self.dicIntents:
             if not tag in listGeneralActions:
                 intent = self.dicIntents[tag]
                 if not intent.action == '':
-                    nameActionFile = intent.action.title()
-                    nameActionClass = 'C'+intent.action.title()
+                    listActions.append(intent.action)
 
-                    #crea los ficheros .py de cada accion
-                    self.createActions(pathAction,nameActionFile,nameActionClass)
+        for action in listActions:
+            nameActionFile = action.title()
+            nameActionClass = 'C'+action.title()
 
-                    #construye el diccionario de acciones
-                    if lengDict == 1:
-                        strActions += '\''+intent.action+'\':'+nameActionClass+'(self)'
-                    else:
-                        strActions += ', \''+intent.action+'\':'+nameActionClass+'(self)'
+            #crea los ficheros .py de cada accion
+            self.createActions(pathAction,nameActionFile,nameActionClass)
 
-                    #construye el string de todos los import para las acciones
-                    strImports += 'from Chatbots.'+self.name+'.Actions.'+nameActionFile+' import '+nameActionClass+'\n'
+            #construye el diccionario de acciones
+            if lengDict == 1:
+                strActions += '\''+action+'\':'+nameActionClass+'(self)'
+            else:
+                strActions += ', \''+action+'\':'+nameActionClass+'(self)'
+
+            #construye el string de todos los import para las acciones
+            strImports += 'from Chatbots.'+self.name+'.Actions.'+nameActionFile+' import '+nameActionClass+'\n'
 
             lengDict += 1
 
