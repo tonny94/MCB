@@ -1,4 +1,4 @@
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 import json
 
 class CProcessSolutions(ActionLine):
@@ -9,7 +9,7 @@ class CProcessSolutions(ActionLine):
 
     def exec(self,):
         if self.chatbot.listResolvedErrors == {}:
-            print('No hay soluciones para procesar/resolver.')
+            self.chatbot.output.exec('No hay soluciones para procesar/resolver.')
         else:
             with open(self.chatbotToProcess.jsonPath, 'r+') as f:
                 data = json.load(f)
@@ -26,13 +26,16 @@ class CProcessSolutions(ActionLine):
                 f.truncate()
 
             # Reiniciar la lista de errores resueltos
-            listResolvedErrors = []
+            #listResolvedErrors = []
             copyResolvedErrores = self.chatbot.listResolvedErrors.copy()
+            stringToPRint = ''
             for k in copyResolvedErrores:
-                listResolvedErrors.append(k)
+                #listResolvedErrors.append(k)
+                stringToPRint += k
+
                 del(self.chatbot.listResolvedErrors[k])
 
-            print('Se han resuelto los errores: ',listResolvedErrors)
+            self.chatbot.output.exec('Se han resuelto los errores: '+stringToPRint)
 
 
 

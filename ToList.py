@@ -1,8 +1,8 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
+from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine
 #Clases generales
 
-class CToList(ActionNotLine):
+class CToList2(ActionNotLine):
 
     def __init__(self,iterableObject,message,type=None):
         self.iterableObject = iterableObject

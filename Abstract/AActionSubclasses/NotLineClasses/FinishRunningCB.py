@@ -1,6 +1,6 @@
 #Clases de acciones
 
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
 
@@ -12,4 +12,4 @@ class CFinishRunningCB(ActionLine):
 
     def exec(self,):
         self.chatbot.runChatBot = False
-        print('Se ha parado de ejecutar el Chatbot "',self.chatbot.name,'".')
+        self.chatbot.output.exec('Se ha parado de ejecutar el Chatbot "'+self.chatbot.name+'".')

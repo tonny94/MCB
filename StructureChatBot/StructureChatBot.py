@@ -1,4 +1,6 @@
 from StructureChatBot.StructureIntent import CStructureIntent
+from Abstract.AOutputSubclasses.Screen import CScreen
+
 import os
 
 class CStructureChatBot:
@@ -7,6 +9,7 @@ class CStructureChatBot:
         self.name = ''
         self.dicIntents = {}
         self.currentIntent = None
+        self.ouput = CScreen()
 
     #para inicializar el atributo 'Name'
     def setName(self, name):
@@ -14,18 +17,18 @@ class CStructureChatBot:
 
     def printCurrentIntent(self):
         if self.currentIntent is None:
-            print('No hay un Intent actual para el chatbot "',self.name,'".')
+            self.ouput.exec('No hay un Intent actual para el chatbot "'+self.name+'".')
         else:
-            print('"',self.currentIntent.tag,'"')
+            self.ouput.exec('"'+self.currentIntent.tag+'"')
 
     def printDictIntents(self):
         result = ", ".join(str(value.tag) for key, value in self.dicIntents.items())
-        print('Los Intents del chatbot "',self.name,'" son:',result)
+        self.ouput.exec('Los Intents del chatbot "'+self.name+'" son:'+result)
 
     #añade in intetn a la lista y actualiza el intent actual, devuelve un estado según cómo haya ido la insercion
     def addIntent(self, nameIntent):
         if nameIntent in self.dicIntents:
-            print('Ya existe "', nameIntent, '" en la lista de Intents del chatbot "', self.name, '".')
+            self.ouput.exec('Ya existe "'+ nameIntent+ '" en la lista de Intents del chatbot "'+ self.name+ '".')
             return False
         else:
             myIntent = CStructureIntent()
@@ -38,26 +41,24 @@ class CStructureChatBot:
     def deleteIntent(self, nameIntent):
         if nameIntent in self.dicIntents:
             del self.dicIntents[nameIntent]
-            print('Se ha eliminado "',nameIntent,'" de la lista de Intents del cahtbot "',self.name,'".')
+            self.ouput.exec('Se ha eliminado "'+nameIntent+'" de la lista de Intents del cahtbot "'+self.name+'".')
 
             if not(self.currentIntent is None) and nameIntent == self.currentIntent.tag:
                 self.currentIntent = None
-                print('"',nameIntent,'" ha dejado se ser la intencion actual.')
+                self.ouput.exec('"'+nameIntent+'" ha dejado se ser la intencion actual.')
         else:
-            print('No existe "',nameIntent,'" en la lista de Intents del cahtbot "',self.name,'".')
+            self.ouput.exec('No existe "'+nameIntent+'" en la lista de Intents del cahtbot "'+self.name+'".')
 
     #cambia la intencion actual si existe en la lista
     def setCurrentIntent(self, nameIntent):
         if nameIntent in self.dicIntents:
             if not self.currentIntent is None:
-                print('Se ha cambiado "', self.currentIntent.tag, '" por "', nameIntent, '".')
+                self.ouput.exec('Se ha cambiado "'+ self.currentIntent.tag+ '" por "'+nameIntent+'".')
             else:
-                print('Ahora "', nameIntent, '" es el actual Intent.')
+                self.ouput.exec('Ahora "'+nameIntent+'" es el actual Intent.')
             self.currentIntent = self.dicIntents[nameIntent]
         else:
-            print('No existe "', nameIntent, '" en la lista de Intents del cahtbot "', self.name, '".')
-
-
+            self.ouput.exec('No existe "'+ nameIntent+ '" en la lista de Intents del cahtbot "'+ self.name+ '".')
 
     #pasa el diccionario de intenciones en formato JSON
     def dicToJSON(self,dicIntents):
@@ -81,9 +82,9 @@ class CStructureChatBot:
         strJson += '}'
         return strJson
 
-    def  toCode(self,listGeneralActions,pathAction):
+    def toCode(self,listGeneralActions,pathAction):
         lengDict = 1
-        strImports = 'import os,inspect \nfrom Interfaces.IChatBot import CChatBot\nfrom Interfaces.IActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
+        strImports = 'import os,inspect \nfrom Abstract.IChatBot import CChatBot\nfrom Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
         strActions = 'self.actionsCB = {'
 
         #seleccionar acciones que no sean las acciones generales y aquellos intens que si tengan acciones
@@ -104,13 +105,14 @@ class CStructureChatBot:
             #construye el diccionario de acciones
             if lengDict == 1:
                 strActions += '\''+action+'\':'+nameActionClass+'(self)'
+                lengDict = 0
             else:
                 strActions += ', \''+action+'\':'+nameActionClass+'(self)'
 
             #construye el string de todos los import para las acciones
             strImports += 'from Chatbots.'+self.name+'.Actions.'+nameActionFile+' import '+nameActionClass+'\n'
 
-            lengDict += 1
+            
 
         strActions += ' }'
         strChatbotClass = 'C'+self.name
@@ -143,12 +145,8 @@ class CStructureChatBot:
         strChatbotCode += '\t\t\t\tself.TrainerAndPredictor.action = \'\'\n'
         strChatbotCode += '\t\telse:\n'
         strChatbotCode += '\t\t\tCNotRecognizedSentence(self.unrecognizedSentence).exec()\n'
-        print(strChatbotCode)
+        self.ouput.exec(strChatbotCode)
         return strChatbotCode
-
-
-
-
 
     def createActions(self,pathAction,nameActionFile,nameActionClass):
         codeFile = open(os.path.join(os.path.sep,pathAction,nameActionFile+'.py'), 'w')
@@ -156,29 +154,10 @@ class CStructureChatBot:
         codeFile.close()
 
     def actionToCode(self,nameActionClass):
-        str = 'from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine\n'
+        str = 'from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine\n'
         str +='class '+nameActionClass+'(ActionNotLine):\n\n'
         str += '\tdef __init__(self,chatbot):\n'
         str += '\t\tself.chatbot = chatbot\n\n'
         str += '\tdef exec(self,):\n'
         str += '\t\tpass'
         return str
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

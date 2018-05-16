@@ -1,4 +1,4 @@
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 from StructureChatBot.StructureIntent import CStructureIntent
 
@@ -10,13 +10,13 @@ class CCreateIntent(ActionLine):
 
     def exec(self):
         if self.chatbot.currentStructureChatBot is None:
-            print('ERROR: No hay un chatbot actual para asociarle un Intent.')
+            self.chatbot.output.exec('ERROR: No hay un chatbot actual para asociarle un Intent.')
         else:
-            sentence = input('=>')
+            sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 state = self.chatbot.currentStructureChatBot.addIntent(sentence)
                 if state:
-                    print('El Intent "' + sentence + '" se ha añadido correctamente.')
+                    self.chatbot.output.exec('El Intent "' + sentence + '" se ha añadido correctamente.')
 
                 # if not sentence in self.chatbot[1].dicIntents:
                 #     myIntent = CStructureIntent()
@@ -42,7 +42,7 @@ class CCreateIntent(ActionLine):
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            print('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operacion')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

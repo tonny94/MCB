@@ -1,5 +1,5 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 
 
@@ -9,14 +9,14 @@ class CCreateChatbot(ActionLine):
         self.chatbot = chatbot
 
     def exec(self,):
-        sentence = input('=>')
+        sentence = self.chatbot.input.exec()
         if not (self.checkCancellation(sentence)):
             self.chatbot.addStructureChatbotDict(sentence)
 
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            print('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operacion')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             self.chatbot.unrecognizeIntent = self.chatbot.currentIntent
             return True

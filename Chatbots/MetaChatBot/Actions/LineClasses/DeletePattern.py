@@ -1,5 +1,5 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
 
@@ -11,17 +11,17 @@ class CDeletePattern(ActionLine):
 
     def exec(self,):
         if self.chatbot.currentStructureChatBot is None:
-            print('ERROR: No hay ningun chatbot actual para eliminar algun Pattern de uno de sus Intents.')
+            self.chatbot.output.exec('ERROR: No hay ningun chatbot actual para eliminar algun Pattern de uno de sus Intents.')
         elif self.chatbot.currentStructureChatBot.currentIntent is None:
-            print('ERROR: No hay ningun Intent para eliminar algun Pattern')
+            self.chatbot.output.exec('ERROR: No hay ningun Intent para eliminar algun Pattern')
         else:
-            sentence = input('=>')
+            sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.currentIntent.deletePattern(sentence)
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            print('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operacion')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

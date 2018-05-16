@@ -1,5 +1,8 @@
 #! /bin/bash
 # -*- coding: utf-8 -*-
+from Abstract.AOutputSubclasses.Screen import CScreen
+
+from Abstract.AInputSubclasses.Keyboard import CKeyboard
 
 class CBProcessor(object):
 
@@ -7,7 +10,8 @@ class CBProcessor(object):
         self.currentRunningChatbot = chatbot
         self.currentAction = ''
         self.updateActionsCBProcessor()
-
+        self.ouput = CScreen()
+        self.input = CKeyboard()
 
     def startModel(self):
         self.currentRunningChatbot.startModel()
@@ -25,12 +29,11 @@ class CBProcessor(object):
     def run(self):
         sentence = ''
         while self.currentRunningChatbot.runChatBot:
-            sentence = input('=>')
+            sentence = self.input.exec()
             if not (sentence is 's'):
                 print(self.doClassification(sentence))
                 self.currentRunningChatbot.execPrediction(sentence)
-        print('Se ha terminado de ejecutar el chatbot "',self.currentRunningChatbot.name,'".')
-
+        self.ouput.exec('Se ha terminado de ejecutar el chatbot "'+self.currentRunningChatbot.name+'".')
 
     def updateActionsCBProcessor(self):
         self.currentRunningChatbot.actions.update(self.currentRunningChatbot.actionsCB)

@@ -1,17 +1,17 @@
 #Clases de acciones
 
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
 
 
 class CDontSaveSentence(ActionLine):
 
-    def __init__(self,chatbotProcessor):
-        self.chatbotProcessor = chatbotProcessor
+    def __init__(self,chatbot):
+        self.chatbot = chatbot
 
     def exec(self,):
-        if self.chatbotProcessor.currentRunningChatbot.unrecognizedSentence is None:
-            print('No hay una sentencia.')
+        if self.chatbot.unrecognizedSentence is None:
+            self.chatbot.output.exec('No hay una sentencia.')
         else:
-            print('No se ha guardado la sentencia "',self.sentence,'".')
+            self.chatbot.output.exec('No se ha guardado la sentencia "'+self.chatbot.unrecognizedSentence+'".')

@@ -3,8 +3,8 @@
 
 
 import os,inspect
-from Interfaces.IChatBot import CChatBot
-from Interfaces.IActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
+from Abstract.AChatBot import CChatBot
+from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
 from Chatbots.SolveError.Actions.LineClasses.SelectIntent import CSelectIntent
 from Chatbots.SolveError.Actions.LineClasses.SelectError import CSelectError
 from Chatbots.SolveError.Actions.NotLineClasses.SaveSolution import CSaveSolution
@@ -12,6 +12,9 @@ from Chatbots.SolveError.Actions.NotLineClasses.ListResolvedErrors import CListR
 from Chatbots.SolveError.Actions.NotLineClasses.ListUnresolvedErrors import CListUnresolvedErrors
 from Chatbots.SolveError.Actions.NotLineClasses.ListIntents import CListIntents
 from Chatbots.SolveError.Actions.NotLineClasses.ProcessSolutions import CProcessSolutions
+
+
+
 
 class CSolveError(CChatBot):
     """Father class"""
@@ -85,7 +88,7 @@ class CSolveError(CChatBot):
             start += 1
 
         strToPrint += ' ]'
-        print(strToPrint)
+        self.output.exec(strToPrint)
 
     def printListUnresolvedErrors(self):
         size = len(self.listResolvedErrors)
@@ -99,12 +102,12 @@ class CSolveError(CChatBot):
                 strToPrint += k + ' asociado a ' + self.listUnresolvedErrors[k] + ','
             start += 1
         strToPrint += ' ]'
-        print(strToPrint)
+        self.output.exec(strToPrint)
 
     def solveSentence(self):
         self.listResolvedErrors[self.senteceToSolve] = self.intentToSolve
         del(self.listUnresolvedErrors[self.senteceToSolve])
-        print('La sentencia "', self.senteceToSolve, '" se ha asociado al Intent "',self.intentToSolve,'".')
+        self.output.exec('La sentencia "'+ self.senteceToSolve+ '" se ha asociado al Intent "'+self.intentToSolve+'".')
         self.senteceToSolve = None
         self.intentToSolve = None
 
@@ -112,7 +115,7 @@ class CSolveError(CChatBot):
         self.name = name
 
     def printIntents(self):
-        print(self.listIntens)
+        self.output.exec(self.listIntens)
 
     def getErrorList(self):
         return self.errorDict

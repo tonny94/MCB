@@ -1,6 +1,9 @@
 
-from Interfaces.IActionSubclasses.NotLineClasses.FinishRunningCB import CFinishRunningCB
+from Abstract.AActionSubclasses.NotLineClasses.FinishRunningCB import CFinishRunningCB
 import TrainerPredictor
+
+from Abstract.AOutputSubclasses.Screen import CScreen
+from Abstract.AInputSubclasses.Keyboard import CKeyboard
 import os
 
 
@@ -27,11 +30,12 @@ class CChatBot(object):
 
         self.listGeneralActions = ['finishRunningChatbot']
         self.actions = {
-
             'finishRunningChatbot': CFinishRunningCB(self)
         }
         self.TrainerAndPredictor = None
-
+        
+        self.input = CKeyboard()
+        self.output = CScreen()
 
 
     def initializePaths(self):
@@ -42,7 +46,7 @@ class CChatBot(object):
 
     def initializate(self):
         if self.TrainerAndPredictor is None:
-            print('No se puede inicializar porque no existe el modelo.')
+            self.output.exec('No se puede inicializar porque no existe el modelo.')
         else:
             self.intents = self.TrainerAndPredictor.classes
             self.currentIntent = self.TrainerAndPredictor.intent
@@ -53,28 +57,28 @@ class CChatBot(object):
 
     def startModel(self):
         if not (os.path.exists(self.jsonPath)):
-            print('No existe el fichero JSON "',self.jsonPath,".")
+            self.output.exec('No existe el fichero JSON "'+self.jsonPath+'".')
         else:
             if not self.existModel(self.generalPath):
-                print('running Trainer')
+                self.output.exec('running Trainer')
                 self.TrainerAndPredictor = TrainerPredictor.CTrainerPredictor()
                 self.TrainerAndPredictor.readJSON(self.jsonPath,self.name)
                 self.TrainerAndPredictor.createElementsToModel()
                 value = self.TrainerAndPredictor.trainingModel(self.generalPath)
                 if not value:
-                    print('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
+                    self.output.exec('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
                 else:
                     self.TrainerAndPredictor.doPickle()
                     # self.TrainerAndPredictor.closeResource()
-                print('end to train')
+                self.output.exec('end to train')
             else:
-                print('El modelo ya existe')
+                self.output.exec('El modelo ya existe')
 
     def startPredictor(self):
         if not (os.path.exists(self.jsonPath)):
-            print('No existe el fichero JSON "',self.jsonPath,".")
+            self.output.exec('No existe el fichero JSON "'+self.jsonPath+'".')
         else:
-            print('running Predictor')
+            self.output.exec('running Predictor')
             if self.TrainerAndPredictor is None:
                 self.TrainerAndPredictor = TrainerPredictor.CTrainerPredictor()
                 self.TrainerAndPredictor.loadArrays(self.generalPath)
@@ -83,7 +87,7 @@ class CChatBot(object):
                 self.TrainerAndPredictor.loadModel()
             # self.TrainerAndPredictor.closeResource()
             self.setIntentsList()
-            print('end to predict')
+            self.output.exec('end to predict')
 
     def setIntentsList(self):
         self.intents = self.TrainerAndPredictor.classes

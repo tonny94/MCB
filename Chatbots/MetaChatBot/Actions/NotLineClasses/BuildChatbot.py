@@ -1,5 +1,5 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
+from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine
 
 #Clases generales
 import os
@@ -20,7 +20,7 @@ class CBuildChatbot(ActionNotLine):
     def exec(self,):
         self.structureChatbot = self.chatbot.currentStructureChatBot
         if self.structureChatbot is None:
-            print('ERROR: No hay un Chatbot actual para construir.')
+            self.chatbot.output.exec('ERROR: No hay un Chatbot actual para construir.')
         else:
 
             #inicializa las variables
@@ -30,7 +30,7 @@ class CBuildChatbot(ActionNotLine):
             self.structureActionsPath = os.path.join(os.path.sep,self.structureChatbotPath,'Actions')
 
             if not (os.path.isdir(self.generalPath)):
-                print('ERROR: No existe la ruta general "',self.generalPath,'".')
+                self.chatbot.output.exec('ERROR: No existe la ruta general "',self.generalPath,'".')
             else:
                 if not os.path.isdir(self.structureChatbotPath):
                     os.makedirs(self.structureChatbotPath)
@@ -38,7 +38,7 @@ class CBuildChatbot(ActionNotLine):
                     os.makedirs(self.structureActionsPath)
                 self.createJSON()
                 self.createCodeFile()
-                print('Se ha construido el chatbot "',self.structureChatbot.name, '" correctamente.')
+                self.chatbot.output.exec('Se ha construido el chatbot "'+self.structureChatbot.name+ '" correctamente.')
 
     def createJSON(self):
         jsonFile = open(self.structureDirJsonFile, 'w')
@@ -65,18 +65,7 @@ class CBuildChatbot(ActionNotLine):
         VTrainer.createElementsToModel()
         value = VTrainer.trainingModel(self.structureChatbotPath)
         if not value:
-            print('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
+            self.chatbot.output.exec('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
         else:
             VTrainer.doPickle()
-            print('Modelo de "',self.structureChatbot.name,'" creado.')
-
-    # def startResponse(self):
-    #     VResponse = Response()
-    #     VResponse.loadArrays(self.structureChatbotPath)
-    #     VResponse.readJSON(self.structureDirJsonFile,self.structureChatbot.name)
-    #     VResponse.buildNetwork()
-    #     VResponse.loadModel()
-    #     print('Response de "',self.structureChatbot.name,'" creado.')
-
-
-
+            self.chatbot.output.exec('Modelo de "'+self.structureChatbot.name+'" creado.')

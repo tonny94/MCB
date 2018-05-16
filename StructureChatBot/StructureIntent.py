@@ -1,3 +1,5 @@
+from Abstract.AOutputSubclasses.Screen import CScreen
+
 class CStructureIntent:
 
     def __init__(self):
@@ -5,6 +7,7 @@ class CStructureIntent:
         self.patterns = []
         self.responses = []
         self.action = ''
+        self.ouput = CScreen()
 
     #inicializa el atributo 'Tag'
     def setTag(self, tag):
@@ -13,7 +16,7 @@ class CStructureIntent:
     #añade un 'patter' a la lista, devuelve un estado según cómo haya ido la insercion
     def addPattern(self, pattern):
         if pattern in self.patterns:
-            print('Ya existe "',pattern,'" en la lista de Patterns de la intencion "',self.tag,'".')
+            self.ouput.exec('Ya existe "'+pattern+'" en la lista de Patterns de la intencion "'+self.tag+'".')
             return False
         else:
             self.patterns.append(pattern)
@@ -23,14 +26,14 @@ class CStructureIntent:
     def deletePattern(self, pattern):
         if pattern in self.patterns:
             self.patterns.remove(pattern)
-            print('Se ha eliminado "',pattern,'" de la lista de Patterns de la intencion "',self.tag,'".')
+            self.ouput.exec('Se ha eliminado "'+pattern+'" de la lista de Patterns de la intencion "'+self.tag+'".')
         else:
-            print('No existe  "',pattern,'" en la lista de Patterns de la intencion"',self.tag,'".')
+            self.ouput.exec('No existe  "'+pattern+'" en la lista de Patterns de la intencion"'+self.tag+'".')
 
     #añade un 'predict' a la lista, devuelve un estado según cómo haya ido la insercion
     def addResponse(self, response):
         if response in self.responses:
-            print('Ya existe "', response, '" en la lista de Responses de la intencion "', self.tag, '".')
+            self.ouput.exec('Ya existe "'+ response+ '" en la lista de Responses de la intencion "'+self.tag+ '".')
             return False
         else:
             self.responses.append (response)
@@ -40,24 +43,24 @@ class CStructureIntent:
     def deleteResponse(self, response):
         if response in self.responses:
             self.responses.remove(response)
-            print('Se ha eliminado "', response, '" de la lista de Responses de la intencion "', self.tag, '".')
+            self.ouput.exec('Se ha eliminado "'+response+ '" de la lista de Responses de la intencion "'+self.tag+ '".')
         else:
-            print('No existe  "', response, '" en la lista de Responses de la intencion"', self.tag, '".')
+            self.ouput.exec('No existe  "'+response+ '" en la lista de Responses de la intencion"'+self.tag+ '".')
 
     #inicializa el atributo 'action'
     def setAction(self, action):
         if action == '':
-            print('Se ha borrado la accion para el Intent "',self.tag,'". ')
+            self.ouput.exec('Se ha borrado la accion para el Intent "'+self.tag+'". ')
         self.action = action
 
     def printPatterns(self):
-        print('Los patterns para el Intent "',self.tag,'" son:',self.patterns)
+        self.ouput.exec('Los patterns para el Intent "'+self.tag+'" son:'+self.patterns)
 
     def printResponses(self):
-        print('Los responses para el Intent "',self.tag,'" son:',self.responses)
+        self.ouput.exec('Los responses para el Intent "'+self.tag+'" son:'+self.responses)
 
     def printAction(self):
-        print('La accion del Intent "',self.tag,'" es:',self.action)
+        self.ouput.exec('La accion del Intent "'+self.tag+'" es:'+self.action)
 
     #pasa a JSON una lista
     def listToJSON(self, lista):

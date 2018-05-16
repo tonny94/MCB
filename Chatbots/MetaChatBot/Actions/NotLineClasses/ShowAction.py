@@ -1,5 +1,5 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
+from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine
 
 #Clases generales
 
@@ -10,9 +10,9 @@ class CShowAction(ActionNotLine):
 
     def exec(self,):
         if self.chatbot.currentStructureChatBot is None:
-            print('ERROR: No hay ningun Chatbot actual para mostrar un Action en un Intent.')
+            self.chatbot.output.exec('ERROR: No hay ningun Chatbot actual para mostrar un Action en un Intent.')
         elif self.chatbot.currentStructureChatBot.currentIntent is None :
-            print('ERROR: No hay ningun Intent actual para asociarle un Action.')
+            self.chatbot.output.exec('ERROR: No hay ningun Intent actual para asociarle un Action.')
         else:
             self.chatbot.currentStructureChatBot.currentIntent.printAction()
 

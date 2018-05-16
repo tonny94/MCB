@@ -1,9 +1,6 @@
 #Clases de acciones
 
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
-
-#Clases generales
-
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 class CSaveSentence(ActionLine):
 
@@ -13,7 +10,7 @@ class CSaveSentence(ActionLine):
 
     def exec(self,):
         if self.chatbot.unrecognizedSentence is None:
-            print('ERROR: No hay sentencia que guardar.')
+            self.chatbot.output.exec('ERROR: No hay sentencia que guardar.')
         else:
             key = ''
             value = ''
@@ -26,8 +23,8 @@ class CSaveSentence(ActionLine):
 
 
             self.chatbot.saveUnrecognizedSentence(key,value)
-            print('Se ha guardado la sentencia "',key,'"')
+            self.chatbot.output.exec('Se ha guardado la sentencia "'+key+'"')
 
     def addNoReconocido(self, nombChatbot):
         #self.dictionary[nombChatbot][0].append(self.sentence)
-        print('Se ha anhadido la sentencia a la lista de error.')
+        self.chatbot.output.exec('Se ha anhadido la sentencia a la lista de error.')

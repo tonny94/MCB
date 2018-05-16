@@ -1,16 +1,12 @@
+#! /bin/bash
 # -*- coding: utf-8 -*-
 
-# things we need for NLP
+
 import nltk
 from nltk.stem import SnowballStemmer
 stemmer = SnowballStemmer('spanish')
-#from nltk.stem.lancaster import LancasterStemmer
-#stemmer = LancasterStemmer()
 
-# things we need for Tensorflow
 import numpy as np
-import tflearn
-import tensorflow as tf
 import random
 import json
 import os
@@ -18,25 +14,25 @@ import pickle
 
 import h5py
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
+from keras.layers import Dense, Dropout
 from keras.optimizers import SGD
 from keras.models import load_model
-#*obser = unicode(self.edit_observ.toPlainText())*
-#* obser1 = obser.encode('utf-8')*
 
-############################################
+from Abstract.AOutputSubclasses.Screen import CScreen
 
 class CTrainerPredictor:
 
     def __init__(self):
+        self.ouput = CScreen()
+        
         self.jsonFile = ''
         self.chatbotName = ''
-        self.intents = []#toda la estructura 'metachatbot':{...}
+        self.intents = []
         self.model = None
         self.pathModel = ''
 
         self.words = []
-        self.classes = []#tag's con patterns
+        self.classes = []
         self.documents = []
 
         self.ignore_words = ['?']
@@ -51,10 +47,6 @@ class CTrainerPredictor:
         self.ERROR_THRESHOLD = 0.25
         self.context = {}
 
-
-
-
-    #lee el json y inicializa el atributo 'intents'
     def readJSON(self,jsonFile,chatbotName):
         self.jsonFile = jsonFile
         self.chatbotName = chatbotName
@@ -64,35 +56,35 @@ class CTrainerPredictor:
     #inicializa las listas que se necesita para el modelo: words,clasees,documents
     def createElementsToModel(self):
 
-        for intent in self.intents[self.chatbotName]:  # selecciona el chatbot
-            for pattern in intent['patterns']:  # selecciona las preguntas del chatbot
+        for intent in self.intents[self.chatbotName]:
+            for pattern in intent['patterns']:
                 # tokenize each word in the sentence
-                w = nltk.word_tokenize(pattern)  # selecciona las palabras
+                w = nltk.word_tokenize(pattern)
                 # add to our words list
-                self.words.extend(w)  # anhade las palabras a una lista
+                self.words.extend(w)
                 # add to documents in our corpus
-                self.documents.append((w, intent['tag']))  # relaciona cada palabra con su TAG
+                self.documents.append((w, intent['tag']))
                 # add to our classes list
-                if intent['tag'] not in self.classes:  # selecciona los TAG'S
+                if intent['tag'] not in self.classes:
                     self.classes.append(intent['tag'])
 
         # stem and lower each word and remove duplicates
-        self.words = [stemmer.stem(w.lower()) for w in self.words if w not in self.ignore_words]  # selecciona raiz de las palabras
+        self.words = [stemmer.stem(w.lower()) for w in self.words if w not in self.ignore_words]
         self.words = sorted(list(set(self.words)))
 
         # remove duplicates
         self.classes = sorted(list(set(self.classes)))
 
-        print(len(self.documents), "documents")
-        print(len(self.classes), "classes", self.classes)
-        print(len(self.words), "unique stemmed words", self.words)
+        self.ouput.exec( str(len(self.documents))+ ' documents')
+        self.ouput.exec( str(len(self.classes))+ "classes ["+ ', '.join(self.classes) +']' )
+        self.ouput.exec( str(len(self.words)) + "unique stemmed words ["+', '.join(self.words) + ']')
 
     #entrena el modelo
     def trainingModel(self,pathModel):
 
         self.pathModel = pathModel
         if not os.path.isdir(pathModel):
-            os.makedirs(pathModel) #mkdir
+            os.makedirs(pathModel)
 
         self.train_x = []
         self.train_y = []
@@ -117,62 +109,34 @@ class CTrainerPredictor:
             self.train_x.append(np.array(bag))
             self.train_y.append(np.array(output_row))
 
-            # shuffle our features and turn into np.array
-            # random.shuffle(self.training)
-            # self.training = np.array(self.training)
-
         # create train and test lists
         self.train_x = np.array(self.train_x)
         self.train_y = np.array(self.train_y)
-        print(self.train_y)
+        self.ouput.exec(self.train_y)
 
         #comprueba de que hayan datos de salida > 1
         if self.train_y.shape[1] == 1:
             return False
         else:
-            #################################
             self.model = Sequential()
             # Dense(64) is a fully-connected layer with 64 hidden units.
             # in the first layer, you must specify the expected input data shape:
             # here, 20-dimensional vectors.
             self.model.add(Dense(25, input_dim=self.train_x.shape[1]))
-            # self.model.add(Dense(8, activation='relu', input_dim=self.train_x.shape[1]   ))
             self.model.add(Dropout(0.5))
             self.model.add(Dense(25))
             self.model.add(Dropout(0.5))
             self.model.add(Dense(self.train_y.shape[1], activation='softmax'))
 
             sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-            self.model.compile(loss='categorical_crossentropy',
-                               optimizer='rmsprop',
-                               metrics=['accuracy'])
+            self.model.compile(loss='categorical_crossentropy',optimizer='rmsprop',metrics=['accuracy'])
 
-            self.model.fit(self.train_x, self.train_y, epochs=1000, batch_size=8)  # ,validation_split=0.1)
+            self.model.fit(self.train_x, self.train_y, epochs=1000, batch_size=8)
             self.model.save(os.path.join(os.path.sep,self.pathModel,'model.h5'))
             return True
-        # reset underlying graph data
-        # tf.reset_default_graph()
-        # # Build neural network
-        # net = tflearn.input_data(shape=[None, len(self.train_x[0])])
-        # net = tflearn.fully_connected(net, 8)
-        # net = tflearn.fully_connected(net, 8)
-        # net = tflearn.fully_connected(net, len(self.train_y[0]), activation='softmax')
-        # net = tflearn.regression(net)
-        #
-        # # Define model and setup tensorboard
-        # # listSplit = self.pathModel.split(os.sep)
-        # # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-        # #tf.reset_default_graph()
-        # self.model = tflearn.DNN(net, tensorboard_dir=self.pathModel)
-        # # Start training (apply gradient descent algorithm)
-        # self.model.fit(self.train_x, self.train_y, n_epoch=1000, batch_size=8, show_metric=True)
-        # self.model.save(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
-
 
     #guarda los datos de entrenamiento
     def doPickle(self):
-        # list = self.pathModel.split(os.sep)
-        # pathTrainingData = self.pathModel.replace(list[len(list)-1],'')
         import pickle
         pickle.dump({'words': self.words, 'classes': self.classes},
                     open(os.path.join(os.path.sep,self.pathModel,"training_data"), "wb"))
@@ -180,7 +144,6 @@ class CTrainerPredictor:
     #cierra la secion del model
     def closeResource(self):
         self.model.session.close()
-
 
     def clean_up_sentence(self,sentence):
         # tokenize the pattern
@@ -204,45 +167,22 @@ class CTrainerPredictor:
 
         return (np.array(bag))
 
-
-
-
 #
 # PARTE DE PPREDICTOR
 #
 
     def loadArrays(self,pathModel):
         self.pathModel = pathModel
-        # listSplit = self.pathModel.split(os.sep)
-        # pathTrainingData = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-
         self.data = pickle.load(open(os.path.join(os.path.sep,self.pathModel, "training_data"), "rb"))
         self.words = self.data['words']
         self.classes = self.data['classes']
 
-    #lee el fichero json y actualiza el atributo 'intents'
-    # def readJSON(self,jsonFile,chatbotName):
-    #     self.jsonFile = jsonFile
-    #     self.chatbotName = chatbotName
-    #     with open(self.jsonFile) as json_data:
-    #         self.intents = json.load(json_data)
-
     #construye la red
     def buildNetwork(self):
         pass
-        # net = tflearn.input_data(shape=[None, len(self.train_x[0])])
-        # net = tflearn.fully_connected(net, 8)
-        # net = tflearn.fully_connected(net, 8)
-        # net = tflearn.fully_connected(net, len(self.train_y[0]), activation='softmax')
-        # net = tflearn.regression(net)
-        # # Define model and setup tensorboard
-        # self.model = tflearn.DNN(net, tensorboard_dir = self.pathModel)
 
     #carga el objeto 'model'
     def loadModel(self):
-        # listSplit = self.pathModel.split(os.sep)
-        # pathModelFiles = self.pathModel.replace(listSplit[len(listSplit) - 1], '')
-        # self.model.load(os.path.join(os.path.sep,self.pathModel,'model.tflearn'))
         self.model = load_model(os.path.join(os.path.sep,self.pathModel,'model.h5'))
 
     def classify(self,sentence):
@@ -262,7 +202,6 @@ class CTrainerPredictor:
     def predict(self, sentence, userID='123', show_details=False):
 
         results = self.classify(sentence)
-
         # if we have a classification then find the matching intent tag
         if results:
             # loop as long as there are matches to process
@@ -270,38 +209,26 @@ class CTrainerPredictor:
                 for i in self.intents[self.chatbotName]:
                     # find a tag matching the first result
                     if i['tag'] == results[0][0]:
-
                         if 'action' in i:
                             # myAction.selectOption(sentence, i['tag'])
                             self.action = i['action']
-
-
                         if self.context == {}:
                             # set context for this intent if necessary
                             if 'context_set' in i:
                                 if show_details: print('context:', i['context_set'])
                                 self.context[userID] = i['context_set']
-
-                            # check if this intent is contextual and applies to this user's conversation
-                            # if (not 'context_filter' in i) or (userID in self.context and 'context_filter' in i and i['context_filter'] == self.context[userID]):
-                            #     if show_details: print('tag:', i['tag'])
-
-
                             self.intent = i
-
                             # a random predict from the intent - si no hay respuestas no se imprime nada
                             if not len(i['responses']) == 0:
-                                return print( (random.choice(i['responses'])) )
+                                return self.ouput.exec( (random.choice(i['responses'])) )
                             else:
                                 return
                         #comprobacion de que la intencion, si tiene context_filter, concuerde con el context_set
                         elif 'context_filter' in i and self.context[userID] == i['context_filter']:
                             #reinicia en contexto
                             self.context = {}
-
-                            # a random predict from the intent - si no hay respuestas no se imprime nada
                             if not len(i['responses']) == 0:
-                                return print((random.choice(i['responses'])))
+                                return self.ouput.exec((random.choice(i['responses'])))
                             else:
                                 return
 

@@ -39,10 +39,10 @@ from Chatbots.MetaChatBot.Actions.LineClasses.CreateAction import CCreateAction
 from Chatbots.MetaChatBot.Actions.NotLineClasses.DeleteAction import CDeleteAction
 from Chatbots.MetaChatBot.Actions.NotLineClasses.ShowAction import CShowAction
 
-from Interfaces.IChatBot import CChatBot
+from Abstract.AChatBot import CChatBot
 from StructureChatBot.StructureChatBot import CStructureChatBot
 from Chatbots.MetaChatBot.Actions.NotLineClasses.RunSolveErrors import CRunSolveErrors
-from Interfaces.IActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
+from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
 
 from Chatbots.MetaChatBot.Actions.NotLineClasses.SaveSentence import CSaveSentence
 from Chatbots.MetaChatBot.Actions.NotLineClasses.DontSaveSentence import CDontSaveSentence
@@ -139,9 +139,9 @@ class CMetaChatBot(CChatBot):
 
             self.dictChatBots[sentence] = myChatBot
             self.currentStructureChatBot = myChatBot
-            print('El ChatBot "' + sentence + '" se ha añadido correctamente.')
+            self.output.exec('El ChatBot "' + sentence + '" se ha añadido correctamente.')
         else:
-            print('El ChatBot "' + sentence + '" ya existe.')
+            self.output.exec('El ChatBot "' + sentence + '" ya existe.')
 
     def deleteStructureChatbotDict(self,sentence):
         if sentence in self.dictChatBots:
@@ -150,35 +150,35 @@ class CMetaChatBot(CChatBot):
 
             if not(self.currentStructureChatBot is None) and sentence is self.currentStructureChatBot.name:
                 self.currentStructureChatBot = None
-                print('El ChatBot "',sentence,'" ha dejado de ser el ChatBot actual.')
-            print('El ChatBot "' + sentence + '" se ha eliminado correctamente .')
+                self.output.exec('El ChatBot "'+sentence+'" ha dejado de ser el ChatBot actual.')
+            self.output.exec('El ChatBot "' + sentence + '" se ha eliminado correctamente .')
         else:
-            print('El ChatBot "' + sentence + '" no existe .')
+            self.output.exec('El ChatBot "' + sentence + '" no existe .')
 
     def changeStrunctureCurrentChatbot(self,sentence):
         if not sentence in self.dictChatBots:
-            print('No existe ese Chatbot.')
+            self.output.exec('No existe ese Chatbot.')
         else:
             if not self.currentStructureChatBot is None:
                 nameCB = self.currentStructureChatBot
                 self.currentStructureChatBot = self.dictChatBots[sentence]
-                print('Se ha cambiado "', nameCB, '" por "', sentence, '".')
+                self.output.exec('Se ha cambiado "'+ nameCB+ '" por "'+ sentence+ '".')
             else:
                 self.currentStructureChatBot = self.dictChatBots[sentence]
-                print('Ahora "', sentence, '" es el actual Chatbot.')
+                self.output.exec('Ahora "'+ sentence+ '" es el actual Chatbot.')
 
     def printCurrentStructureChatbot(self):
         if self.currentStructureChatBot is None:
-            print('No hay ningun ChatBot actual.')
+            self.output.exec('No hay ningun ChatBot actual.')
         else:
-            print('"', self.currentStructureChatBot.name, '"')
+            self.output.exec('"'+ self.currentStructureChatBot.name+ '"')
 
     def printStructureChatbotDict(self):
-        result = ", ".join(str(value.tag) for key, value in self.dictChatBots.items())
-        print('Los chatbot creados son:', result)
+        result = ", ".join(str(value.name) for key, value in self.dictChatBots.items())
+        self.output.exec('Los chatbot creados son: '+ result)
 
     def printIntents(self):
-        print(self.intents)
+        self.output.exec(self.intents)
 
     def setUnrecognizedSentence(self, sentence):
         self.unrecognizedSentence = sentence

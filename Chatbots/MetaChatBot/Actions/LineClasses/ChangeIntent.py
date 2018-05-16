@@ -1,6 +1,6 @@
 #Clases de acciones
 
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 #Clases generales
 
@@ -12,15 +12,15 @@ class CChangeIntent(ActionLine):
 
     def exec(self,):
         if self.chatbot.currentStructureChatBot is None:
-            print('ERROR: No se puede cambiar de Intent porque no hay un Chatbot actual.')
+            self.chatbot.output.exec('ERROR: No se puede cambiar de Intent porque no hay un Chatbot actual.')
         else:
-            sentence = input('=>')
+            sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.setCurrentIntent(sentence)
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            print('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operacion')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

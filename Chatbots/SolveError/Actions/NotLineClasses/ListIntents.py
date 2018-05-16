@@ -1,4 +1,4 @@
-from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
+from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine
 
 class CListIntents(ActionNotLine):
 

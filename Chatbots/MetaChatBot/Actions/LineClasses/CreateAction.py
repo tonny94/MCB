@@ -1,4 +1,4 @@
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 
 class CCreateAction(ActionLine):
@@ -8,17 +8,17 @@ class CCreateAction(ActionLine):
 
     def exec(self):
         if self.chatbot.currentStructureChatBot is None:
-            print('ERROR: No hay ningun Chatbot actual para crear un Action en un Intent.')
+            self.chatbot.output.exec('ERROR: No hay ningun Chatbot actual para crear un Action en un Intent.')
         elif self.chatbot.currentStructureChatBot.currentIntent is None :
-            print('ERROR: No hay ningun Intent actual para asociarle un Action.')
+            self.chatbot.output.exec('ERROR: No hay ningun Intent actual para asociarle un Action.')
         else:
-            sentence = input('=>')
+            sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.currentIntent.setAction(sentence)
-                print('Se ha guardado la accion "',sentence,'".')
+                self.chatbot.output.exec('Se ha guardado la accion "'+sentence+'".')
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            print('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operacion')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

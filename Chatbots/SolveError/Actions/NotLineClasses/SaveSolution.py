@@ -1,4 +1,4 @@
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 class CSaveSolution(ActionLine):
 
@@ -7,11 +7,11 @@ class CSaveSolution(ActionLine):
 
     def exec(self,):
         if self.chatbot.senteceToSolve is None and self.chatbot.intentToSolve is None:
-            print('No hay una sentencia ni un Intent seleccionados.')
+            self.chatbot.output.exec('No hay una sentencia ni un Intent seleccionados.')
         elif self.chatbot.senteceToSolve is None:
-            print('No hay una sentencia de error seleccionada.')
+            self.chatbot.output.exec('No hay una sentencia de error seleccionada.')
         elif self.chatbot.intentToSolve is None:
-            print('No hay una intención a la que vincular la sentencia.')
+            self.chatbot.output.exec('No hay una intención a la que vincular la sentencia.')
 
         else:
             self.chatbot.solveSentence()

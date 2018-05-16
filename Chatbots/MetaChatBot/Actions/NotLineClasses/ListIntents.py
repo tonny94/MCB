@@ -1,5 +1,5 @@
 #Clases de acciones
-from Interfaces.IActionSubclasses.ActionNotLine import ActionNotLine
+from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine
 
 class CListIntents(ActionNotLine):
 
@@ -8,6 +8,6 @@ class CListIntents(ActionNotLine):
 
     def exec(self,):
         if self.chatbot.currentStructureChatBot is None:
-            print('ERROR: No hay ningun ChatBot actual para listar sus Intents.')
+            self.chatbot.output.exec('ERROR: No hay ningun ChatBot actual para listar sus Intents.')
         else:
             self.chatbot.currentStructureChatBot.printDictIntents()

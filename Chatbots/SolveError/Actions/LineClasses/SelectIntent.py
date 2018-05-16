@@ -1,4 +1,4 @@
-from Interfaces.IActionSubclasses.ActionLine import ActionLine
+from Abstract.AActionSubclasses.ActionLine import ActionLine
 
 
 class CSelectIntent(ActionLine):
@@ -7,18 +7,18 @@ class CSelectIntent(ActionLine):
         self.chatbot = chatbot
 
     def exec(self,):
-        sentence = input('=>')
+        sentence = self.chatbot.input.exec()
         if not (self.checkCancellation(sentence)):
 
             if not(sentence in self.chatbot.listIntens):
-                print('El Intent no existe en la lista.')
+                self.chatbot.output.exec('El Intent no existe en la lista.')
             else:
                 self.chatbot.intentToSolve = sentence
-                print('Se ha seleccionado el Intent "',sentence,'".')
+                self.chatbot.output.exec('Se ha seleccionado el Intent "'+sentence+'".')
 
     def checkCancellation(self, sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            print('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operacion')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

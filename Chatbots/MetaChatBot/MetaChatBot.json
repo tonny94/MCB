@@ -127,9 +127,7 @@
                 "Crear una nueva intencion",
                 "Quiero crear una intencion",
                 "Nueva intencion",
-                "Crear intencion",
-                "a\u00f1adir intent",
-                "a\u00f1adir intent"
+                "Crear intencion"
             ],
             "responses": [
                 "Digame el nombre de la intencion",

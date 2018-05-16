@@ -1,16 +1,9 @@
-from Interfaces.IAction import IAction
+from Abstract.AAction import IAction
 
-class ActionLine(IAction):
-    listKeysWordsCancelRunning = ['cancelar','abortar','parar','no seguir','cancelar ejecucion','parar ejecucion','dejar de ejecutar','abortar ejecucion','error']
+class ActionNotLine(IAction):
 
     def exec(self):
         pass
-
-    def checkCancellation(self,sentence):
-        pass
-
-
-
 
 #         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}
 #
