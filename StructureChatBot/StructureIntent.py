@@ -21,6 +21,8 @@ class CStructureIntent:
         else:
             self.patterns.append(pattern)
             return True
+    def addListPatterns(self,listPatterns):
+        self.patterns = listPatterns
 
     #si exite el pattern en la lista lo borra, se encarga de imprimir el estado
     def deletePattern(self, pattern):
@@ -38,6 +40,9 @@ class CStructureIntent:
         else:
             self.responses.append (response)
             return True
+
+    def addListResponse(self,listResponse):
+        self.responses = listResponse
 
     # si exite el 'predict' en la lista lo borra, se encarga de imprimir el estado
     def deleteResponse(self, response):
@@ -94,5 +99,11 @@ class CStructureIntent:
         strJson += '"action":"' + self.actionToJSON() + '"\n\t\t\t'
         strJson += '}'
         return strJson
+
+    def codeToStructureIntent(self,structure):
+        self.setTag(structure['tag'])
+        self.addListPatterns(structure['patterns'])
+        self.addListResponse(structure['responses'])
+        self.setAction(structure['action'])
 
 

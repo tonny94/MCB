@@ -1,7 +1,7 @@
 from StructureChatBot.StructureIntent import CStructureIntent
 from Abstract.AOutputSubclasses.Screen import CScreen
 
-import os
+import os,json
 
 class CStructureChatBot:
     """Son class"""
@@ -84,7 +84,7 @@ class CStructureChatBot:
 
     def toCode(self,listGeneralActions,pathAction):
         lengDict = 1
-        strImports = 'import os,inspect \nfrom Abstract.IChatBot import CChatBot\nfrom Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
+        strImports = 'import os,inspect \nfrom Abstract.AChatBot import CChatBot\nfrom Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
         strActions = 'self.actionsCB = {'
 
         #seleccionar acciones que no sean las acciones generales y aquellos intens que si tengan acciones
@@ -161,3 +161,43 @@ class CStructureChatBot:
         str += '\tdef exec(self,):\n'
         str += '\t\tpass'
         return str
+
+
+
+
+    def codeToStructureChatbot(self,chatbot,jsonFile):
+
+        with open(jsonFile) as json_data:
+            chatbotJsonStructure = json.load(json_data)
+        listIntenst = chatbotJsonStructure[chatbot.name]
+
+        lastIntent = 1
+        for intent in listIntenst:
+            structureIntent = CStructureIntent()
+            structureIntent.codeToStructureIntent(intent)
+            chatbot.dicIntents[structureIntent.tag]=structureIntent
+            if lastIntent == len(listIntenst):
+                chatbot.setCurrentIntent(structureIntent.tag)
+            lastIntent += 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

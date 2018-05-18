@@ -14,8 +14,8 @@ cbp.run()
 
 """
 FALTA:
-1.- clases INPUT , OUTPUT
-2.- metodo para cargar los chatbots creados al MetaChatBot
+1.- clases INPUT , OUTPUT   - LISTO
+2.- metodo para cargar los chatbots creados al MetaChatBot      -   LISTO
 3.- metodo para ejecutar un chatbot desde el MetaChatBot
 """
 

@@ -53,6 +53,7 @@ class CMetaChatBot(CChatBot):
         super(CMetaChatBot, self).__init__()
         self.dictChatBots = {}
         self.currentStructureChatBot = None
+        self.listNoChatbots = ['MetaChatBot','SolveError']
         self.actionsCB ={
 
             'buildChatBot': CBuildChatbot(self),
@@ -87,6 +88,28 @@ class CMetaChatBot(CChatBot):
             'runSolveErrors': CRunSolveErrors(self)
         }
         self.initializePaths()
+        self.loadChatbots()
+
+
+    def loadChatbots(self):
+        pathChatbots = os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) )
+        listAllChatbots = os.listdir(pathChatbots)
+        if len(listAllChatbots) == len(self.listNoChatbots):
+            self.output.exec('No hay chatbots para cargar.')
+        else:
+            currentChatbotLoaded = False
+            for nameChatbot in listAllChatbots:
+                if not nameChatbot in self.listNoChatbots:
+                    pathJson = os.path.join(os.path.sep, pathChatbots, nameChatbot,nameChatbot+'.json')
+                    if os.path.isfile(pathJson):
+                        chatbot = CStructureChatBot()
+                        chatbot.setName(nameChatbot)
+                        chatbot.codeToStructureChatbot(chatbot, pathJson)
+                        self.dictChatBots[nameChatbot] = chatbot
+                        if not currentChatbotLoaded :
+                            self.currentStructureChatBot =chatbot
+                            currentChatbotLoaded = True
+
 
 
 

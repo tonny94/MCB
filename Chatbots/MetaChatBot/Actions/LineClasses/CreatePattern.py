@@ -16,7 +16,7 @@ class CCreatePattern(ActionLine):
             if not(self.checkCancellation(sentence)):
                 state = self.chatbot.currentStructureChatBot.currentIntent.addPattern(sentence)
                 if state:
-                    self.chatbot.output.exec('Se ha añadido el Pattern "',sentence,'" correctamente.')
+                    self.chatbot.output.exec('Se ha añadido el Pattern "'+sentence+'" correctamente.')
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
