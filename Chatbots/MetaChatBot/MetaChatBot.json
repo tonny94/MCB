@@ -57,6 +57,20 @@
             "action": "runSolveErrors"
         },
         {
+            "tag": "startRunningChatbot",
+            "patterns": [
+                "ejecutar chatbot",
+                "iniciar chatbot",
+                "Quiero ejecutar un chatbot",
+                "Empezar ejecucion de chatbot"
+            ],
+            "responses": [
+                "Que chatbot quiere ejecutar?",
+                "Digame que chatbot quiere ejecutar"
+            ],
+            "action": "startRunningChatbot"
+        },
+        {
             "tag": "createChatBot",
             "patterns": [
                 "Anhadir chatbot",

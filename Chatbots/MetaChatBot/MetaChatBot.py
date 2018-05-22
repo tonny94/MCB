@@ -46,6 +46,7 @@ from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNot
 
 from Chatbots.MetaChatBot.Actions.NotLineClasses.SaveSentence import CSaveSentence
 from Chatbots.MetaChatBot.Actions.NotLineClasses.DontSaveSentence import CDontSaveSentence
+from Chatbots.MetaChatBot.Actions.LineClasses.StartRunningChatbot import CStartRunningChatbot
 
 class CMetaChatBot(CChatBot):
     """Father class"""
@@ -85,7 +86,8 @@ class CMetaChatBot(CChatBot):
             'saveSentence': CSaveSentence(self),
             'dontSaveSentence': CDontSaveSentence(self),
 
-            'runSolveErrors': CRunSolveErrors(self)
+            'runSolveErrors': CRunSolveErrors(self),
+            'startRunningChatbot': CStartRunningChatbot(self)
         }
         self.initializePaths()
         self.loadChatbots()
