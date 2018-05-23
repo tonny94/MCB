@@ -59,10 +59,12 @@ class CStructureIntent:
         self.action = action
 
     def printPatterns(self):
-        self.ouput.exec('Los patterns para el Intent "'+self.tag+'" son:'+self.patterns)
+        result = ", ".join(pattern for pattern in self.patterns)
+        self.ouput.exec('Los patterns para el Intent "'+self.tag+'" son:'+result)
 
     def printResponses(self):
-        self.ouput.exec('Los responses para el Intent "'+self.tag+'" son:'+self.responses)
+        result = ", ".join(pattern for pattern in self.responses)
+        self.ouput.exec('Los responses para el Intent "'+self.tag+'" son:'+result)
 
     def printAction(self):
         self.ouput.exec('La accion del Intent "'+self.tag+'" es:'+self.action)

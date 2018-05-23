@@ -173,7 +173,7 @@ class CMetaChatBot(CChatBot):
             # myChatBot = self.dicChatBots[nameChatBot]
             del self.dictChatBots[sentence]
 
-            if not(self.currentStructureChatBot is None) and sentence is self.currentStructureChatBot.name:
+            if not(self.currentStructureChatBot is None) and sentence == self.currentStructureChatBot.name:
                 self.currentStructureChatBot = None
                 self.output.exec('El ChatBot "'+sentence+'" ha dejado de ser el ChatBot actual.')
             self.output.exec('El ChatBot "' + sentence + '" se ha eliminado correctamente .')
@@ -187,7 +187,7 @@ class CMetaChatBot(CChatBot):
             if not self.currentStructureChatBot is None:
                 nameCB = self.currentStructureChatBot
                 self.currentStructureChatBot = self.dictChatBots[sentence]
-                self.output.exec('Se ha cambiado "'+ nameCB+ '" por "'+ sentence+ '".')
+                self.output.exec('Se ha cambiado "'+ nameCB.name+ '" por "'+ sentence+ '".')
             else:
                 self.currentStructureChatBot = self.dictChatBots[sentence]
                 self.output.exec('Ahora "'+ sentence+ '" es el actual Chatbot.')

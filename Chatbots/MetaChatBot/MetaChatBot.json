@@ -129,7 +129,8 @@
                 "Ver chatbot actual",
                 "Actual chatbot",
                 "Quiero ver el chatbot actual",
-                "que chatbot esta activo?"
+                "que chatbot esta activo?",
+                "mostar chatbot"
             ],
             "responses": [],
             "action": "showcurrentChatBot"

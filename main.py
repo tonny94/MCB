@@ -5,6 +5,11 @@ import os
 from ChatBotProcessor import CBProcessor
 from Chatbots.MetaChatBot.MetaChatBot import CMetaChatBot
 
+import keras
+import sys
+import tensorflow as tf
+print("pyton: {}, keras: {}".format(sys.version,keras.__version__))
+
 #METACHATBOT
 mcb = CMetaChatBot()
 cbp = CBProcessor(mcb)
