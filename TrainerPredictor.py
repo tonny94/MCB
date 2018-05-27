@@ -50,7 +50,7 @@ class CTrainerPredictor:
     def readJSON(self,jsonFile,chatbotName):
         self.jsonFile = jsonFile
         self.chatbotName = chatbotName
-        with open(self.jsonFile) as json_data:
+        with open(self.jsonFile, 'r+', encoding='utf-8') as json_data:
             self.intents = json.load(json_data)
 
     #inicializa las listas que se necesita para el modelo: words,clasees,documents

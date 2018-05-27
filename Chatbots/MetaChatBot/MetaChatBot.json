@@ -24,12 +24,8 @@
         {
             "tag": "saveSentence",
             "patterns": [
-                "guardar sentencia",
-                "guardar",
-                "salvar",
-                "salvar sentencia",
-                "salvar frase",
-                "guardar frase"
+                "@Guardar",
+                "@Salvar"
             ],
             "responses": [],
             "action": "saveSentence"
@@ -37,12 +33,8 @@
         {
             "tag": "dontSaveSentence",
             "patterns": [
-                "no guardar sentencia",
-                "no guardar",
-                "no salvar",
-                "no salvar sentencia",
-                "no salvar frase",
-                "no guardar frase"
+                "@No salvar",
+                "@No guardar"
             ],
             "responses": [],
             "action": "dontSaveSentence"
@@ -65,7 +57,7 @@
                 "Empezar ejecucion de chatbot"
             ],
             "responses": [
-                "Que chatbot quiere ejecutar?",
+                "Qué chatbot quiere ejecutar?",
                 "Digame que chatbot quiere ejecutar"
             ],
             "action": "startRunningChatbot"
@@ -73,7 +65,7 @@
         {
             "tag": "createChatBot",
             "patterns": [
-                "Anhadir chatbot",
+                "Añadir chatbot",
                 "Crear chatbot",
                 "Quiero crear un chatbot",
                 "Quiero anhadir un chatbot",
@@ -81,8 +73,8 @@
             ],
             "responses": [
                 "Digame el nombre del chatbot",
-                "Que chatbot quiere crear?",
-                "Que chatbot quiere anhadir?"
+                "Qué chatbot quiere crear?",
+                "Qué chatbot quiere anhadir?"
             ],
             "action": "createChatBot"
         },
@@ -105,8 +97,9 @@
             "patterns": [
                 "Listar chatbots",
                 "Ver todos los chatbots",
-                "Que chatbots  hay creados",
-                "Quiero ver todos los chatbots"
+                "Qué chatbots  hay creados?",
+                "Quiero ver todos los chatbots",
+                "ver chatbots"
             ],
             "responses": [],
             "action": "listChatBot"
@@ -130,7 +123,8 @@
                 "Actual chatbot",
                 "Quiero ver el chatbot actual",
                 "que chatbot esta activo?",
-                "mostar chatbot"
+                "mostrar chatbot",
+                "ver chatbot"
             ],
             "responses": [],
             "action": "showcurrentChatBot"
@@ -138,30 +132,30 @@
         {
             "tag": "createIntent",
             "patterns": [
-                "Anhadir una intencion",
-                "Crear una nueva intencion",
-                "Quiero crear una intencion",
-                "Nueva intencion",
-                "Crear intencion"
+                "Añadir una intención",
+                "Crear una nueva intención",
+                "Quiero crear una intención",
+                "Nueva intención",
+                "Crear intención"
             ],
             "responses": [
-                "Digame el nombre de la intencion",
-                "Que intencion quiere crear?",
-                "Que intencion quiere anhadir?"
+                "Digame el nombre de la intención",
+                "Qué intencion quiere crear?",
+                "Qué intencion quiere anhadir?"
             ],
             "action": "createIntent"
         },
         {
             "tag": "deleteIntent",
             "patterns": [
-                "Quiero borrar una intencion",
-                "Quiero eliminar una intencion",
-                "Borrar intencion",
-                "Eliminar intencion"
+                "Quiero borrar una intención",
+                "Quiero eliminar una intención",
+                "Borrar intención",
+                "Eliminar intención"
             ],
             "responses": [
-                "Digame que intencion quiere borrar",
-                "Digame que intencion quiere eliminar"
+                "Digame que intención quiere borrar",
+                "Digame que intención quiere eliminar"
             ],
             "action": "deleteIntent"
         },
@@ -171,7 +165,8 @@
                 "Listar intenciones",
                 "Ver todos los intenciones",
                 "Que intenciones  hay creados",
-                "Quiero ver todos las intenciones"
+                "Quiero ver todos las intenciones",
+                "ver intenciones"
             ],
             "responses": [],
             "action": "listIntent"
@@ -179,9 +174,10 @@
         {
             "tag": "changeIntent",
             "patterns": [
-                "Cambiar de intencion",
-                "Otra intencion",
-                "Quiero cambiar de intencion"
+                "Cambiar de intención",
+                "Otra intención",
+                "Quiero cambiar de intención",
+                "otra intención"
             ],
             "responses": [
                 "Seleccione el nombre de la intencion"
@@ -191,10 +187,11 @@
         {
             "tag": "showcurrentIntent",
             "patterns": [
-                "Ver intencion actual",
-                "Actul intencion",
-                "Quiero ver la intencion actual",
-                "que intencion esta activo?"
+                "Ver intención actual",
+                "Actual intención",
+                "Quiero ver la intención actual",
+                "qué intención esta activo?",
+                "intención actual"
             ],
             "responses": [],
             "action": "showcurrentIntent"
@@ -202,40 +199,41 @@
         {
             "tag": "createPattern",
             "patterns": [
-                "Anhadir pattern",
-                "Crear pattern",
-                "Quiero crear un pattern",
-                "Quiero anhadir un pattern",
-                "Nuevo pattern"
+                "Añadir patrón",
+                "Crear patrón",
+                "Quiero crear un patrón",
+                "Quiero anhadir un patrón",
+                "Nuevo patrón"
             ],
             "responses": [
-                "Digame el nombre del pattern",
-                "Que pattern quiere crear?",
-                "Que pattern quiere anhadir?"
+                "Digame el nombre del patrón",
+                "Qué patrón quiere crear?",
+                "Qué patrón quiere anhadir?"
             ],
             "action": "createPattern"
         },
         {
             "tag": "deletePattern",
             "patterns": [
-                "Quiero borrar un pattern",
-                "Quiero eliminar un pattern",
-                "Borrar pattern",
-                "Eliminar pattern"
+                "Quiero borrar un patrón",
+                "Quiero eliminar un patrón",
+                "Borrar patrón",
+                "Eliminar patrón"
             ],
             "responses": [
-                "Digame que pattern quiere borrar",
-                "Digame que pattern quiere eliminar"
+                "Digame que patrón quiere borrar",
+                "Digame que patrón quiere eliminar"
             ],
             "action": "deletePattern"
         },
         {
             "tag": "listPattern",
             "patterns": [
-                "Listar patterns",
-                "Ver todos los patterns",
-                "Que patterns  hay creados",
-                "Quiero ver todos los patterns"
+                "Listar patrones",
+                "Ver todos los patrones",
+                "Qué patrones hay creados?",
+                "Quiero ver todos los patrones",
+                "ver patrones"
             ],
             "responses": [],
             "action": "listPattern"
@@ -243,40 +241,40 @@
         {
             "tag": "createResponse",
             "patterns": [
-                "Anhadir response",
-                "Crear response",
-                "Quiero crear un response",
-                "Quiero anhadir un response",
-                "Nuevo response"
+                "Añadir respuesta",
+                "Crear respuesta",
+                "Quiero crear una respuesta",
+                "Quiero añadir una respuesta",
+                "Nueva respuesta"
             ],
             "responses": [
-                "Digame el nombre del response",
-                "Que response quiere crear?",
-                "Que response quiere anhadir?"
+                "Digame el nombre de la respuesta",
+                "Qué respuesta quiere crear?",
+                "Qué respuesta quiere añadir?"
             ],
             "action": "createResponse"
         },
         {
             "tag": "deleteResponse",
             "patterns": [
-                "Quiero borrar un response",
-                "Quiero eliminar un response",
-                "Borrar response",
-                "Eliminar response"
+                "Quiero borrar una respuesta",
+                "Quiero eliminar una respuesta",
+                "Borrar respuesta",
+                "Eliminar respuesta"
             ],
             "responses": [
-                "Digame que response quiere borrar",
-                "Digame que response quiere eliminar"
+                "Digame qué respuesta quiere borrar",
+                "Digame qué respuesta quiere eliminar"
             ],
             "action": "deleteResponse"
         },
         {
             "tag": "listResponse",
             "patterns": [
-                "Listar responses",
-                "Ver todos los responses",
-                "Que responses  hay creados",
-                "Quiero ver todos los responses"
+                "Listar respuestas",
+                "Ver todas las respuestas",
+                "Qué respuestas hay creadas",
+                "Quiero ver todas las respuestas"
             ],
             "responses": [],
             "action": "listResponse"
@@ -284,25 +282,25 @@
         {
             "tag": "createAction",
             "patterns": [
-                "crear accion",
-                "anadir accion",
-                "nueva accion",
-                "actualizar accion",
-                "insertar accion"
+                "crear acción",
+                "anadir acción",
+                "nueva acción",
+                "actualizar acción",
+                "insertar accioón"
             ],
             "responses": [
-                "Que accion quiere crear ?",
-                "Digame la accion que quiere anadir"
+                "Qué acción quiere crear ?",
+                "Digame la acción que quiere añadir"
             ],
             "action": "createAction"
         },
         {
             "tag": "deleteAction",
             "patterns": [
-                "borrar accion",
-                "eliminar accion",
-                "quiero eliminar la accion",
-                "quitar accion"
+                "borrar acción",
+                "eliminar acción",
+                "quiero eliminar la acción",
+                "quitar acción"
             ],
             "responses": [],
             "action": "deleteAction"
@@ -310,10 +308,9 @@
         {
             "tag": "showAction",
             "patterns": [
-                "Mostrar accion",
-                "quiero ver la accion",
-                "ver accion",
-                "quiero ver la accion"
+                "Mostrar acción",
+                "quiero ver la acción",
+                "ver acción"
             ],
             "responses": [],
             "action": "showAction"

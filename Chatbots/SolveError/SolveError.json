@@ -10,7 +10,7 @@
          "action": "selectIntent"
       },
       {"tag": "saveSolution",
-         "patterns": ["guardar","salvar","guardar solución","salvar solución"],
+         "patterns": ["guardar solución","salvar solución","guardar solución","salvar solución"],
          "responses": [],
          "action": "saveSolution"
       },

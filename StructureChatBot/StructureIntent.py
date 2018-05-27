@@ -95,12 +95,25 @@ class CStructureIntent:
 
     # pasa el objeto CStructureIntent a formato JSON
     def toJSON(self):
-        strJson = '{"tag":"'+self.tagToJSON()+'",\n\t\t\t'
-        strJson += '"patterns":' + self.listToJSON(self.patterns) + ',\n\t\t\t'
-        strJson += '"responses":' + self.listToJSON(self.responses) + ',\n\t\t\t'
-        strJson += '"action":"' + self.actionToJSON() + '"\n\t\t\t'
-        strJson += '}'
-        return strJson
+        # strJson = '{"tag":"'+self.tagToJSON()+'",\n\t\t\t'
+        # strJson += '"patterns":' + self.listToJSON(self.patterns) + ',\n\t\t\t'
+        # strJson += '"responses":' + self.listToJSON(self.responses) + ',\n\t\t\t'
+        # strJson += '"action":"' + self.actionToJSON() + '"\n\t\t\t'
+        # strJson = '{"tag":"' + self.tagToJSON() + '", '
+        # strJson += '"patterns":' + self.listToJSON(self.patterns) + ', '
+        # strJson += '"responses":' + self.listToJSON(self.responses) + ', '
+        # strJson += '"action":"' + self.actionToJSON() + '" '
+        # strJson += '}'
+        # return strJson
+
+        dictIntetn ={}
+        dictIntetn['tag'] = self.tagToJSON()
+        dictIntetn['patterns'] = self.patterns
+        dictIntetn['responses'] = self.responses
+        dictIntetn['action'] = self.actionToJSON()
+        return dictIntetn
+
+
 
     def codeToStructureIntent(self,structure):
         self.setTag(structure['tag'])

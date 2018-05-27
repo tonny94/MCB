@@ -62,25 +62,43 @@ class CStructureChatBot:
 
     #pasa el diccionario de intenciones en formato JSON
     def dicToJSON(self,dicIntents):
+
+        # if len(dicIntents) > 0:
+        #     length = 0
+        #     # strJSON = '\n\t\t[\n\t\t\t'
+        #     strJSON = ' ['
+        #     for intent in dicIntents:
+        #         if length == len(dicIntents)-1:
+        #             # strJSON += dicIntents[intent].toJSON()+'\n\t\t]'
+        #             strJSON += dicIntents[intent].toJSON() + ' ]'
+        #         else:
+        #             # strJSON += dicIntents[intent].toJSON()+',\n\t\t\t'
+        #             strJSON += dicIntents[intent].toJSON() + ', '
+        #         length += 1
+        #     return strJSON
+        # else:
+        #     return '[]'
+        listIntents = []
         if len(dicIntents) > 0:
             length = 0
-            strJSON = '\n\t\t[\n\t\t\t'
+            # strJSON = '\n\t\t[\n\t\t\t'
             for intent in dicIntents:
-                if length == len(dicIntents)-1:
-                    strJSON += dicIntents[intent].toJSON()+'\n\t\t]'
-                else:
-                    strJSON += dicIntents[intent].toJSON()+',\n\t\t\t'
-                length += 1
-            return strJSON
-        else:
-            return '[]'
+                listIntents.append(dicIntents[intent].toJSON())
+        return listIntents
+
 
     #pasa el objeto 'Chatbot' a formato JSON
     def toJSON(self):
-        strJson = '{"' + self.name + '":'
-        strJson += self.dicToJSON(self.dicIntents)+'\n\t'
-        strJson += '}'
-        return strJson
+        # strJson = '{"' + self.name + '":'
+        # strJson += self.dicToJSON(self.dicIntents)+'\n\t'
+        # strJson = '{"' + self.name + '":'
+        # strJson += self.dicToJSON(self.dicIntents)
+        # strJson += '}'
+        # return strJson
+
+        dictJson = {}
+        dictJson[self.name] = self.dicToJSON(self.dicIntents)
+        return dictJson
 
     def toCode(self,listGeneralActions,pathAction):
         lengDict = 1
@@ -130,21 +148,20 @@ class CStructureChatBot:
         strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+\'.json\')\n\n'
 
         #saveUnrecognizedSentence
-        strChatbotCode += '\tdef saveUnrecognizedSentence(self,key,value):\n'
-        strChatbotCode += '\t\tnewDict = {key:value}\n'
-        strChatbotCode += '\t\tself.errorDict.update(newDict)\n\n'
+        strChatbotCode += '\tdef saveUnrecognizedSentence(self,key):\n'
+        strChatbotCode += '\t\tself.errorDict.append(key)\n\n'
 
         #execPrediction
-        strChatbotCode += '\tdef execPrediction(self,sentence):\n'
-        strChatbotCode += '\t\tvalorClasificacion = self.TrainerAndPredictor.classify(sentence)\n'
-        strChatbotCode += '\t\tif (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:\n'
-        strChatbotCode += '\t\t\tself.TrainerAndPredictor.predict(sentence)\n'
-        strChatbotCode += '\t\t\tself.currentAction = self.TrainerAndPredictor.action\n'
-        strChatbotCode += '\t\t\tif not self.currentAction == \'\':\n'
-        strChatbotCode += '\t\t\t\tself.actions[self.currentAction].exec()\n'
-        strChatbotCode += '\t\t\t\tself.TrainerAndPredictor.action = \'\'\n'
-        strChatbotCode += '\t\telse:\n'
-        strChatbotCode += '\t\t\tCNotRecognizedSentence(self.unrecognizedSentence).exec()\n'
+        # strChatbotCode += '\tdef execPrediction(self,sentence):\n'
+        # strChatbotCode += '\t\tvalorClasificacion = self.TrainerAndPredictor.classify(sentence)\n'
+        # strChatbotCode += '\t\tif (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:\n'
+        # strChatbotCode += '\t\t\tself.TrainerAndPredictor.predict(sentence)\n'
+        # strChatbotCode += '\t\t\tself.currentAction = self.TrainerAndPredictor.action\n'
+        # strChatbotCode += '\t\t\tif not self.currentAction == \'\':\n'
+        # strChatbotCode += '\t\t\t\tself.actions[self.currentAction].exec()\n'
+        # strChatbotCode += '\t\t\t\tself.TrainerAndPredictor.action = \'\'\n'
+        # strChatbotCode += '\t\telse:\n'
+        # strChatbotCode += '\t\t\tCNotRecognizedSentence(self.unrecognizedSentence).exec()\n'
         self.ouput.exec(strChatbotCode)
         return strChatbotCode
 
@@ -167,7 +184,7 @@ class CStructureChatBot:
 
     def codeToStructureChatbot(self,chatbot,jsonFile):
 
-        with open(jsonFile) as json_data:
+        with open(jsonFile, 'r', encoding='utf-8') as json_data:
             chatbotJsonStructure = json.load(json_data)
         listIntenst = chatbotJsonStructure[chatbot.name]
 
@@ -179,25 +196,3 @@ class CStructureChatBot:
             if lastIntent == len(listIntenst):
                 chatbot.setCurrentIntent(structureIntent.tag)
             lastIntent += 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

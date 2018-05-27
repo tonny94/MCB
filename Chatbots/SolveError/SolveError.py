@@ -47,32 +47,31 @@ class CSolveError(CChatBot):
         self.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+'.json')
 
-    def saveUnrecognizedSentence(self,key,value):
-        newDict = {key:value}
-        self.errorDict.update(newDict)
+    # def saveUnrecognizedSentence(self,key):
+    #     self.errorDict.append(key)
 
-    def execPrediction(self,sentence):
-        valorClasificacion = self.TrainerAndPredictor.classify(sentence)
-        if (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:
-            self.TrainerAndPredictor.predict(sentence)
-            self.currentAction = self.TrainerAndPredictor.action
-
-            if not self.currentAction == '':
-                # self.updateActionsCBProcessor(self.actionsMetaCB)
-                self.setCurrentSentence(sentence)
-                self.setCurrentIntent(self.TrainerAndPredictor.intent)
-                self.actions[self.currentAction].exec()
-                self.TrainerAndPredictor.action = ''
-
-            # reinicia el atributo
-            self.setUnrecognizedSentence(None)
-            self.setUnrecognizedIntent(None)
-        else:
-            # guarda la sentencia que no se reconocio
-            self.setUnrecognizedSentence(sentence)
-            value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
-            self.setUnrecognizedIntent(value)
-            CNotRecognizedSentence(self.unrecognizedSentence).exec()
+    # def execPrediction(self,sentence):
+    #     valorClasificacion = self.TrainerAndPredictor.classify(sentence)
+    #     if (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:
+    #         self.TrainerAndPredictor.predict(sentence)
+    #         self.currentAction = self.TrainerAndPredictor.action
+    #
+    #         if not self.currentAction == '':
+    #             # self.updateActionsCBProcessor(self.actionsMetaCB)
+    #             self.setCurrentSentence(sentence)
+    #             self.setCurrentIntent(self.TrainerAndPredictor.intent)
+    #             self.actions[self.currentAction].exec()
+    #             self.TrainerAndPredictor.action = ''
+    #
+    #         # reinicia el atributo
+    #         self.setUnrecognizedSentence(None)
+    #         self.setUnrecognizedIntent(None)
+    #     else:
+    #         # guarda la sentencia que no se reconocio
+    #         self.setUnrecognizedSentence(sentence)
+    #         value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
+    #         self.setUnrecognizedIntent(value)
+    #         CNotRecognizedSentence(self.unrecognizedSentence).exec()
 
     def printListResolvedErrors(self):
         size = len(self.listResolvedErrors)

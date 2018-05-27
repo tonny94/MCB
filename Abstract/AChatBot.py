@@ -2,6 +2,11 @@
 from Abstract.AActionSubclasses.NotLineClasses.FinishRunningCB import CFinishRunningCB
 import TrainerPredictor
 
+from Chatbots.MetaChatBot.Actions.NotLineClasses.SaveSentence import CSaveSentence
+from Chatbots.MetaChatBot.Actions.NotLineClasses.DontSaveSentence import CDontSaveSentence
+from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
+#
+
 from Abstract.AOutputSubclasses.Screen import CScreen
 from Abstract.AInputSubclasses.Keyboard import CKeyboard
 import os
@@ -20,7 +25,7 @@ class CChatBot(object):
         self.generalPath = ''
         self.actionsPath = ''
 
-        self.errorDict = {}
+        self.errorDict = []
 
         self.currentSentence = None
         self.currentIntent = None
@@ -30,7 +35,11 @@ class CChatBot(object):
 
         self.listGeneralActions = ['finishRunningChatbot']
         self.actions = {
-            'finishRunningChatbot': CFinishRunningCB(self)
+            'finishRunningChatbot': CFinishRunningCB(self),
+
+            'saveSentence': CSaveSentence(self),
+            'dontSaveSentence': CDontSaveSentence(self)
+            # 'runSolveErrors': CRunSolveErrors(self)
         }
         self.TrainerAndPredictor = None
         
@@ -41,8 +50,46 @@ class CChatBot(object):
     def initializePaths(self):
         pass
 
-    def saveUnrecognizedSentence(self,key,value):
-        pass
+    def saveUnrecognizedSentence(self,key):
+        self.errorDict.append(key)
+
+    def execPrediction(self,sentence):
+        valorClasificacion = self.TrainerAndPredictor.classify(sentence)
+        if (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:
+            self.TrainerAndPredictor.predict(sentence)
+            self.currentAction = self.TrainerAndPredictor.action
+
+            if not self.currentAction == '':
+                # self.updateActionsCBProcessor(self.actionsMetaCB)
+                self.setCurrentSentence(sentence)
+                self.setCurrentIntent(self.TrainerAndPredictor.intent['tag'])
+                self.actions[self.currentAction].exec()
+                self.TrainerAndPredictor.action = ''
+
+            # reinicia el atributo
+            self.setUnrecognizedSentence(None)
+            self.setUnrecognizedIntent(None)
+        else:
+            # guarda la sentencia que no se reconocio
+            self.setUnrecognizedSentence(sentence)
+            value = '"No se encontró intent"'
+            if not valorClasificacion == []:
+               value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
+            self.setUnrecognizedIntent(value)
+            CNotRecognizedSentence(self.unrecognizedSentence).exec()
+
+    def setUnrecognizedSentence(self, sentence):
+        self.unrecognizedSentence = sentence
+
+    def setUnrecognizedIntent(self, intent):
+        self.unrecognizeIntent = intent
+
+    def setCurrentSentence(self, sentence):
+        self.currentSentence = sentence
+
+    def setCurrentIntent(self, intent):
+        self.currentIntent = intent
+
 
     def initializate(self):
         if self.TrainerAndPredictor is None:

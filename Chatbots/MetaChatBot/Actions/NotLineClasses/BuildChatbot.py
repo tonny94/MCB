@@ -2,7 +2,8 @@
 from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine
 
 #Clases generales
-import os
+import os,json
+
 from TrainerPredictor import CTrainerPredictor
 
 
@@ -41,9 +42,13 @@ class CBuildChatbot(ActionNotLine):
                 self.chatbot.output.exec('Se ha construido el chatbot "'+self.structureChatbot.name+ '" correctamente.')
 
     def createJSON(self):
-        jsonFile = open(self.structureDirJsonFile, 'w')
-        jsonFile.write(self.chatbotToJson())
-        jsonFile.close()
+        with open(self.structureDirJsonFile, 'w', encoding='utf-8') as f:
+            json.dump(self.chatbotToJson(), f)
+
+
+        # jsonFile = open(self.structureDirJsonFile, 'w')
+        # jsonFile.write(self.chatbotToJson())
+        # jsonFile.close()
         self.startTrainer()
 
     def chatbotToJson(self):

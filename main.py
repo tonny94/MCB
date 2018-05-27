@@ -5,10 +5,10 @@ import os
 from ChatBotProcessor import CBProcessor
 from Chatbots.MetaChatBot.MetaChatBot import CMetaChatBot
 
-import keras
-import sys
-import tensorflow as tf
-print("pyton: {}, keras: {}".format(sys.version,keras.__version__))
+# import keras
+# import sys
+# import tensorflow as tf
+# print("pyton: {}, keras: {}".format(sys.version,keras.__version__))
 
 #METACHATBOT
 mcb = CMetaChatBot()
@@ -18,11 +18,11 @@ cbp.startPredictor()
 cbp.run()
 
 """
-FALTA:
-1.- clases INPUT , OUTPUT   - LISTO
-2.- metodo para cargar los chatbots creados al MetaChatBot      -   LISTO
-3.- metodo para ejecutar un chatbot desde el MetaChatBot
+FALLOS:
+1.- Tras ejecutar un chatbot desde el MEtaChatbot, se sale de la ejecucion siempre que no sea una palabra del un pattern
 """
+
+
 
 
 

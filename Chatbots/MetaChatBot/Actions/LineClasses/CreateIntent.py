@@ -40,6 +40,34 @@ class CCreateIntent(ActionLine):
         intent.responses = []
         chatbot.dicIntents['finishRunningChatbot'] = intent
 
+    def createSaveSentenceIntent(self,chatbot):
+        # crea la intencion
+        intent = CStructureIntent()
+        intent.setTag('saveSentence')
+        intent.setAction('saveSentence')
+        intent.addListPatterns(["guardar sentencia",
+                "guardar",
+                "salvar",
+                "salvar sentencia",
+                "salvar frase",
+                "guardar frase"])
+        intent.responses = []
+        chatbot.dicIntents['saveSentence'] = intent
+
+    def createDontSaveSentenceIntent(self,chatbot):
+        # crea la intencion
+        intent = CStructureIntent()
+        intent.setTag('dontSaveSentence')
+        intent.setAction('dontSaveSentence')
+        intent.addListPatterns(["no guardar sentencia",
+                "no guardar",
+                "no salvar",
+                "no salvar sentencia",
+                "no salvar frase",
+                "no guardar frase"])
+        intent.responses = []
+        chatbot.dicIntents['dontSaveSentence'] = intent
+
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
             self.chatbot.output.exec('Se ha cancelado la operacion')
