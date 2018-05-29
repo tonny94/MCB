@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import os,inspect
+import os,inspect,json
 from Abstract.AChatBot import CChatBot
 from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
 from Chatbots.SolveError.Actions.LineClasses.SelectIntent import CSelectIntent
@@ -36,7 +36,7 @@ class CSolveError(CChatBot):
                             'listResolvedErros':CListResolvedErrors(self),
                             'listUnresolvedErros':CListUnresolvedErrors(self),
                             'listIntents':CListIntents(self),
-                            'processSolitions':CProcessSolutions(self)
+                            'processSolutions':CProcessSolutions(self)
                         }
 
         self.initializePaths()
@@ -46,6 +46,16 @@ class CSolveError(CChatBot):
         self.name = strSplit[len(strSplit)-1]
         self.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+'.json')
+        self.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorFile.json')
+        self.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorSolvedFile.json')
+
+        if not os.path.isfile(self.errorFilePath):
+            with open(self.errorFilePath, 'w', encoding='utf-8') as f:
+                json.dump({}, f)
+
+        if not os.path.isfile(self.errorSolvedFilePath):
+            with open(self.errorSolvedFilePath, 'w', encoding='utf-8') as f:
+                json.dump({}, f)
 
     # def saveUnrecognizedSentence(self,key):
     #     self.errorDict.append(key)
@@ -74,38 +84,23 @@ class CSolveError(CChatBot):
     #         CNotRecognizedSentence(self.unrecognizedSentence).exec()
 
     def printListResolvedErrors(self):
-        size = len(self.listResolvedErrors)
-        start = 0
-        strToPrint = '[ '
-        for k in self.listResolvedErrors.keys():
-
-            if start == size:
-                strToPrint += k + ' asociado a ' + self.listResolvedErrors[k]
-            else:
-                strToPrint += k + ' asociado a ' + self.listResolvedErrors[k] + ','
-
-            start += 1
-
-        strToPrint += ' ]'
-        self.output.exec(strToPrint)
+        result = ", ".join('"'+str(key)+'" resuelto con el intent "'+str(value)+'"'  for key, value in self.listResolvedErrors.items())
+        self.output.exec(self.listResolvedErrors)
 
     def printListUnresolvedErrors(self):
-        size = len(self.listResolvedErrors)
-        start = 0
-        strToPrint = '[ '
-        for k in self.listUnresolvedErrors.keys():
-
-            if start == size:
-                strToPrint += k + ' asociado a ' + self.listUnresolvedErrors[k]
-            else:
-                strToPrint += k + ' asociado a ' + self.listUnresolvedErrors[k] + ','
-            start += 1
-        strToPrint += ' ]'
-        self.output.exec(strToPrint)
+        result = ", ".join('"'+str(key)+'" mal asociado con el intent "'+str(value)+'"' for key, value in self.listUnresolvedErrors.items())
+        self.output.exec(self.listUnresolvedErrors)
 
     def solveSentence(self):
         self.listResolvedErrors[self.senteceToSolve] = self.intentToSolve
         del(self.listUnresolvedErrors[self.senteceToSolve])
+        # self.listUnresolvedErrors.remove(self.senteceToSolve)
+        with open(self.chatbot.errorFilePath, 'r+', encoding='utf-8') as f:
+            json_data = json.load(f)
+            del(json_data[self.senteceToSolve])
+            f.seek(0)
+            json.dump(json_data, f, ensure_ascii=False, indent=4)
+            f.truncate()
         self.output.exec('La sentencia "'+ self.senteceToSolve+ '" se ha asociado al Intent "'+self.intentToSolve+'".')
         self.senteceToSolve = None
         self.intentToSolve = None

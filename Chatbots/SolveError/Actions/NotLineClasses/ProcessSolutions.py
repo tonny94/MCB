@@ -8,10 +8,13 @@ class CProcessSolutions(ActionLine):
         self.chatbotToProcess = self.chatbot.chatbot
 
     def exec(self,):
-        if self.chatbot.listResolvedErrors == {}:
+        if self.chatbot.listResolvedErrors == []:
             self.chatbot.output.exec('No hay soluciones para procesar/resolver.')
         else:
-            with open(self.chatbotToProcess.jsonPath, 'r+') as f:
+            with open(self.chatbotToProcess.errorFilePath,'r+',encoding='utf-8') as errorFile:
+                dictErrors = json.load(errorFile)
+
+            with open(self.chatbotToProcess.jsonPath, 'r+',encoding='utf-8') as f:
                 data = json.load(f)
                 intents = data[self.chatbotToProcess.name]
                 for sentence,intent in self.chatbot.listResolvedErrors.items():

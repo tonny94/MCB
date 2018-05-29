@@ -3,7 +3,7 @@
 
 
 
-import os
+import os,json
 import inspect
 # Clases generales
 
@@ -115,6 +115,16 @@ class CMetaChatBot(CChatBot):
         self.name = strSplit[len(strSplit)-1]
         self.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+'.json')
+        self.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorFile.json')
+        self.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorSolvedFile.json')
+
+        if not os.path.isfile(self.errorFilePath):
+            with open(self.errorFilePath, 'w', encoding='utf-8') as f:
+                json.dump({}, f)
+
+        if not os.path.isfile(self.errorSolvedFilePath):
+            with open(self.errorSolvedFilePath, 'w', encoding='utf-8') as f:
+                json.dump({}, f)
         # self.initializate()
 
     # def execPrediction(self,sentence):

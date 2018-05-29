@@ -24,23 +24,17 @@ class CSaveSentence(ActionLine):
                 value = self.chatbot.unrecognizeIntent
                 key = self.chatbot.unrecognizedSentence
 
-            nameChatbot = self.chatbot.name
-            pathErrorFile = os.path.join(os.path.sep, self.chatbot.generalPath, nameChatbot + '_ErrorFile.json')
-
-            jsonFile = None
-            if not os.path.isfile(pathErrorFile):
-                with open(pathErrorFile, 'w', encoding='utf-8') as f:
-                    json.dump({}, f)
-            #----- guardar caracteres especiales -----------#
-            with open(pathErrorFile, 'r+', encoding='utf-8') as f:
+            self.chatbot.saveUnrecognizedSentence(key,value)
+            #----- guardar errores en su fichero -----------#
+            with open(self.chatbot.errorFilePath, 'r+', encoding='utf-8') as f:
                 json_data = json.load(f)
-                json_data[key]= value
+                json_data.update(self.chatbot.errorDict)
                 f.seek(0)
                 json.dump(json_data, f, ensure_ascii=False, indent=4)
                 f.truncate()
 
-            self.chatbot.saveUnrecognizedSentence(key)
-            self.chatbot.output.exec('Se ha guardado la sentencia "' + key + '"')
+
+            self.chatbot.output.exec('Se ha guardado la sentencia "' + key + '" que se le ha asociado erroneamente con la intención "'+value+'".')
 
 
 

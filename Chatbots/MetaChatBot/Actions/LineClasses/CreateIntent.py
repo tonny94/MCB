@@ -45,12 +45,8 @@ class CCreateIntent(ActionLine):
         intent = CStructureIntent()
         intent.setTag('saveSentence')
         intent.setAction('saveSentence')
-        intent.addListPatterns(["guardar sentencia",
-                "guardar",
-                "salvar",
-                "salvar sentencia",
-                "salvar frase",
-                "guardar frase"])
+        intent.addListPatterns(["@Guardar",
+                "@Salvar"])
         intent.responses = []
         chatbot.dicIntents['saveSentence'] = intent
 
@@ -59,12 +55,8 @@ class CCreateIntent(ActionLine):
         intent = CStructureIntent()
         intent.setTag('dontSaveSentence')
         intent.setAction('dontSaveSentence')
-        intent.addListPatterns(["no guardar sentencia",
-                "no guardar",
-                "no salvar",
-                "no salvar sentencia",
-                "no salvar frase",
-                "no guardar frase"])
+        intent.addListPatterns(["@No guardar",
+                "@No salvar"])
         intent.responses = []
         chatbot.dicIntents['dontSaveSentence'] = intent
 

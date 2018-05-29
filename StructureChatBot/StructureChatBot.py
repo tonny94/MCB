@@ -102,7 +102,7 @@ class CStructureChatBot:
 
     def toCode(self,listGeneralActions,pathAction):
         lengDict = 1
-        strImports = 'import os,inspect \nfrom Abstract.AChatBot import CChatBot\nfrom Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
+        strImports = 'import os,inspect,json \nfrom Abstract.AChatBot import CChatBot\nfrom Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
         strActions = 'self.actionsCB = {'
 
         #seleccionar acciones que no sean las acciones generales y aquellos intens que si tengan acciones
@@ -145,7 +145,16 @@ class CStructureChatBot:
         strChatbotCode += '\t\tstrSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)\n'
         strChatbotCode += '\t\tself.name = strSplit[len(strSplit)-1]\n'
         strChatbotCode += '\t\tself.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))\n'
-        strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+\'.json\')\n\n'
+        strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+\'.json\')\n'
+                
+        strChatbotCode += '\t\tself.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorFile.json\')\n'
+        strChatbotCode += '\t\tself.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorSolvedFile.json\')\n'
+        strChatbotCode += '\t\tif not os.path.isfile(self.errorFilePath):\n'
+        strChatbotCode += '\t\t\twith open(self.errorFilePath, \'w\', encoding=\'utf-8\') as f:\n'
+        strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
+        strChatbotCode += '\t\tif not os.path.isfile(self.errorSolvedFilePath):\n'
+        strChatbotCode += '\t\t\twith open(self.errorSolvedFilePath, \'w\', encoding=\'utf-8\') as f:\n'
+        strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
 
         #saveUnrecognizedSentence
         strChatbotCode += '\tdef saveUnrecognizedSentence(self,key):\n'
@@ -165,14 +174,14 @@ class CStructureChatBot:
         self.ouput.exec(strChatbotCode)
         return strChatbotCode
 
-    def createActions(self,pathAction,nameActionFile,nameActionClass):
-        codeFile = open(os.path.join(os.path.sep,pathAction,nameActionFile+'.py'), 'w')
+    def createActions(self, pathAction, nameActionFile, nameActionClass):
+        codeFile = open(os.path.join(os.path.sep, pathAction, nameActionFile + '.py'), 'w')
         codeFile.write(self.actionToCode(nameActionClass))
         codeFile.close()
 
-    def actionToCode(self,nameActionClass):
+    def actionToCode(self, nameActionClass):
         str = 'from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine\n'
-        str +='class '+nameActionClass+'(ActionNotLine):\n\n'
+        str += 'class ' + nameActionClass + '(ActionNotLine):\n\n'
         str += '\tdef __init__(self,chatbot):\n'
         str += '\t\tself.chatbot = chatbot\n\n'
         str += '\tdef exec(self,):\n'

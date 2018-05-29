@@ -14,7 +14,7 @@
          "responses": [],
          "action": "saveSolution"
       },
-      {"tag": "processSolitions",
+      {"tag": "processSolutions",
          "patterns": ["resolver errores","quiero reolver los errores","quiero procesar los errores","solucionar errores","arreglar errores","procesar soluciones","solucionar errores"],
          "responses": [],
          "action": "processSolitions"

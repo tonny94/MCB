@@ -43,7 +43,7 @@ class CBuildChatbot(ActionNotLine):
 
     def createJSON(self):
         with open(self.structureDirJsonFile, 'w', encoding='utf-8') as f:
-            json.dump(self.chatbotToJson(), f)
+            json.dump(self.chatbotToJson(), f,ensure_ascii=False,indent=4)
 
 
         # jsonFile = open(self.structureDirJsonFile, 'w')
@@ -59,6 +59,8 @@ class CBuildChatbot(ActionNotLine):
         codeFile = open(self.structureDirCodeFile, 'w')
         codeFile.write(self.chatbotToCode())
         codeFile.close()
+
+
 
     def chatbotToCode(self):
         strCode = self.structureChatbot.toCode(self.chatbot.listGeneralActions,self.structureActionsPath)

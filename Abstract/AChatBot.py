@@ -5,11 +5,11 @@ import TrainerPredictor
 from Chatbots.MetaChatBot.Actions.NotLineClasses.SaveSentence import CSaveSentence
 from Chatbots.MetaChatBot.Actions.NotLineClasses.DontSaveSentence import CDontSaveSentence
 from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
-#
+
 
 from Abstract.AOutputSubclasses.Screen import CScreen
 from Abstract.AInputSubclasses.Keyboard import CKeyboard
-import os
+import os,json
 
 
 class CChatBot(object):
@@ -24,8 +24,9 @@ class CChatBot(object):
         self.jsonPath = ''
         self.generalPath = ''
         self.actionsPath = ''
+        self.errorFilePath = ''
 
-        self.errorDict = []
+        self.errorDict = {}
 
         self.currentSentence = None
         self.currentIntent = None
@@ -33,7 +34,7 @@ class CChatBot(object):
         self.unrecognizedSentence = None
         self.unrecognizeIntent = None
 
-        self.listGeneralActions = ['finishRunningChatbot']
+        self.listGeneralActions = ['finishRunningChatbot','saveSentence','dontSaveSentence']
         self.actions = {
             'finishRunningChatbot': CFinishRunningCB(self),
 
@@ -50,8 +51,8 @@ class CChatBot(object):
     def initializePaths(self):
         pass
 
-    def saveUnrecognizedSentence(self,key):
-        self.errorDict.append(key)
+    def saveUnrecognizedSentence(self,key,value):
+        self.errorDict[key] = value
 
     def execPrediction(self,sentence):
         valorClasificacion = self.TrainerAndPredictor.classify(sentence)
@@ -91,13 +92,13 @@ class CChatBot(object):
         self.currentIntent = intent
 
 
-    def initializate(self):
-        if self.TrainerAndPredictor is None:
-            self.output.exec('No se puede inicializar porque no existe el modelo.')
-        else:
-            self.intents = self.TrainerAndPredictor.classes
-            self.currentIntent = self.TrainerAndPredictor.intent
-            self.name = self.TrainerAndPredictor.chatbotName
+    # def initializate(self):
+    #     if self.TrainerAndPredictor is None:
+    #         self.output.exec('No se puede inicializar porque no existe el modelo.')
+    #     else:
+    #         self.intents = self.TrainerAndPredictor.classes
+    #         self.currentIntent = self.TrainerAndPredictor.intent
+    #         self.name = self.TrainerAndPredictor.chatbotName
 
     def existModel(self,path):
         return os.path.exists(os.path.join(os.path.sep,path,'model.h5'))
@@ -134,7 +135,12 @@ class CChatBot(object):
                 self.TrainerAndPredictor.loadModel()
             # self.TrainerAndPredictor.closeResource()
             self.setIntentsList()
+            self.setErrorDict()
             self.output.exec('end to predict')
 
     def setIntentsList(self):
         self.intents = self.TrainerAndPredictor.classes
+
+    def setErrorDict(self):
+        with open(self.errorFilePath, 'r', encoding='utf-8') as json_data:
+            self.errorDict = json.load(json_data)
