@@ -79,7 +79,7 @@ class CMetaChatBot(CChatBot):
             'deleteAction': CDeleteAction(self),
             'showAction':CShowAction(self),
 
-            'runSolveErrors': CRunSolveErrors(self),
+            # 'runSolveErrors': CRunSolveErrors(self),
             'startRunningChatbot': CStartRunningChatbot(self)
         }
         self.initializePaths()

@@ -1,4 +1,9 @@
 {"SolveError": [
+      {"tag": "selectChatbot",
+         "patterns": ["seleccionar chatbot","escoger un chatbot","escoger chatbot","seleccionar un chatbot","quiero seleccionar un chatbot","quiero escoger un chatbot","otro chatbot"],
+         "responses": ["¿ Qué error quiere resolver ?","¿ Qué error quiere procesar ?"],
+         "action": "selectChatbot"
+      },
       {"tag": "selectError",
          "patterns": ["seleccionar error","escoger un error","escoger error","seleccionar un error","quiero seleccionar un error","quiero escoger un error"],
          "responses": ["¿ Qué error quiere resolver ?","¿ Qué error quiere procesar ?"],

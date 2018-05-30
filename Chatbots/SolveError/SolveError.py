@@ -19,17 +19,17 @@ from Chatbots.SolveError.Actions.NotLineClasses.ProcessSolutions import CProcess
 class CSolveError(CChatBot):
     """Father class"""
 
-    def __init__(self,chatbot):
+    def __init__(self):
         super(CSolveError, self).__init__()
-        self.chatbot = chatbot
-        self.listUnresolvedErrors = self.chatbot.errorDict
+        self.listUnresolvedErrors = {}
         self.listResolvedErrors = {}
-        self.listIntens = self.chatbot.intents
+        self.listIntens = []
 
         self.senteceToSolve = None
         self.intentToSolve = None
 
         self.actionsCB = {
+                            'selectChatbot':CSelectChatbot(self),
                             'selectError':CSelectError(self),
                             'selectIntent':CSelectIntent(self),
                             'saveSolution': CSaveSolution(self),
