@@ -10,8 +10,8 @@ class CBProcessor(object):
         self.currentRunningChatbot = chatbot
         self.currentAction = ''
         self.updateActionsCBProcessor()
-        self.ouput = CScreen()
-        self.input = CKeyboard()
+        self.ouput = chatbot.output
+        self.input = chatbot.input
 
     def startModel(self):
         self.currentRunningChatbot.startModel()
