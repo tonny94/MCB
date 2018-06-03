@@ -18,12 +18,12 @@ from keras.layers import Dense, Dropout
 from keras.optimizers import SGD
 from keras.models import load_model
 
-from Abstract.AOutputSubclasses.Screen import CScreen
+# from Abstract.AOutputSubclasses.Screen import CScreen
 
 class CTrainerPredictor:
 
     def __init__(self):
-        self.ouput = CScreen()
+        # self.ouput = CScreen()
         
         self.jsonFile = ''
         self.chatbotName = ''
@@ -46,6 +46,8 @@ class CTrainerPredictor:
         self.intent = ''
         self.ERROR_THRESHOLD = 0.25
         self.context = {}
+
+        self.randomResponse = ''
 
     def readJSON(self,jsonFile,chatbotName):
         self.jsonFile = jsonFile
@@ -75,9 +77,9 @@ class CTrainerPredictor:
         # remove duplicates
         self.classes = sorted(list(set(self.classes)))
 
-        self.ouput.exec( str(len(self.documents))+ ' documents')
-        self.ouput.exec( str(len(self.classes))+ "classes ["+ ', '.join(self.classes) +']' )
-        self.ouput.exec( str(len(self.words)) + "unique stemmed words ["+', '.join(self.words) + ']')
+        print( str(len(self.documents))+ ' documents')
+        print( str(len(self.classes))+ "classes ["+ ', '.join(self.classes) +']' )
+        print( str(len(self.words)) + "unique stemmed words ["+', '.join(self.words) + ']')
 
     #entrena el modelo
     def trainingModel(self,pathModel):
@@ -112,7 +114,7 @@ class CTrainerPredictor:
         # create train and test lists
         self.train_x = np.array(self.train_x)
         self.train_y = np.array(self.train_y)
-        self.ouput.exec(self.train_y)
+        print(self.train_y)
 
         #comprueba de que hayan datos de salida > 1
         if self.train_y.shape[1] == 1:
@@ -220,7 +222,8 @@ class CTrainerPredictor:
                             self.intent = i
                             # a random predict from the intent - si no hay respuestas no se imprime nada
                             if not len(i['responses']) == 0:
-                                return self.ouput.exec( (random.choice(i['responses'])) )
+                                self.randomResponse = random.choice(i['responses'])
+                                return #print( (random.choice(i['responses'])) )
                             else:
                                 return
                         #comprobacion de que la intencion, si tiene context_filter, concuerde con el context_set
@@ -228,7 +231,7 @@ class CTrainerPredictor:
                             #reinicia en contexto
                             self.context = {}
                             if not len(i['responses']) == 0:
-                                return self.ouput.exec((random.choice(i['responses'])))
+                                return print((random.choice(i['responses'])))
                             else:
                                 return
 

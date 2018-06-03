@@ -2,13 +2,14 @@
 from Abstract.AActionSubclasses.NotLineClasses.FinishRunningCB import CFinishRunningCB
 import TrainerPredictor
 
-from Chatbots.MetaChatBot.Actions.NotLineClasses.SaveSentence import CSaveSentence
-from Chatbots.MetaChatBot.Actions.NotLineClasses.DontSaveSentence import CDontSaveSentence
+from Abstract.AActionSubclasses.NotLineClasses.SaveSentence import CSaveSentence
+from Abstract.AActionSubclasses.NotLineClasses.DontSaveSentence import CDontSaveSentence
 from Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence
 
 
 from Abstract.AOutputSubclasses.Screen import CScreen
 from Abstract.AInputSubclasses.Keyboard import CKeyboard
+from Abstract.AInteractor import IInteractor
 import os,json
 
 
@@ -40,12 +41,11 @@ class CChatBot(object):
 
             'saveSentence': CSaveSentence(self),
             'dontSaveSentence': CDontSaveSentence(self)
-            # 'runSolveErrors': CRunSolveErrors(self)
         }
         self.TrainerAndPredictor = None
         
-        self.input = CKeyboard()
-        self.output = CScreen()
+        self.input = IInteractor.input
+        self.output = IInteractor.output
 
 
     def initializePaths(self):
@@ -53,6 +53,9 @@ class CChatBot(object):
 
     def saveUnrecognizedSentence(self,key,value):
         self.errorDict[key] = value
+
+    def showRandomResponse(self):
+        self.output.exec(self.TrainerAndPredictor.randomResponse)
 
     def execPrediction(self,sentence):
         valorClasificacion = self.TrainerAndPredictor.classify(sentence)
@@ -73,7 +76,7 @@ class CChatBot(object):
         else:
             # guarda la sentencia que no se reconocio
             self.setUnrecognizedSentence(sentence)
-            value = '"No se encontró intent"'
+            value = '"No se le asoció una intención"'
             if not valorClasificacion == []:
                value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
             self.setUnrecognizedIntent(value)
@@ -90,15 +93,6 @@ class CChatBot(object):
 
     def setCurrentIntent(self, intent):
         self.currentIntent = intent
-
-
-    # def initializate(self):
-    #     if self.TrainerAndPredictor is None:
-    #         self.output.exec('No se puede inicializar porque no existe el modelo.')
-    #     else:
-    #         self.intents = self.TrainerAndPredictor.classes
-    #         self.currentIntent = self.TrainerAndPredictor.intent
-    #         self.name = self.TrainerAndPredictor.chatbotName
 
     def existModel(self,path):
         return os.path.exists(os.path.join(os.path.sep,path,'model.h5'))
@@ -121,6 +115,7 @@ class CChatBot(object):
                 self.output.exec('end to train')
             else:
                 self.output.exec('El modelo ya existe')
+
 
     def startPredictor(self):
         if not (os.path.exists(self.jsonPath)):

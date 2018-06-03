@@ -40,21 +40,12 @@
             "action": "dontSaveSentence"
         },
         {
-            "tag": "runSolveErrors",
-            "patterns": [
-                "resolver errores",
-                "procesar errores"
-            ],
-            "responses": [],
-            "action": "runSolveErrors"
-        },
-        {
             "tag": "startRunningChatbot",
             "patterns": [
                 "ejecutar chatbot",
                 "iniciar chatbot",
                 "Quiero ejecutar un chatbot",
-                "Empezar ejecucion de chatbot"
+                "Empezar ejecución de chatbot"
             ],
             "responses": [
                 "Qué chatbot quiere ejecutar?",
@@ -68,13 +59,13 @@
                 "Añadir chatbot",
                 "Crear chatbot",
                 "Quiero crear un chatbot",
-                "Quiero anhadir un chatbot",
+                "Quiero añadir un chatbot",
                 "nuevo chatbot"
             ],
             "responses": [
                 "Digame el nombre del chatbot",
                 "Qué chatbot quiere crear?",
-                "Qué chatbot quiere anhadir?"
+                "Qué chatbot quiere añadir?"
             ],
             "action": "createChatBot"
         },
@@ -90,7 +81,7 @@
                 "Digame que chatbot quiere borrar",
                 "Digame que chatbot quiere eliminar"
             ],
-            "action": "deleteChatBot"
+            "action": "d.eleteChatBot"
         },
         {
             "tag": "listChatBot",
@@ -140,8 +131,8 @@
             ],
             "responses": [
                 "Digame el nombre de la intención",
-                "Qué intencion quiere crear?",
-                "Qué intencion quiere anhadir?"
+                "Qué intención quiere crear?",
+                "Qué intención quiere añadir?"
             ],
             "action": "createIntent"
         },
@@ -180,7 +171,7 @@
                 "otra intención"
             ],
             "responses": [
-                "Seleccione el nombre de la intencion"
+                "Seleccione el nombre de la intención"
             ],
             "action": "changeIntent"
         },
@@ -202,13 +193,13 @@
                 "Añadir patrón",
                 "Crear patrón",
                 "Quiero crear un patrón",
-                "Quiero anhadir un patrón",
+                "Quiero añadir un patrón",
                 "Nuevo patrón"
             ],
             "responses": [
                 "Digame el nombre del patrón",
                 "Qué patrón quiere crear?",
-                "Qué patrón quiere anhadir?"
+                "Qué patrón quiere añadir?"
             ],
             "action": "createPattern"
         },

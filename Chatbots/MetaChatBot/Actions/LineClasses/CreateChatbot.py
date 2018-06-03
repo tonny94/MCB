@@ -9,6 +9,7 @@ class CCreateChatbot(ActionLine):
         self.chatbot = chatbot
 
     def exec(self,):
+        self.chatbot.showRandomResponse()
         sentence = self.chatbot.input.exec()
         if not (self.checkCancellation(sentence)):
             self.chatbot.addStructureChatbotDict(sentence)

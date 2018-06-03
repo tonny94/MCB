@@ -13,6 +13,7 @@ class CDeleteIntent(ActionLine):
         if self.chatbot.currentStructureChatBot is None:
             self.chatbot.output.exec('ERROR: No hay ningun chatbot actual para eliminar algun CStructureIntent de su lista.')
         else:
+            self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.deleteIntent(sentence)

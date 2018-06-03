@@ -26,9 +26,9 @@ class CRunSolveErrors(ActionLine):
             cbp = CBProcessor(solveError)
             cbp.startModel()
             cbp.startPredictor()
-            self.chatbot.output.exec('Ejecutáncose el Chatbot "SolveError".')
+            # self.chatbot.output.exec('Ejecutáncose el Chatbot "SolveError".')
             cbp.run()
-            self.chatbot.output.exec('Se terminó de ejecutar el Chatbot "SolveError".')
+            # self.chatbot.output.exec('Se terminó de ejecutar el Chatbot "SolveError".')
             # cbp = CBProcessor()
 
 

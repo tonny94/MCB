@@ -6,4 +6,9 @@ class CListIntents(ActionNotLine):
         self.chatbot = chatbot
 
     def exec(self, ):
-        self.chatbot.printIntents()
+        if self.chatbot.nameChatbotToSolve == '':
+            self.chatbot.output.exec('No hay un chatbot seleccionado.')
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listUnresolvedErrors == {}:
+            self.chatbot.output.exec('El chatbot "'+self.chatbot.nameChatbotToSolve+'" no tiene errores.')
+        else:
+            self.chatbot.printIntents()

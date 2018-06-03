@@ -12,6 +12,7 @@ class CStartRunningChatbot(ActionLine):
         self.chatbot = chatbot
 
     def exec(self,):
+        self.chatbot.showRandomResponse()
         sentence = self.chatbot.input.exec()
         if not (self.checkCancellation(sentence)):
             if not sentence in self.chatbot.dictChatBots.keys():
@@ -38,6 +39,6 @@ class CStartRunningChatbot(ActionLine):
         cbp = CBProcessor(chatbotInstance)
         cbp.startModel()
         cbp.startPredictor()
-        self.chatbot.output.exec('Ejecutáncose el Chatbot "'+nameChatbot+'".')
+        # self.chatbot.output.exec('Ejecutáncose el Chatbot "'+nameChatbot+'".')
         cbp.run()
-        self.chatbot.output.exec('Se terminó de ejecutar el Chatbot "'+nameChatbot+'".')
+        # self.chatbot.output.exec('Se terminó de ejecutar el Chatbot "'+nameChatbot+'".')

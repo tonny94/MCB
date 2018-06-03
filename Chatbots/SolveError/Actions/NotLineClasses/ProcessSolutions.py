@@ -1,22 +1,22 @@
 from Abstract.AActionSubclasses.ActionLine import ActionLine
-import json
+import os,json
+from TrainerPredictor import CTrainerPredictor
 
 class CProcessSolutions(ActionLine):
 
     def __init__(self,chatbot):
         self.chatbot = chatbot
-        self.chatbotToProcess = self.chatbot.chatbot
 
     def exec(self,):
-        if self.chatbot.listResolvedErrors == []:
-            self.chatbot.output.exec('No hay soluciones para procesar/resolver.')
-        else:
-            with open(self.chatbotToProcess.errorFilePath,'r+',encoding='utf-8') as errorFile:
-                dictErrors = json.load(errorFile)
 
-            with open(self.chatbotToProcess.jsonPath, 'r+',encoding='utf-8') as f:
+        if self.chatbot.nameChatbotToSolve == '':
+            self.chatbot.output.exec('No hay un chatbot seleccionado.')
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listResolvedErrors == {}:
+            self.chatbot.output.exec('El chatbot "'+self.chatbot.nameChatbotToSolve+'" no tiene soluciones que aplicar.')
+        else:
+            with open(self.chatbot.pathJSONChatbotToSolve, 'r+',encoding='utf-8') as f:
                 data = json.load(f)
-                intents = data[self.chatbotToProcess.name]
+                intents = data[self.chatbot.nameChatbotToSolve]
                 for sentence,intent in self.chatbot.listResolvedErrors.items():
                     for i in intents:
                         # find a tag matching the first result
@@ -25,23 +25,44 @@ class CProcessSolutions(ActionLine):
                             break
 
                 f.seek(0)
-                json.dump(data, f, indent=4)
+                json.dump(data, f, ensure_ascii=False,indent=4)
                 f.truncate()
 
-            # Reiniciar la lista de errores resueltos
-            #listResolvedErrors = []
-            copyResolvedErrores = self.chatbot.listResolvedErrors.copy()
-            stringToPRint = ''
-            for k in copyResolvedErrores:
-                #listResolvedErrors.append(k)
-                stringToPRint += k
+            listSolvedErros = []
+            with open(self.chatbot.pathErrorFileChatbotToSolve, 'r+', encoding='utf-8') as f:
+                json_data = json.load(f)
 
-                del(self.chatbot.listResolvedErrors[k])
+                copyResolvedErrores = self.chatbot.listResolvedErrors.copy()
+                for k, v in copyResolvedErrores.items():
+                    listSolvedErros.append(k)
+                    del (json_data[k])
+                    del (self.chatbot.listResolvedErrors[k])
+                result = ", ".join(str(value) for value in listSolvedErros)
 
-            self.chatbot.output.exec('Se han resuelto los errores: '+stringToPRint)
+                f.seek(0)
+                json.dump(json_data, f, ensure_ascii=False, indent=4)
+                f.truncate()
+
+            self.rebuildModel()
+            self.chatbot.output.exec('Se han resuelto los errores: '+result)
 
 
-
+    def rebuildModel(self):
+        if not (os.path.exists(self.chatbot.pathJSONChatbotToSolve)):
+            self.chatbot.output.exec('No existe el fichero JSON "'+self.chatbot.pathJSONChatbotToSolve+'".')
+        else:
+            self.chatbot.output.exec('running Trainer')
+            TrainerAndPredictor = CTrainerPredictor()
+            TrainerAndPredictor.readJSON(self.chatbot.pathJSONChatbotToSolve,self.chatbot.nameChatbotToSolve)
+            TrainerAndPredictor.createElementsToModel()
+            pathModelChatbotToSolve = os.path.join(os.path.sep,self.chatbot.generalPathChatbotToSolve,self.chatbot.nameChatbotToSolve)
+            value = TrainerAndPredictor.trainingModel(pathModelChatbotToSolve)
+            if not value:
+                self.chatbot.output.exec('No se ha podido generar el Modelo porque se necesita más de 1 Intent con Patterns creados.')
+            else:
+                TrainerAndPredictor.doPickle()
+                # self.TrainerAndPredictor.closeResource()
+            self.chatbot.output.exec('end to train')
 
 
     """

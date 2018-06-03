@@ -14,6 +14,7 @@ class CChangeIntent(ActionLine):
         if self.chatbot.currentStructureChatBot is None:
             self.chatbot.output.exec('ERROR: No se puede cambiar de Intent porque no hay un Chatbot actual.')
         else:
+            self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.setCurrentIntent(sentence)

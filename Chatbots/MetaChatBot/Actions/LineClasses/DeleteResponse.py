@@ -15,6 +15,7 @@ class CDeleteResponse(ActionLine):
         elif self.chatbot.currentStructureChatBot.currentIntent is None:
             self.chatbot.output.exec('ERROR: No hay ningun CStructureIntent para eliminar algun Response')
         else:
+            self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.currentIntent.deleteResponse(sentence)

@@ -12,6 +12,7 @@ class CCreateIntent(ActionLine):
         if self.chatbot.currentStructureChatBot is None:
             self.chatbot.output.exec('ERROR: No hay un chatbot actual para asociarle un Intent.')
         else:
+            self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 state = self.chatbot.currentStructureChatBot.addIntent(sentence)

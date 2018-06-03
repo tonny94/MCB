@@ -148,17 +148,17 @@ class CStructureChatBot:
         strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+\'.json\')\n'
                 
         strChatbotCode += '\t\tself.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorFile.json\')\n'
-        strChatbotCode += '\t\tself.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorSolvedFile.json\')\n'
+        # strChatbotCode += '\t\tself.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorSolvedFile.json\')\n'
         strChatbotCode += '\t\tif not os.path.isfile(self.errorFilePath):\n'
         strChatbotCode += '\t\t\twith open(self.errorFilePath, \'w\', encoding=\'utf-8\') as f:\n'
         strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
-        strChatbotCode += '\t\tif not os.path.isfile(self.errorSolvedFilePath):\n'
-        strChatbotCode += '\t\t\twith open(self.errorSolvedFilePath, \'w\', encoding=\'utf-8\') as f:\n'
-        strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
+        # strChatbotCode += '\t\tif not os.path.isfile(self.errorSolvedFilePath):\n'
+        # strChatbotCode += '\t\t\twith open(self.errorSolvedFilePath, \'w\', encoding=\'utf-8\') as f:\n'
+        # strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
 
         #saveUnrecognizedSentence
-        strChatbotCode += '\tdef saveUnrecognizedSentence(self,key):\n'
-        strChatbotCode += '\t\tself.errorDict.append(key)\n\n'
+        strChatbotCode += '\tdef saveUnrecognizedSentence(self,key,value):\n'
+        strChatbotCode += '\t\tself.errorDict[key] = value\n\n'
 
         #execPrediction
         # strChatbotCode += '\tdef execPrediction(self,sentence):\n'

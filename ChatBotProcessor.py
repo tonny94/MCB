@@ -4,17 +4,22 @@ from Abstract.AOutputSubclasses.Screen import CScreen
 
 from Abstract.AInputSubclasses.Keyboard import CKeyboard
 
+from Abstract.AInteractor import IInteractor
+
 class CBProcessor(object):
 
     def __init__(self,chatbot):
         self.currentRunningChatbot = chatbot
         self.currentAction = ''
         self.updateActionsCBProcessor()
-        self.ouput = chatbot.output
-        self.input = chatbot.input
+        self.ouput = IInteractor.output
+        self.input = IInteractor.input
 
     def startModel(self):
         self.currentRunningChatbot.startModel()
+
+    # def rebuildModel(self):
+    #     self.currentRunningChatbot.rebuildModel()
 
     def startPredictor(self):
         self.currentRunningChatbot.startPredictor()
@@ -27,13 +32,12 @@ class CBProcessor(object):
         self.currentRunningChatbot.TrainerAndPredictor.predict(sentence)
 
     def run(self):
-        sentence = ''
+        self.ouput.exec('Se está ejecutando el ChatBot "'+self.currentRunningChatbot.name+'".')
         while self.currentRunningChatbot.runChatBot:
             sentence = self.input.exec()
-            if not (sentence is 's'):
-                print(self.doClassification(sentence))
-                self.currentRunningChatbot.execPrediction(sentence)
-        self.ouput.exec('Se ha terminado de ejecutar el chatbot "'+self.currentRunningChatbot.name+'".')
+            # if not (sentence is 's'):
+            print(self.doClassification(sentence))
+            self.currentRunningChatbot.execPrediction(sentence)
 
     def updateActionsCBProcessor(self):
         self.currentRunningChatbot.actions.update(self.currentRunningChatbot.actionsCB)

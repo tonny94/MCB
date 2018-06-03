@@ -1,0 +1,126 @@
+{
+    "Lista_Compra": [
+        {
+            "tag": "finishRunningChatbot",
+            "patterns": [
+                "salir",
+                "salir del chatbot",
+                "parar chatbot",
+                "terminar de ejecutar chatbot",
+                "parar"
+            ],
+            "responses": [],
+            "action": "finishRunningChatbot"
+        },
+        {
+            "tag": "saveSentence",
+            "patterns": [
+                "@Guardar",
+                "@Salvar"
+            ],
+            "responses": [],
+            "action": "saveSentence"
+        },
+        {
+            "tag": "dontSaveSentence",
+            "patterns": [
+                "@No guardar",
+                "@No salvar"
+            ],
+            "responses": [],
+            "action": "dontSaveSentence"
+        },
+        {
+            "tag": "añadirProducto",
+            "patterns": [
+                "nuevo producto",
+                "añadir producto",
+                "quiero añadir otro producto",
+                "guardar producto",
+                "insertar producto",
+                "añadir nuevo producto"
+            ],
+            "responses": [
+                "¿qué producto quiere añadir?",
+                "Dígame el producto que desea guardar",
+                "¿cuál es el producto que desea añadir?"
+            ],
+            "action": "añadirProducto"
+        },
+        {
+            "tag": "eliminarProducto",
+            "patterns": [
+                "eliminar producto",
+                "eliminar un producto",
+                "sacar un producto de la compra",
+                "borrar producto",
+                "quiero eliminar un producto"
+            ],
+            "responses": [
+                "¿qué producto quiere borrar?",
+                "Digame el producto que desea borrar",
+                "¿qué producto no quiere comprar?"
+            ],
+            "action": "eliminarProducto"
+        },
+        {
+            "tag": "listarProductos",
+            "patterns": [
+                "mostrar productos",
+                "ver lista de la compra",
+                "ver productos",
+                "mostrar la compra",
+                "ver la compra",
+                "quiero ver los productos",
+                "quiero ver la lista de la compra",
+                "quiero ver la compra"
+            ],
+            "responses": [],
+            "action": "listarProductos"
+        },
+        {
+            "tag": "realizarCompra",
+            "patterns": [
+                "pagar",
+                "terminar compra",
+                "realizar compra",
+                "comprar"
+            ],
+            "responses": [],
+            "action": "realizarCompra"
+        },
+        {
+            "tag": "modoDePago",
+            "patterns": [
+                "escoger forma de pago",
+                "cambiar forma de pago",
+                "seleccionar modo de pago",
+                "modo de pago",
+                "forma de pago"
+            ],
+            "responses": [
+                "Digame en qué modo desea pagar",
+                "¿de qué modo quiere pagar?",
+                "selecciona la forma de pago"
+            ],
+            "action": "modoPago"
+        },
+        {
+            "tag": "cancelarCompra",
+            "patterns": [
+                "no quiero comprar",
+                "eliminar compra",
+                "borrar la compra",
+                "deshacer la compra",
+                "no realizar la compra",
+                "cancelar compra"
+            ],
+            "responses": [
+                "la compra ha sido cancelada",
+                "se ha borrado la compra",
+                "compra cancelada"
+            ],
+            "action": "cancelarCompra"
+        }
+    ]
+}

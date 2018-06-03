@@ -13,7 +13,7 @@ class CSaveSentence(ActionLine):
         if self.chatbot.unrecognizedSentence is None and self.chatbot.currentSentence is None:
             self.chatbot.output.exec('ERROR: No hay sentencia que guardar.')
         elif self.chatbot.unrecognizedSentence in self.chatbot.errorDict or self.chatbot.currentSentence in self.chatbot.errorDict:
-            self.chatbot.output.exec('La sentencia reconocida ya existe en la lista.')
+            self.chatbot.output.exec('La sentencia no reconocida ya existe en la lista de errores del chatbot "'+self.chatbot.name+'".')
         else:
             key = ''
             value = ''
@@ -34,17 +34,9 @@ class CSaveSentence(ActionLine):
                 f.truncate()
 
 
-            self.chatbot.output.exec('Se ha guardado la sentencia "' + key + '" que se le ha asociado erroneamente con la intención "'+value+'".')
+            self.chatbot.output.exec('Se ha guardado la sentencia "' + key + '" que se le asoció con la intención "'+value+'".')
 
 
-
-            # ----- mostrar caracteres especiales -----------#
-            # with open('p1.json', 'r', encoding='utf-8') as f:
-            #     json_data = json.load(f)
-            #     for k, v in json_data.items():
-            #         print(k + '->' + v)
-
-
-    def addNoReconocido(self, nombChatbot):
-        #self.dictionary[nombChatbot][0].append(self.sentence)
-        self.chatbot.output.exec('Se ha anhadido la sentencia a la lista de error.')
+    # def addNoReconocido(self, nombChatbot):
+    #     #self.dictionary[nombChatbot][0].append(self.sentence)
+    #     self.chatbot.output.exec('Se ha anhadido la sentencia a la lista de error.')

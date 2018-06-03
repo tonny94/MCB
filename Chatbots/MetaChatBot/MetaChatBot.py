@@ -46,11 +46,18 @@ from Chatbots.MetaChatBot.Actions.LineClasses.StartRunningChatbot import CStartR
 
 class CMetaChatBot(CChatBot):
     """Father class"""
+
     def __init__(self):
         super(CMetaChatBot, self).__init__()
+
+        #variables para guardar los chatbots que se estan creando y el actual
         self.dictChatBots = {}
         self.currentStructureChatBot = None
+
+        #lista para saber cuales no son chatbots creados por el MetaChatbot
         self.listNoChatbots = ['MetaChatBot','SolveError']
+
+        #acciones propias del MetaChatbot
         self.actionsCB ={
 
             'buildChatBot': CBuildChatbot(self),
@@ -79,15 +86,21 @@ class CMetaChatBot(CChatBot):
             'deleteAction': CDeleteAction(self),
             'showAction':CShowAction(self),
 
-            # 'runSolveErrors': CRunSolveErrors(self),
             'startRunningChatbot': CStartRunningChatbot(self)
         }
+
+        #metodos para inicializar rutas del chatbot y cargar los cahtbots creados por el MetaChatbot
         self.initializePaths()
         self.loadChatbots()
 
-
+    # ------------------------------------------------------------------------------------------------------------------------ #
+    # ------------------------------------------------------------------------------------------------------------------------ #
+    """
+        Carga los chatbots que se han creado con el MetaChatbot y los pone en la variable 
+        lista de chatbots.
+    """
     def loadChatbots(self):
-        pathChatbots = os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) )
+        pathChatbots = os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
         listAllChatbots = os.listdir(pathChatbots)
         if len(listAllChatbots) == len(self.listNoChatbots):
             self.output.exec('No hay chatbots para cargar.')
@@ -106,60 +119,42 @@ class CMetaChatBot(CChatBot):
                             currentChatbotLoaded = True
             self.output.exec('Ahora el chatbot actual es "'+self.currentStructureChatBot.name+'".')
 
+    # ------------------------------------------------------------------------------------------------------------------------ #
+    # ------------------------------------------------------------------------------------------------------------------------ #
 
-
-
-    #Metodos comunes a todos los chatbots
+    """
+        Inicializa las rutas del MetaChatbot para saver dónde está el fichero de 
+        errores, la ruta donde guardar el modelo, etc...
+    """
     def initializePaths(self):
         strSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)
         self.name = strSplit[len(strSplit)-1]
         self.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+'.json')
         self.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorFile.json')
-        self.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorSolvedFile.json')
+        # self.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorSolvedFile.json')
 
         if not os.path.isfile(self.errorFilePath):
             with open(self.errorFilePath, 'w', encoding='utf-8') as f:
                 json.dump({}, f)
 
-        if not os.path.isfile(self.errorSolvedFilePath):
-            with open(self.errorSolvedFilePath, 'w', encoding='utf-8') as f:
-                json.dump({}, f)
+        # if not os.path.isfile(self.errorSolvedFilePath):
+        #     with open(self.errorSolvedFilePath, 'w', encoding='utf-8') as f:
+        #         json.dump({}, f)
         # self.initializate()
 
-    # def execPrediction(self,sentence):
-    #     valorClasificacion = self.TrainerAndPredictor.classify(sentence)
-    #     if (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:
-    #         self.TrainerAndPredictor.predict(sentence)
-    #         self.currentAction = self.TrainerAndPredictor.action
-    #
-    #         if not self.currentAction == '':
-    #             # self.updateActionsCBProcessor(self.actionsMetaCB)
-    #             self.setCurrentSentence(sentence)
-    #             self.setCurrentIntent(self.TrainerAndPredictor.intent['tag'])
-    #             self.actions[self.currentAction].exec()
-    #             self.TrainerAndPredictor.action = ''
-    #
-    #         # reinicia el atributo
-    #         self.setUnrecognizedSentence(None)
-    #         self.setUnrecognizedIntent(None)
-    #     else:
-    #         # guarda la sentencia que no se reconocio
-    #         self.setUnrecognizedSentence(sentence)
-    #         value = '"No se encontró intent"'
-    #         if not valorClasificacion == []:
-    #            value = valorClasificacion[0][0] #self.currentRunningChatbot.TrainerAndPredictor.getIntent(valorClasificacion[0][0])
-    #         self.setUnrecognizedIntent(value)
-    #         CNotRecognizedSentence(self.unrecognizedSentence).exec()
+    # ------------------------------------------------------------------------------------------------------------------------ #
+    # ------------------------------------------------------------------------------------------------------------------------ #
 
-
-    #Metodos propios de la clase METACHATBOT
+    """
+        Genera una estrudtura de Chatbot con sus intenciones por defecto.
+    """
     def addStructureChatbotDict(self,sentence):
         if not sentence in self.dictChatBots:
             myChatBot = CStructureChatBot()
             myChatBot.setName(sentence)
 
-            # crea la intencion de salir para cada chatbot que se cree
+            # crea las intenciones por defecto para cada chatbot que se cree
             CCreateIntent(myChatBot).createExitIntent(myChatBot)
             CCreateIntent(myChatBot).createSaveSentenceIntent(myChatBot)
             CCreateIntent(myChatBot).createDontSaveSentenceIntent(myChatBot)
@@ -201,11 +196,19 @@ class CMetaChatBot(CChatBot):
             self.output.exec('El cahtbot actual es "'+ self.currentStructureChatBot.name+ '"')
 
     def printStructureChatbotDict(self):
-        result = ", ".join(str(value.name) for key, value in self.dictChatBots.items())
-        self.output.exec('Los chatbot creados son: '+ result)
+        if self.currentStructureChatBot is None:
+            self.output.exec('No hay ningun ChatBot actual.')
+        elif self.dictChatBots == {} and not(self.currentStructureChatBot is None):
+            self.output.exec('No hay chatbots creados.')
+        else:
+            result = ", ".join(str(value.name) for key, value in self.dictChatBots.items())
+            self.output.exec('Los chatbot creados son: [ '+ result+' ]')
 
     def printIntents(self):
-        self.output.exec(self.intents)
+        if self.currentStructureChatBot.currentIntent is None:
+            self.output.exec('No hay intenciones creadas para el chatbot "'+self.currentStructureChatBot.name+'".')
+        else:
+            self.output.exec(self.intents)
 
     def setListIntents(self,list):
         self.intents = list

@@ -6,12 +6,15 @@ class CSaveSolution(ActionLine):
         self.chatbot = chatbot
 
     def exec(self,):
-        if self.chatbot.senteceToSolve is None and self.chatbot.intentToSolve is None:
+        if self.chatbot.nameChatbotToSolve == '':
+            self.chatbot.output.exec('No hay un chatbot seleccionado.')
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listUnresolvedErrors == {}:
+            self.chatbot.output.exec('El chatbot "'+self.chatbot.nameChatbotToSolve+'" no tiene errores.')
+        elif self.chatbot.senteceToSolve is None and self.chatbot.intentToSolve is None:
             self.chatbot.output.exec('No hay una sentencia ni un Intent seleccionados.')
         elif self.chatbot.senteceToSolve is None:
             self.chatbot.output.exec('No hay una sentencia de error seleccionada.')
         elif self.chatbot.intentToSolve is None:
             self.chatbot.output.exec('No hay una intención a la que vincular la sentencia.')
-
         else:
-            self.chatbot.solveSentence()
+            self.chatbot.saveSolution()

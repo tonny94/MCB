@@ -15,6 +15,7 @@ class CDeletePattern(ActionLine):
         elif self.chatbot.currentStructureChatBot.currentIntent is None:
             self.chatbot.output.exec('ERROR: No hay ningun Intent para eliminar algun Pattern')
         else:
+            self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
                 self.chatbot.currentStructureChatBot.currentIntent.deletePattern(sentence)
