@@ -10,23 +10,17 @@ class CCreateIntent(ActionLine):
 
     def exec(self):
         if self.chatbot.currentStructureChatBot is None:
-            self.chatbot.output.exec('ERROR: No hay un chatbot actual para asociarle un Intent.')
+            self.chatbot.output.exec('ERROR: No hay un Chatbot actual para asociarle una Intención.')
         else:
             self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
-                state = self.chatbot.currentStructureChatBot.addIntent(sentence)
-                if state:
-                    self.chatbot.output.exec('El Intent "' + sentence + '" se ha añadido correctamente.')
-
-                # if not sentence in self.chatbot[1].dicIntents:
-                #     myIntent = CStructureIntent()
-                #     myIntent.setTag(sentence)
-                #     self.chatbot[1].dicIntents[sentence] = myIntent
-                #     self.chatbot[1].currentIntent = myIntent
-                #     print('El CStructureIntent "' + sentence + '" se ha añadido correctamente.')
-                # else:
-                #     print('El CStructureIntent "' + sentence + '" ya existe.')
+                if not self.chatbot.isEmpty(sentence):
+                    state = self.chatbot.currentStructureChatBot.addIntent(sentence)
+                    if state:
+                        self.chatbot.output.exec('La Intención "' + sentence + '" se ha añadido correctamente.')
+                else:
+                    self.chatbot.output.exec('No se admiten valores vacíos.')
 
     def createExitIntent(self,chatbot):
         # crea la intencion
@@ -63,7 +57,7 @@ class CCreateIntent(ActionLine):
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            self.chatbot.output.exec('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operación.')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

@@ -15,11 +15,14 @@ class CSelectError(ActionLine):
             self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not (self.checkCancellation(sentence)):
-                if not(sentence in self.chatbot.listUnresolvedErrors):
-                    self.chatbot.output.exec('La sentencia a resolver no se encuentra entre la lista de errores.')
+                if not self.chatbot.isEmpty(sentence):
+                    if not(sentence in self.chatbot.listUnresolvedErrors):
+                        self.chatbot.output.exec('La sentencia a resolver no se encuentra entre la lista de errores.')
+                    else:
+                        self.chatbot.senteceToSolve = sentence
+                        self.chatbot.output.exec('Se ha seleccionado el error "'+ sentence+ '".')
                 else:
-                    self.chatbot.senteceToSolve = sentence
-                    self.chatbot.output.exec('Se ha seleccionado el error "'+ sentence+ '".')
+                    self.chatbot.output.exec('No se admiten valores vacíos.')
 
     def checkCancellation(self, sentence):
         if (sentence.lower()  in self.listKeysWordsCancelRunning):

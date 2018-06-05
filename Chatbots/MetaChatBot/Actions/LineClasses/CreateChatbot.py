@@ -12,12 +12,15 @@ class CCreateChatbot(ActionLine):
         self.chatbot.showRandomResponse()
         sentence = self.chatbot.input.exec()
         if not (self.checkCancellation(sentence)):
-            self.chatbot.addStructureChatbotDict(sentence)
+            if not self.chatbot.isEmpty(sentence):
+                self.chatbot.addStructureChatbotDict(sentence)
+            else:
+                self.chatbot.output.exec('No se admiten valores vacíos.')
 
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            self.chatbot.output.exec('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operación.')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             self.chatbot.unrecognizeIntent = self.chatbot.currentIntent
             return True

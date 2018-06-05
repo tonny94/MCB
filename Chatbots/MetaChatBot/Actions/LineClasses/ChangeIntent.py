@@ -12,16 +12,19 @@ class CChangeIntent(ActionLine):
 
     def exec(self,):
         if self.chatbot.currentStructureChatBot is None:
-            self.chatbot.output.exec('ERROR: No se puede cambiar de Intent porque no hay un Chatbot actual.')
+            self.chatbot.output.exec('ERROR: No se puede cambiar de Intención porque no hay un Chatbot actual.')
         else:
             self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
-                self.chatbot.currentStructureChatBot.setCurrentIntent(sentence)
+                if not self.chatbot.isEmpty(sentence):
+                    self.chatbot.currentStructureChatBot.setCurrentIntent(sentence)
+                else:
+                    self.chatbot.output.exec('No se admiten valores vacíos.')
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            self.chatbot.output.exec('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operación.')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

@@ -51,6 +51,9 @@ class CChatBot(object):
     def initializePaths(self):
         pass
 
+    def isEmpty(self,sentence):
+        return sentence in ['',None,""]
+
     def saveUnrecognizedSentence(self,key,value):
         self.errorDict[key] = value
 

@@ -8,20 +8,23 @@ class CCreateResponse(ActionLine):
 
     def exec(self):
         if self.chatbot.currentStructureChatBot is None:
-            self.chatbot.output.exec('ERROR: No hay un Chatbot actual para crear un Response en un Intent.')
+            self.chatbot.output.exec('ERROR: No hay un Chatbot actual para crear un Response en una Intención.')
         elif self.chatbot.currentStructureChatBot.currentIntent is None :
-            self.chatbot.output.exec('ERROR: No hay un Intent actual para asociarle un Response.')
+            self.chatbot.output.exec('ERROR: No hay una Intención actual para asociarle una Respuesta.')
         else:
             self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not(self.checkCancellation(sentence)):
-                state = self.chatbot.currentStructureChatBot.currentIntent.addResponse(sentence)
-                if state:
-                    self.chatbot.output.exec('Se ha añadido el Response "'+sentence+'" correctamente.')
+                if not self.chatbot.isEmpty(sentence):
+                    state = self.chatbot.currentStructureChatBot.currentIntent.addResponse(sentence)
+                    if state:
+                        self.chatbot.output.exec('Se ha añadido la Respuesta "'+sentence+'" correctamente.')
+                else:
+                    self.chatbot.output.exec('No se admiten valores vacíos.')
 
     def checkCancellation(self,sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
-            self.chatbot.output.exec('Se ha cancelado la operacion')
+            self.chatbot.output.exec('Se ha cancelado la operación.')
             self.chatbot.unrecognizedSentence = self.chatbot.currentSentence
             return True
         else:

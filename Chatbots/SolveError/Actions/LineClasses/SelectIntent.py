@@ -15,11 +15,14 @@ class CSelectIntent(ActionLine):
             self.chatbot.showRandomResponse()
             sentence = self.chatbot.input.exec()
             if not (self.checkCancellation(sentence)):
-                if not(sentence in self.chatbot.listIntens):
-                    self.chatbot.output.exec('El Intent no existe en la lista.')
+                if not self.chatbot.isEmpty(sentence):
+                    if not(sentence in self.chatbot.listIntens):
+                        self.chatbot.output.exec('El Intent no existe en la lista.')
+                    else:
+                        self.chatbot.intentToSolve = sentence
+                        self.chatbot.output.exec('Se ha seleccionado el Intent "'+sentence+'".')
                 else:
-                    self.chatbot.intentToSolve = sentence
-                    self.chatbot.output.exec('Se ha seleccionado el Intent "'+sentence+'".')
+                    self.chatbot.output.exec('No se admiten valores vacíos.')
 
     def checkCancellation(self, sentence):
         if (sentence.lower() in self.listKeysWordsCancelRunning):
