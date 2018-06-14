@@ -1,6 +1,7 @@
 from Abstract.AOutput import IOutput
 import os
 
+
 class CScreen(IOutput):
 
     def exec(self,sentence):

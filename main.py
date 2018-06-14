@@ -1,6 +1,3 @@
-#! /bin/bash
-# -*- coding: utf-8 -*-
-
 import os
 from ChatBotProcessor import CBProcessor
 from Chatbots.MetaChatBot.MetaChatBot import CMetaChatBot
@@ -22,18 +19,10 @@ cbp.run()
 # cbp.startPredictor()
 # cbp.run()
 
-"""
-FALLOS:
-1.- Si no hay muchas [intenciones y/o patrones] y si se introduce una sentencia que no reconoce se le asocia a la accion terminar ejecución.
 
 """
-
-
-"""
-
 interaction
     -2 atributos : input, output  - SEGUIR PROBANDO
-   
 
 ejecutar nuevo chatbot desde metachatbot. - SEGUIR PROBARNDO
 
@@ -45,4 +34,14 @@ el nombre del chatbot, acciones -> quitar tildes, ñ, y espacios. - POSIBLES PRO
 
 1.- Que se muestre la solucion (sentencia e intent) del SolveError - PROBAR
 2.- no admitir vacios en las acciones que esperan una sentencia - PROBAR
+"""
+
+
+
+
+"""
+cambiar en MetaChatBot : loadChatbots -> para cargar el nombre del fichero json         -> LISTO
+cambiar en SolveError : a la hora de cargar la lista de chatbots                        -> LISTO
+cambiar en structurechatbot a la hora de generar el string de ficheros .py "toCode"     
+cambiar createmodel del trainerandpredictor, chatbotName
 """

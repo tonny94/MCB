@@ -1,40 +1,32 @@
+import unicodedata
 from Abstract.AAction import IAction
 
-class ActionLine(IAction):
-    listKeysWordsCancelRunning = ['cancelar','abortar','parar','no seguir','cancelar ejecucion','parar ejecucion','dejar de ejecutar','abortar ejecucion','error']
+# clase para obetener el tipo de entrada/salida de datos
+from Abstract.AInteractor import IInteractor
 
+
+class ActionLine(IAction):
+
+    # lista de palabras clave para la cancelación de una acción.
+    listKeysWordsCancelRunning = ['cancelar','abortar','parar','no seguir','cancelar ejecución','parar ejecución','dejar de ejecutar','abortar ejecución','error']
+    output = IInteractor.output
     def exec(self):
+        """
+        Método para la ejecución de una acción.
+        :return: void.
+        """
         pass
 
     def checkCancellation(self,sentence):
-        pass
-
-
-
-
-#         self.actions = {'saludar': self.saludar, 'despedir': self.despedir, 'saludar1': self.saludar1}
-#
-#         def exectAction(self, functionName, *args):
-#             self.actions[functionName](*args)
-#
-#         def saludar(self, a, b):
-#             print('probando ' + str(a) + ' con ' + str(b))
-#
-#         def despedir(self):
-#             print('adios')
-#
-#         def saludar1(self, a):
-#             print('solo 1' + str(a))
-# objAction = Action()
-#
-# objAction.exectAction('saludar','primero',9)
-# objAction.exectAction('despedir')
-# objAction.exectAction('saludar1',4)
-
-
-
-
-
-
-
-
+        """
+        Método que compara si el parámetro está en la lista de cancelación de acción.
+        :param sentence: Senencia a comprobar si existe en la lista de cancelación de acción.
+        :return: boolean.
+        """
+        wordTransformed = unicodedata.normalize('NFKD', sentence).encode('ASCII','ignore').lower()  # elimiona los caracteres especiales
+        listTransformed = [unicodedata.normalize('NFKD', w).encode('ASCII', 'ignore').lower() for w in self.listKeysWordsCancelRunning]  # transforma los elementos de la lista
+        if (wordTransformed in listTransformed):
+            self.output.exec('Se ha cancelado la operación.')
+            return True
+        else:
+            return False

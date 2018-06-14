@@ -136,7 +136,7 @@ class Response:
                                 return print( (random.choice(i['responses'])) )
                             else:
                                 return
-                        #comprobacion de que la intencion, si tiene context_filter, concuerde con el context_set
+                        #comprobacion de que la intención, si tiene context_filter, concuerde con el context_set
                         elif 'context_filter' in i and self.context[userID] == i['context_filter']:
                             #reinicia en contexto
                             self.context = {}

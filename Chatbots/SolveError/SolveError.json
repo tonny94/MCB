@@ -13,8 +13,8 @@
                 "cambiar chatbot"
             ],
             "responses": [
-                "\u00bf Qu\u00e9 chatbot quiere resolver ?",
-                "\u00bf Qu\u00e9 chatbot quiere procesar ?"
+                "¿ Qué chatbot quiere resolver ?",
+                "¿ Qué chatbot quiere procesar ?"
             ],
             "action": "selectChatbot"
         },
@@ -41,8 +41,8 @@
                 "quiero escoger un error"
             ],
             "responses": [
-                "\u00bf Qu\u00e9 error quiere resolver ?",
-                "\u00bf Qu\u00e9 error quiere procesar ?"
+                "¿ Qué error quiere resolver ?",
+                "¿ Qué error quiere procesar ?"
             ],
             "action": "selectError"
         },
@@ -50,24 +50,25 @@
             "tag": "selectIntent",
             "patterns": [
                 "quiero seleccionar un intent",
-                "seleccionar una intencion",
+                "seleccionar una intención",
                 "seleccionar un intent",
                 "escoger intent",
-                "escoger intencion"
+                "escoger intención"
             ],
             "responses": [
-                "\u00bf A qu\u00e9 intenci\u00f3n lo quiere a\u00f1adir ?",
-                "\u00bf En qu\u00e9 intenci\u00f3n lo quiere guardar ?"
+                "¿ A qué intención lo quiere añadir ?",
+                "¿ En qué intención lo quiere guardar ?"
             ],
             "action": "selectIntent"
         },
         {
             "tag": "saveSolution",
             "patterns": [
-                "guardar soluci\u00f3n",
-                "salvar soluci\u00f3n",
-                "guardar soluci\u00f3n",
-                "salvar soluci\u00f3n"
+                "guardar solución",
+                "salvar solución",
+                "guardar solución",
+                "salvar solución",
+                "guardar"
             ],
             "responses": [],
             "action": "saveSolution"
@@ -136,7 +137,8 @@
                 "solución actual",
                 "error resuelto",
                 "solución",
-                "ver solución actual"
+                "ver solución actual",
+                "mostrar solucion"
             ],
             "responses": [],
             "action": "showCurrentSolution"

@@ -1,5 +1,5 @@
 {
-    "MetaChatBot": [
+    "Meta ChatBot": [
         {
             "tag": "finishRunningChatbot",
             "patterns": [
@@ -127,7 +127,8 @@
                 "Crear una nueva intención",
                 "Quiero crear una intención",
                 "Nueva intención",
-                "Crear intención"
+                "Crear intención",
+                "insertar intención"
             ],
             "responses": [
                 "Digame el nombre de la intención",

@@ -1,34 +1,53 @@
+import os,unicodedata,json
 from StructureChatBot.StructureIntent import CStructureIntent
-from Abstract.AOutputSubclasses.Screen import CScreen
 
-import os,json
+#clase para obetener el tipo de entrada/salida de datos
+from Abstract.AInteractor import IInteractor
+
 
 class CStructureChatBot:
-    """Son class"""
+
     def __init__(self):
         self.name = ''
+        self.nameTransformed = ''
         self.dicIntents = {}
         self.currentIntent = None
-        self.ouput = CScreen()
+        self.ouput = IInteractor.output
 
-    #para inicializar el atributo 'Name'
     def setName(self, name):
+        """
+        Actualiza el nombre el chatbot
+        :param name: Nombre del chatbot
+        :return: void
+        """
         self.name = name
 
     def printCurrentIntent(self):
+        """
+        Muestra la intención actual
+        :return: void
+        """
         if self.currentIntent is None:
-            self.ouput.exec('No hay un Intent actual para el chatbot "'+self.name+'".')
+            self.ouput.exec('No hay una Intención actual para el ChatBot "'+self.name+'".')
         else:
-            self.ouput.exec('"'+self.currentIntent.tag+'"')
+            self.ouput.exec('La Intención actual es "'+self.currentIntent.tag+'".')
 
     def printDictIntents(self):
+        """
+        Muestra las intenciones del chatbot
+        :return: void
+        """
         result = ", ".join(str(value.tag) for key, value in self.dicIntents.items())
-        self.ouput.exec('Los Intents del chatbot "'+self.name+'" son:'+result)
+        self.ouput.exec('Las Intenciones del ChatBot "'+self.name+'" son:'+result)
 
-    #añade in intetn a la lista y actualiza el intent actual, devuelve un estado según cómo haya ido la insercion
     def addIntent(self, nameIntent):
+        """
+        Añade una intención a la lista y actualiza la intención actual, devuelve un estado según cómo haya ido la inserción
+        :param nameIntent: Nombre de la intención a insertar
+        :return: boolean
+        """
         if nameIntent in self.dicIntents:
-            self.ouput.exec('Ya existe "'+ nameIntent+ '" en la lista de Intents del chatbot "'+ self.name+ '".')
+            self.ouput.exec('Ya existe "'+ nameIntent+ '" en la lista de Intenciones del ChatBot "'+ self.name+ '".')
             return False
         else:
             myIntent = CStructureIntent()
@@ -37,75 +56,70 @@ class CStructureChatBot:
             self.currentIntent = myIntent
             return True
 
-    #elimina el intent de la lista, si existe, y si es actual reinicia el atributo 'currentIntent'
     def deleteIntent(self, nameIntent):
+        """
+        Elimina la intención de la lista, si existe, y si es el actual reinicia el atributo 'currentIntent'
+        :param nameIntent: Intención a borrar
+        :return: void
+        """
         if nameIntent in self.dicIntents:
             del self.dicIntents[nameIntent]
-            self.ouput.exec('Se ha eliminado "'+nameIntent+'" de la lista de Intents del cahtbot "'+self.name+'".')
+            self.ouput.exec('Se ha eliminado "'+nameIntent+'" de la lista de Intenciones del ChatBot "'+self.name+'".')
 
             if not(self.currentIntent is None) and nameIntent == self.currentIntent.tag:
-                self.currentIntent = None
-                self.ouput.exec('"'+nameIntent+'" ha dejado se ser la intencion actual.')
+                self.currentIntent = None                                           # reinicio del atributo
+                self.ouput.exec('"'+nameIntent+'" ha dejado se ser la intención actual.')
         else:
-            self.ouput.exec('No existe "'+nameIntent+'" en la lista de Intents del cahtbot "'+self.name+'".')
+            self.ouput.exec('No existe "'+nameIntent+'" en la lista de Intenciones del ChatBot "'+self.name+'".')
 
-    #cambia la intencion actual si existe en la lista
     def setCurrentIntent(self, nameIntent):
+        """
+        Cambia la intención actual si existe en la lista
+        :param nameIntent: Intención que será la actual
+        :return: void
+        """
         if nameIntent in self.dicIntents:
             if not self.currentIntent is None:
                 self.ouput.exec('Se ha cambiado "'+ self.currentIntent.tag+ '" por "'+nameIntent+'".')
             else:
-                self.ouput.exec('Ahora "'+nameIntent+'" es el actual Intent.')
+                self.ouput.exec('Ahora "'+nameIntent+'" es la Intención actual.')
             self.currentIntent = self.dicIntents[nameIntent]
         else:
-            self.ouput.exec('No existe "'+ nameIntent+ '" en la lista de Intents del cahtbot "'+ self.name+ '".')
+            self.ouput.exec('No existe "'+ nameIntent+ '" en la lista de intenciones del ChatBot "'+ self.name+ '".')
 
-    #pasa el diccionario de intenciones en formato JSON
     def dicToJSON(self,dicIntents):
-
-        # if len(dicIntents) > 0:
-        #     length = 0
-        #     # strJSON = '\n\t\t[\n\t\t\t'
-        #     strJSON = ' ['
-        #     for intent in dicIntents:
-        #         if length == len(dicIntents)-1:
-        #             # strJSON += dicIntents[intent].toJSON()+'\n\t\t]'
-        #             strJSON += dicIntents[intent].toJSON() + ' ]'
-        #         else:
-        #             # strJSON += dicIntents[intent].toJSON()+',\n\t\t\t'
-        #             strJSON += dicIntents[intent].toJSON() + ', '
-        #         length += 1
-        #     return strJSON
-        # else:
-        #     return '[]'
+        """
+        Convierte la estructura de un diccionario a json
+        :param dicIntents: Diccionario a convertir
+        :return: list
+        """
         listIntents = []
         if len(dicIntents) > 0:
-            length = 0
-            # strJSON = '\n\t\t[\n\t\t\t'
             for intent in dicIntents:
                 listIntents.append(dicIntents[intent].toJSON())
         return listIntents
 
-
-    #pasa el objeto 'Chatbot' a formato JSON
     def toJSON(self):
-        # strJson = '{"' + self.name + '":'
-        # strJson += self.dicToJSON(self.dicIntents)+'\n\t'
-        # strJson = '{"' + self.name + '":'
-        # strJson += self.dicToJSON(self.dicIntents)
-        # strJson += '}'
-        # return strJson
-
+        """
+        Convierte la estructura del chatbot a JSON
+        :return: dict
+        """
         dictJson = {}
         dictJson[self.name] = self.dicToJSON(self.dicIntents)
         return dictJson
 
     def toCode(self,listGeneralActions,pathAction):
+        """
+        Devuelve un string con la estructura adecuada para generar un fichero .py
+        :param listGeneralActions: Lista de acciones que se crearán
+        :param pathAction: Ruta donde se guardarán los ficheros de las acciones
+        :return: string
+        """
         lengDict = 1
         strImports = 'import os,inspect,json \nfrom Abstract.AChatBot import CChatBot\nfrom Abstract.AActionSubclasses.NotLineClasses.NotRecognizedSentence import CNotRecognizedSentence\n'
         strActions = 'self.actionsCB = {'
 
-        #seleccionar acciones que no sean las acciones generales y aquellos intens que si tengan acciones
+        # seleccionar acciones que no sean las acciones generales y aquellas intenciones que si tengan acción
         listActions = []
         for tag in self.dicIntents:
             if not tag in listGeneralActions:
@@ -113,12 +127,12 @@ class CStructureChatBot:
                 if not intent.action == '':
                     listActions.append(intent.action)
 
+        # recorre la lista de acciones para crear sus ficheros
         for action in listActions:
-            nameActionFile = action.title()
-            nameActionClass = 'C'+action.title()
-
-            #crea los ficheros .py de cada accion
-            self.createActions(pathAction,nameActionFile,nameActionClass)
+            actionTransformed = self.removeASCII(action)
+            nameActionFile = actionTransformed.title()
+            nameActionClass = 'C'+actionTransformed.title()
+            self.createActions(pathAction,nameActionFile,nameActionClass)        #crea los ficheros .py de cada acción
 
             #construye el diccionario de acciones
             if lengDict == 1:
@@ -128,12 +142,10 @@ class CStructureChatBot:
                 strActions += ', \''+action+'\':'+nameActionClass+'(self)'
 
             #construye el string de todos los import para las acciones
-            strImports += 'from Chatbots.'+self.name+'.Actions.'+nameActionFile+' import '+nameActionClass+'\n'
-
-            
+            strImports += 'from Chatbots.'+self.nameTransformed+'.Actions.'+nameActionFile+' import '+nameActionClass+'\n'
 
         strActions += ' }'
-        strChatbotClass = 'C'+self.name
+        strChatbotClass = 'C'+self.nameTransformed
         strChatbotCode = strImports+'\nclass '+strChatbotClass+'(CChatBot):\n'
         strChatbotCode += '\tdef __init__(self):\n'
         strChatbotCode += '\t\tsuper('+strChatbotClass+', self).__init__()\n'
@@ -143,43 +155,52 @@ class CStructureChatBot:
         #initializePaths
         strChatbotCode +='\tdef initializePaths(self):\n'
         strChatbotCode += '\t\tstrSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)\n'
-        strChatbotCode += '\t\tself.name = strSplit[len(strSplit)-1]\n'
+        strChatbotCode += '\t\tself.nameTransformed = strSplit[len(strSplit)-1]\n'
         strChatbotCode += '\t\tself.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))\n'
-        strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+\'.json\')\n'
-                
-        strChatbotCode += '\t\tself.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorFile.json\')\n'
-        # strChatbotCode += '\t\tself.errorSolvedFilePath = os.path.join(os.path.sep, self.generalPath, self.name + \'_ErrorSolvedFile.json\')\n'
+        strChatbotCode += '\t\tself.jsonPath = os.path.join(os.path.sep,self.generalPath,self.nameTransformed+\'.json\')\n'
+        strChatbotCode += '\t\twith open(self.jsonPath, \'r+\', encoding=\'utf-8\') as f:\n'
+        strChatbotCode += '\t\t\tdata = json.load(f)\n'
+        strChatbotCode += '\t\t\tself.name = list(data.keys())[0]\n'
+        strChatbotCode += '\t\tself.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.nameTransformed + \'_ErrorFile.json\')\n'
         strChatbotCode += '\t\tif not os.path.isfile(self.errorFilePath):\n'
         strChatbotCode += '\t\t\twith open(self.errorFilePath, \'w\', encoding=\'utf-8\') as f:\n'
         strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
-        # strChatbotCode += '\t\tif not os.path.isfile(self.errorSolvedFilePath):\n'
-        # strChatbotCode += '\t\t\twith open(self.errorSolvedFilePath, \'w\', encoding=\'utf-8\') as f:\n'
-        # strChatbotCode += '\t\t\t\tjson.dump({}, f)\n\n'
 
         #saveUnrecognizedSentence
         strChatbotCode += '\tdef saveUnrecognizedSentence(self,key,value):\n'
         strChatbotCode += '\t\tself.errorDict[key] = value\n\n'
 
-        #execPrediction
-        # strChatbotCode += '\tdef execPrediction(self,sentence):\n'
-        # strChatbotCode += '\t\tvalorClasificacion = self.TrainerAndPredictor.classify(sentence)\n'
-        # strChatbotCode += '\t\tif (not valorClasificacion == []) and valorClasificacion[0][1] >= 0.9:\n'
-        # strChatbotCode += '\t\t\tself.TrainerAndPredictor.predict(sentence)\n'
-        # strChatbotCode += '\t\t\tself.currentAction = self.TrainerAndPredictor.action\n'
-        # strChatbotCode += '\t\t\tif not self.currentAction == \'\':\n'
-        # strChatbotCode += '\t\t\t\tself.actions[self.currentAction].exec()\n'
-        # strChatbotCode += '\t\t\t\tself.TrainerAndPredictor.action = \'\'\n'
-        # strChatbotCode += '\t\telse:\n'
-        # strChatbotCode += '\t\t\tCNotRecognizedSentence(self.unrecognizedSentence).exec()\n'
-        self.ouput.exec(strChatbotCode)
         return strChatbotCode
 
+    def removeASCII(self,name):
+        """
+        Transforma el parámetro quitando los caracteres especiales y los espacios en blanco
+        :param name:
+        :return: string
+        """
+        actionTransformed = unicodedata.normalize('NFKD', name).encode('ASCII','ignore')  # elimiona los caracteres especiales
+        actionTransformed = actionTransformed.decode("utf-8")  # transforma en string
+        actionTransformed = actionTransformed.replace(' ', '_')  # elimina espacies en blanco
+        return actionTransformed
+
     def createActions(self, pathAction, nameActionFile, nameActionClass):
+        """
+        Crea ficheros de las acciones
+        :param pathAction: Ruta de la acción
+        :param nameActionFile: Nombre del fichero de la acción
+        :param nameActionClass: Nombre de la clase de la acción
+        :return: void
+        """
         codeFile = open(os.path.join(os.path.sep, pathAction, nameActionFile + '.py'), 'w')
         codeFile.write(self.actionToCode(nameActionClass))
         codeFile.close()
 
     def actionToCode(self, nameActionClass):
+        """
+        Devuelve la estructura de una acción para un fichero .py
+        :param nameActionClass: Nombre de la clase
+        :return: string
+        """
         str = 'from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine\n'
         str += 'class ' + nameActionClass + '(ActionNotLine):\n\n'
         str += '\tdef __init__(self,chatbot):\n'
@@ -188,20 +209,19 @@ class CStructureChatBot:
         str += '\t\tpass'
         return str
 
-
-
-
-    def codeToStructureChatbot(self,chatbot,jsonFile):
-
-        with open(jsonFile, 'r', encoding='utf-8') as json_data:
-            chatbotJsonStructure = json.load(json_data)
-        listIntenst = chatbotJsonStructure[chatbot.name]
-
+    def codeToStructureChatbot(self,chatbot,intents):
+        """
+        Carga la estructura del chatbot desde su json
+        :param chatbot: Nombre del chatbot
+        :param jsonFile: Ruta del json del chatbot
+        :return: void
+        """
+        listIntenst = intents            # guarda todas las intenciones del chatbot
         lastIntent = 1
-        for intent in listIntenst:
-            structureIntent = CStructureIntent()
-            structureIntent.codeToStructureIntent(intent)
-            chatbot.dicIntents[structureIntent.tag]=structureIntent
+        for intent in listIntenst:                                  # recorre las intenciones
+            structureIntent = CStructureIntent()                    # crea inteniones por cada elemento en la lista
+            structureIntent.codeToStructureIntent(intent)           # método para generar la estructura adecuada
+            chatbot.dicIntents[structureIntent.tag]=structureIntent # añade la intención a la lista
             if lastIntent == len(listIntenst):
-                chatbot.setCurrentIntent(structureIntent.tag)
+                chatbot.setCurrentIntent(structureIntent.tag)       # establece la ultima intención como intención actual
             lastIntent += 1

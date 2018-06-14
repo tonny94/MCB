@@ -1,10 +1,5 @@
-#! /bin/bash
-# -*- coding: utf-8 -*-
-from Abstract.AOutputSubclasses.Screen import CScreen
-
-from Abstract.AInputSubclasses.Keyboard import CKeyboard
-
 from Abstract.AInteractor import IInteractor
+
 
 class CBProcessor(object):
 
@@ -16,31 +11,72 @@ class CBProcessor(object):
         self.input = IInteractor.input
 
     def startModel(self):
+        """
+        Inicia el método StartModel del ChatBot.
+        :return: void
+        """
         self.currentRunningChatbot.startModel()
 
-    # def rebuildModel(self):
-    #     self.currentRunningChatbot.rebuildModel()
-
     def startPredictor(self):
+        """
+        Inicia el método StartPredictor del ChatBot.
+        :return: void
+        """
         self.currentRunningChatbot.startPredictor()
 
-    ## Encuentra las posibles respuestas ##
     def doClassification(self, sentence):
+        """
+        Encuentra las posibles Respuestas para el Patrón dado.
+        :param sentence: Patrón a clasificar
+        :return: list
+        """
         return self.currentRunningChatbot.TrainerAndPredictor.classify(sentence)
 
-    def doPrediction(self, sentence):
-        self.currentRunningChatbot.TrainerAndPredictor.predict(sentence)
-
     def run(self):
+        """
+        Ejecuta el Chatbot
+        :return:
+        """
         self.ouput.exec('Se está ejecutando el ChatBot "'+self.currentRunningChatbot.name+'".')
         while self.currentRunningChatbot.runChatBot:
-            sentence = self.input.exec()
-            # if not (sentence is 's'):
+            sentence = self.input.exec()                            # espera la entrada por parte del usuario
             print(self.doClassification(sentence))
-            self.currentRunningChatbot.execPrediction(sentence)
+            self.currentRunningChatbot.execPrediction(sentence)     # ejecuta la predicción del Chatbot
 
     def updateActionsCBProcessor(self):
+        """
+        Actualiza el diccionario de acciones del Processor con las acciones del ChatBot
+        :return: void
+        """
         self.currentRunningChatbot.actions.update(self.currentRunningChatbot.actionsCB)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # def doPrediction(self, sentence):
+    #     """
+    #
+    #     :param sentence:
+    #     :return:
+    #     """
+    #     self.currentRunningChatbot.TrainerAndPredictor.predict(sentence)
 
 
     """
