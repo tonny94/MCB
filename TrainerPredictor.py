@@ -199,9 +199,7 @@ class CTrainerPredictor:
     def predict(self, sentence):
         """
         Da una respuesta acorde a la frase introducida
-        :param sentence:
-        :param userID:
-        :param show_details:
+        :param sentence: Frase a predecir.
         :return:
         """
         results = self.classify(sentence)           # se oltiene la lista de la clasificación
@@ -220,28 +218,3 @@ class CTrainerPredictor:
                 results.pop(0)
 
 
-
-
-
-
-
-    # def getIntent(self,intent):
-    #     for i in self.intents[self.chatbotName]:
-    #         # find a tag matching the first result
-    #         if i['tag'] == intent:
-    #             return i
-    #         else:
-    #             return None
-
-    # #cierra la secion del model
-    # def closeResource(self):
-    #     """
-    #
-    #     :return:
-    #     """
-    #     self.model.session.close()
-
-
-    # #construye la red
-    # def buildNetwork(self):
-    #     pass

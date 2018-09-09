@@ -16,7 +16,7 @@ class CListResolvedErrors(ActionNotLine):
         """
         if self.chatbot.nameChatbotToSolve == '':
             self.chatbot.output.exec('No hay un ChatBot seleccionado.')
-        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listResolvedErrors == {}:
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.dictResolvedErrors == {}:
             self.chatbot.output.exec('El ChatBot "'+self.chatbot.nameChatbotToSolve+'" no tiene errores corregidos.')
         else:
             self.chatbot.printListResolvedErrors()

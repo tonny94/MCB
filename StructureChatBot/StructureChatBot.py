@@ -213,15 +213,14 @@ class CStructureChatBot:
         """
         Carga la estructura del chatbot desde su json
         :param chatbot: Nombre del chatbot
-        :param jsonFile: Ruta del json del chatbot
+        :param intents: Lista de intenciones del chatbot
         :return: void
         """
-        listIntenst = intents            # guarda todas las intenciones del chatbot
         lastIntent = 1
-        for intent in listIntenst:                                  # recorre las intenciones
+        for intent in intents:                                      # recorre las intenciones
             structureIntent = CStructureIntent()                    # crea inteniones por cada elemento en la lista
             structureIntent.codeToStructureIntent(intent)           # método para generar la estructura adecuada
             chatbot.dicIntents[structureIntent.tag]=structureIntent # añade la intención a la lista
-            if lastIntent == len(listIntenst):
+            if lastIntent == len(intents):
                 chatbot.setCurrentIntent(structureIntent.tag)       # establece la ultima intención como intención actual
             lastIntent += 1

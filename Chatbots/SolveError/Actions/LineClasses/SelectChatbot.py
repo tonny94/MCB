@@ -20,11 +20,11 @@ class CSelectChatbot(ActionLine):
         sentence = self.chatbot.input.exec()                        # se espera la entrada del usuario.
         if not (self.checkCancellation(sentence)):
             if not self.chatbot.isEmpty(sentence):
-                if not(sentence in self.chatbot.listChatbots):
+                if not(sentence in self.chatbot.dictChatbots):
                     self.chatbot.output.exec('El ChatBot "'+sentence+'" no existe.')
 
                 else:
-                    nameChatbotTransformed = self.chatbot.listChatbots[sentence]
+                    nameChatbotTransformed = self.chatbot.dictChatbots[sentence]
                     if not os.path.exists(os.path.join(os.path.sep,self.chatbot.generalPathChatbotToSolve,nameChatbotTransformed,nameChatbotTransformed+'_ErrorFile.json')):  # comprueba si exite fichero de errores
                         self.chatbot.output.exec('El ChatBot "' + sentence + '" no tiene un fichero de errores.')
                     else:
@@ -32,9 +32,9 @@ class CSelectChatbot(ActionLine):
                         self.chatbot.pathJSONChatbotToSolve = os.path.join(os.path.sep,self.chatbot.generalPathChatbotToSolve,nameChatbotTransformed, nameChatbotTransformed + '.json')                 # fichero json
 
                         with open(self.chatbot.pathErrorFileChatbotToSolve, 'r', encoding='utf-8') as json_data:
-                            self.chatbot.listUnresolvedErrors = json.load(json_data)    # carga la lista de errores
+                            self.chatbot.dictUnresolvedErrors = json.load(json_data)    # carga la lista de errores
 
-                        if self.chatbot.listUnresolvedErrors == {}:
+                        if self.chatbot.dictUnresolvedErrors == {}:
                             self.chatbot.output.exec('El ChatBot "'+sentence+'" no tiene sentencias que resolver.')
                         else:
                             self.chatbot.nameChatbotToSolve = sentence

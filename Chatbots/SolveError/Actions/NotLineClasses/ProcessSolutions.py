@@ -18,13 +18,13 @@ class CProcessSolutions(ActionLine):
         """
         if self.chatbot.nameChatbotToSolve == '':
             self.chatbot.output.exec('No hay un chatbot seleccionado.')
-        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listResolvedErrors == {}:
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.dictResolvedErrors == {}:
             self.chatbot.output.exec('El ChatBot "'+self.chatbot.nameChatbotToSolve+'" no tiene soluciones que aplicar.')
         else:
             with open(self.chatbot.pathJSONChatbotToSolve, 'r+',encoding='utf-8') as f:
                 data = json.load(f)                                     # carga los datos del json
                 intents = data[self.chatbot.nameChatbotToSolve]         # selecciona las intenciones del chatbot
-                for sentence,intent in self.chatbot.listResolvedErrors.items():
+                for sentence,intent in self.chatbot.dictResolvedErrors.items():
                     for i in intents:
                         if i['tag'] == intent:                          # encuentra la intención donde añadirá la sentencia a resolver
                             i['patterns'].append(sentence)
@@ -37,11 +37,11 @@ class CProcessSolutions(ActionLine):
             listSolvedErros = []
             with open(self.chatbot.pathErrorFileChatbotToSolve, 'r+', encoding='utf-8') as f:
                 json_data = json.load(f)                                    # se carga los errores del fichero de errores
-                copyResolvedErrores = self.chatbot.listResolvedErrors.copy()# copia para el recorrido de errores resueltos
+                copyResolvedErrores = self.chatbot.dictResolvedErrors.copy()# copia para el recorrido de errores resueltos
                 for k, v in copyResolvedErrores.items():
                     listSolvedErros.append(k)                               # se guarda en una lista solo las sentencias resueltas
                     del (json_data[k])                                      # se elimina del json las sentencias resueltas
-                    del (self.chatbot.listResolvedErrors[k])                # se elimina las sentencias del diccionario de errores
+                    del (self.chatbot.dictResolvedErrors[k])                # se elimina las sentencias del diccionario de errores
                 result = ", ".join(str(value) for value in listSolvedErros) # se genera un string para el aviso
 
                 f.seek(0)

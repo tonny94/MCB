@@ -17,14 +17,14 @@ class CSelectError(ActionLine):
         """
         if self.chatbot.nameChatbotToSolve == '':
             self.chatbot.output.exec('No hay un chatbot seleccionado.')
-        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listUnresolvedErrors == {}:
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.dictUnresolvedErrors == {}:
             self.chatbot.output.exec('El ChatBot "' + self.chatbot.nameChatbotToSolve + '" no tiene errores.')
         else:
             self.chatbot.showRandomResponse()                               # muestra la respuesta relacionada con el patrón.
             sentence = self.chatbot.input.exec()                            # se espera la entrada del usuario.
             if not (self.checkCancellation(sentence)):
                 if not self.chatbot.isEmpty(sentence):
-                    if not(sentence in self.chatbot.listUnresolvedErrors):
+                    if not(sentence in self.chatbot.dictUnresolvedErrors):
                         self.chatbot.output.exec('La sentencia a resolver no se encuentra entre la lista de errores.')
                     else:
                         self.chatbot.senteceToSolve = sentence              # se guarda la sentencia a resolver

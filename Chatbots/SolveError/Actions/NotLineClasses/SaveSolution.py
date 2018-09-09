@@ -16,7 +16,7 @@ class CSaveSolution(ActionLine):
         """
         if self.chatbot.nameChatbotToSolve == '':
             self.chatbot.output.exec('No hay un ChatBot seleccionado.')
-        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listUnresolvedErrors == {}:
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.dictUnresolvedErrors == {}:
             self.chatbot.output.exec('El ChatBot "'+self.chatbot.nameChatbotToSolve+'" no tiene errores.')
         elif self.chatbot.senteceToSolve is None and self.chatbot.intentToSolve is None:
             self.chatbot.output.exec('No hay una sentencia ni una intención seleccionados.')

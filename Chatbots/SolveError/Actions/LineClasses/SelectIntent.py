@@ -17,7 +17,7 @@ class CSelectIntent(ActionLine):
         """
         if self.chatbot.nameChatbotToSolve == '':
             self.chatbot.output.exec('No hay un chatbot seleccionado.')
-        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.listUnresolvedErrors == {}:
+        elif not (self.chatbot.nameChatbotToSolve == '') and self.chatbot.dictUnresolvedErrors == {}:
             self.chatbot.output.exec('El ChatBot "' + self.chatbot.nameChatbotToSolve + '" no tiene errores.')
         else:
             self.chatbot.showRandomResponse()                       # muestra la respuesta relacionada con el patrón.

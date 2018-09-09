@@ -19,7 +19,8 @@ class CStartRunningChatbot(ActionLine):
                 if not sentence in self.chatbot.dictChatBots.keys():
                     self.chatbot.output.exec('No se ha encontrado el Chatbot "'+sentence+'".')
                 else:
-                    self.executeChatbot(sentence)                       # ejecuta el chatbot
+                    nameTransformed = self.chatbot.dictChatBots[sentence].nameTransformed
+                    self.executeChatbot(nameTransformed)                       # ejecuta el chatbot
             else:
                 self.chatbot.output.exec('No se admiten valores vacíos.')
 

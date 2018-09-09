@@ -107,7 +107,9 @@ class CMetaChatBot(CChatBot):
                             chatbot.setName(nameWithoutTranform)
                             intents = dictChatBot[nameWithoutTranform]          # guarda las intenciones del chatbot
                             chatbot.codeToStructureChatbot(chatbot, intents)    # convierte el json en un chatbot
+                            chatbot.nameTransformed = nameChatbot               # guarda el nombre del chatbot sin caracteres especiales
                             self.dictChatBots[nameWithoutTranform] = chatbot    # se añade el chatbot a la lista
+
 
                         if not currentChatbotLoaded :
                             self.currentStructureChatBot =chatbot           # se establece el primer chatbot como chatbot actual
@@ -116,7 +118,7 @@ class CMetaChatBot(CChatBot):
 
     def initializePaths(self):
         """
-        Inicializa las rutas del MetaChatbot para saver dónde está el fichero de errores, la ruta donde guardar el modelo, etc...
+        Inicializa las rutas del MetaChatbot para saber dónde está el fichero de errores, la ruta donde guardar el modelo, etc...
         :return: void
         """
         strSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)   # nombre de los directorios que contiene este fichero

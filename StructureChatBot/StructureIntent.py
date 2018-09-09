@@ -128,7 +128,6 @@ class CStructureIntent:
         """
         return self.tag
 
-    # pasa a JSON el atributo 'action'
     def actionToJSON(self):
         """
         Devuelve el nombre de la Acción

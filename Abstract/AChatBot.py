@@ -14,9 +14,6 @@ from Abstract.AInteractor import IInteractor
 class CChatBot(object):
 
     def __init__(self):
-        """
-        Constructor de la clase.
-        """
 
         # variables propias del Chatbot a crear
         self.name = ''

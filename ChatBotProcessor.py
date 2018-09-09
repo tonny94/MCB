@@ -40,7 +40,7 @@ class CBProcessor(object):
         self.ouput.exec('Se está ejecutando el ChatBot "'+self.currentRunningChatbot.name+'".')
         while self.currentRunningChatbot.runChatBot:
             sentence = self.input.exec()                            # espera la entrada por parte del usuario
-            print(self.doClassification(sentence))
+            # print(self.doClassification(sentence))
             self.currentRunningChatbot.execPrediction(sentence)     # ejecuta la predicción del Chatbot
 
     def updateActionsCBProcessor(self):
