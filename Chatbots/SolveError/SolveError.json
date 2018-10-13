@@ -146,8 +146,8 @@
         {
             "tag": "saveSentence",
             "patterns": [
-                "@Guardar",
-                "@Salvar"
+                "Guardar sentencia",
+                "Salvar sentencia"
             ],
             "responses": [],
             "action": "saveSentence"
@@ -155,8 +155,8 @@
         {
             "tag": "dontSaveSentence",
             "patterns": [
-                "@No salvar",
-                "@No guardar"
+                "No salvar sentencia",
+                "No guardar sentencia"
             ],
             "responses": [],
             "action": "dontSaveSentence"
