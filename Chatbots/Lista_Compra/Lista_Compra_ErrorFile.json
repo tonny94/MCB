@@ -1,3 +1,4 @@
 {
-    "quitar elemento": "saveSentence"
+    "quitar elemento": "saveSentence",
+    "listar productos": "añadirProducto"
 }
