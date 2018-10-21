@@ -11,6 +11,7 @@ from Chatbots.Lista_Compra.Actions.Cancelarcompra import CCancelarcompra
 class CLista_Compra(CChatBot):
 	def __init__(self):
 		super(CLista_Compra, self).__init__()
+		self.cesta = []
 		self.actionsCB = {'añadirProducto':CAnadirproducto(self), 'eliminarProducto':CEliminarproducto(self), 'listarProductos':CListarproductos(self), 'realizarCompra':CRealizarcompra(self), 'modoPago':CModopago(self), 'cancelarCompra':CCancelarcompra(self) }
 		self.initializePaths()
 

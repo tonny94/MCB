@@ -20,11 +20,11 @@ class CSelectChatbot(ActionLine):
         sentence = self.chatbot.input.exec()                        # se espera la entrada del usuario.
         if not (self.checkCancellation(sentence)):
             if not self.chatbot.isEmpty(sentence):
-                if not(sentence in self.chatbot.dictChatbots):
+                if not(sentence in self.chatbot.listChatbots):
                     self.chatbot.output.exec('El ChatBot "'+sentence+'" no existe.')
 
                 else:
-                    nameChatbotTransformed = self.chatbot.dictChatbots[sentence]
+                    nameChatbotTransformed = self.chatbot.listChatbots[sentence]
                     if not os.path.exists(os.path.join(os.path.sep,self.chatbot.generalPathChatbotToSolve,nameChatbotTransformed,nameChatbotTransformed+'_ErrorFile.json')):  # comprueba si exite fichero de errores
                         self.chatbot.output.exec('El ChatBot "' + sentence + '" no tiene un fichero de errores.')
                     else:

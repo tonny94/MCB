@@ -60,7 +60,7 @@ class CProcessSolutions(ActionLine):
         if not (os.path.exists(self.chatbot.pathJSONChatbotToSolve)):
             self.chatbot.output.exec('No existe el fichero JSON "'+self.chatbot.pathJSONChatbotToSolve+'".')
         else:
-            self.chatbot.output.exec('Generando el modelo para el ChatBot "'+self.chatbot.name+'"...')
+            self.chatbot.output.exec('Generando el modelo para el ChatBot "'+self.chatbot.nameTransformedChatbotToSolve+'"...')
             TrainerAndPredictor = CTrainerPredictor()
             TrainerAndPredictor.readJSON(self.chatbot.pathJSONChatbotToSolve,self.chatbot.nameChatbotToSolve)   # lee el json
             TrainerAndPredictor.createElementsToModel()                                 # crea elementos para el modelo

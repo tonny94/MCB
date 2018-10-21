@@ -16,7 +16,8 @@
             "tag": "saveSentence",
             "patterns": [
                 "Guardar sentencia",
-                "Salvar sentencia"
+                "Salvar sentencia",
+                "guardar"
             ],
             "responses": [],
             "action": "saveSentence"

@@ -1,0 +1,70 @@
+{
+    "compra online": [
+        {
+            "tag": "finishRunningChatbot",
+            "patterns": [
+                "salir",
+                "salir del chatbot",
+                "parar chatbot",
+                "terminar de ejecutar chatbot",
+                "parar"
+            ],
+            "responses": [],
+            "action": "finishRunningChatbot"
+        },
+        {
+            "tag": "saveSentence",
+            "patterns": [
+                "@Guardar",
+                "@Salvar"
+            ],
+            "responses": [],
+            "action": "saveSentence"
+        },
+        {
+            "tag": "dontSaveSentence",
+            "patterns": [
+                "@No guardar",
+                "@No salvar"
+            ],
+            "responses": [],
+            "action": "dontSaveSentence"
+        },
+        {
+            "tag": "nuevo producto",
+            "patterns": [
+                "quiero introducir un nuevo producto",
+                "añadir producto"
+            ],
+            "responses": [
+                "qué producto quiere añadir?",
+                "dígme el producto"
+            ],
+            "action": "newProduct"
+        },
+        {
+            "tag": "pagar",
+            "patterns": [
+                "quiero pagar",
+                "pagar"
+            ],
+            "responses": [
+                "necesita escoger el tipo de tarjeta",
+                "por favor, seleccione una tarjeta"
+            ],
+            "action": "Pay"
+        },
+        {
+            "tag": "Creditcard",
+            "patterns": [
+                "seleccionar tarjeta",
+                "pagar con tarjeta"
+            ],
+            "responses": [
+                "dígame con qué tarjeta pagará",
+                "instroduzca el tipo de tarjeta"
+            ],
+            "action": "Creditcard"
+        }
+    ]
+}

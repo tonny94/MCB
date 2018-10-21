@@ -22,8 +22,8 @@ class CSolveError(CChatBot):
         super(CSolveError, self).__init__()
 
         #variables para cargar las soluciones resueltas o por resolver
-        self.listUnresolvedErrors = {}
-        self.listResolvedErrors = {}
+        self.dictUnresolvedErrors = {}
+        self.dictResolvedErrors = {}
         self.listIntens = []
         self.currentSolution = {}
 
@@ -96,7 +96,7 @@ class CSolveError(CChatBot):
         Muestra los errores resueltos
         :return: void
         """
-        result = ", ".join('"'+str(key)+'" resuelto con el intent "'+str(value)+'"' for key, value in self.listResolvedErrors.items())
+        result = ", ".join('"'+str(key)+'" resuelto con el intent "'+str(value)+'"' for key, value in self.dictResolvedErrors.items())
         self.output.exec(result)
 
     def printListUnresolvedErrors(self):
@@ -104,7 +104,7 @@ class CSolveError(CChatBot):
         Muestra los errores
         :return: void
         """
-        result = ", ".join('"'+str(key)+'" que se asoció con el intent "'+str(value)+'"' for key, value in self.listUnresolvedErrors.items())
+        result = ", ".join('"'+str(key)+'" que se asoció con el intent "'+str(value)+'"' for key, value in self.dictUnresolvedErrors.items())
         self.output.exec(result)
 
     def printCurrentSolution(self):
@@ -120,9 +120,9 @@ class CSolveError(CChatBot):
         Guarda la colución dada por el usuario
         :return: void
         """
-        self.listResolvedErrors[self.senteceToSolve] = self.intentToSolve
+        self.dictResolvedErrors[self.senteceToSolve] = self.intentToSolve
         self.currentSolution[self.senteceToSolve] = self.intentToSolve
-        del(self.listUnresolvedErrors[self.senteceToSolve])         # elimina la sentencia del diccionario de errores
+        del(self.dictUnresolvedErrors[self.senteceToSolve])         # elimina la sentencia del diccionario de errores
         self.output.exec('La sentencia "'+ self.senteceToSolve+ '" se ha asociado a la Intención "'+self.intentToSolve+'".')
         self.senteceToSolve = None      # reinicia el valor de la sentencia
         self.intentToSolve = None       # reinicia el valor de la intención
