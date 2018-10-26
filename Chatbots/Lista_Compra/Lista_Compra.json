@@ -121,7 +121,8 @@
                 "se ha borrado la compra",
                 "compra cancelada"
             ],
-            "action": "cancelarCompra"
+            "action": "cancelarCompra",
+
         }
     ]
 }

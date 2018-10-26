@@ -5,4 +5,5 @@ class CCancelarcompra(ActionNotLine):
 		self.chatbot = chatbot
 
 	def exec(self,):
+
 		pass

@@ -5,4 +5,5 @@ class CListarproductos(ActionNotLine):
 		self.chatbot = chatbot
 
 	def exec(self,):
+
 		print("La cesta tiene: ", self.chatbot.cesta)
