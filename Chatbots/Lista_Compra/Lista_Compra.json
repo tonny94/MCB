@@ -1,5 +1,5 @@
 {
-    "Lista_Compra": [
+    "Lista Compra": [
         {
             "tag": "finishRunningChatbot",
             "patterns": [
@@ -121,8 +121,7 @@
                 "se ha borrado la compra",
                 "compra cancelada"
             ],
-            "action": "cancelarCompra",
-
+            "action": "cancelarCompra"
         }
     ]
 }

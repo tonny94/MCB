@@ -16,11 +16,15 @@ class CStartRunningChatbot(ActionLine):
         sentence = self.chatbot.input.exec()                            # se espera la entrada del usuario.
         if not (self.checkCancellation(sentence)):
             if not self.chatbot.isEmpty(sentence):
-                if not sentence in self.chatbot.dictChatBots.keys():
+
+                existChatbotName = [value for key, value in self.chatbot.dictChatBots.items() if sentence.lower() == str(key).lower()]
+
+                if len(existChatbotName)==0:
                     self.chatbot.output.exec('No se ha encontrado el Chatbot "'+sentence+'".')
                 else:
-                    nameTransformed = self.chatbot.dictChatBots[sentence].nameTransformed
-                    self.executeChatbot(nameTransformed)                       # ejecuta el chatbot
+                    nameChatbot = existChatbotName[0].nameTransformed
+                    #nameTransformed = self.chatbot.dictChatBots[nameChatbot].nameTransformed
+                    self.executeChatbot(nameChatbot)                       # ejecuta el chatbot
             else:
                 self.chatbot.output.exec('No se admiten valores vacíos.')
 

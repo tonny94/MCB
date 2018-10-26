@@ -108,7 +108,7 @@ class CMetaChatBot(CChatBot):
                             intents = dictChatBot[nameWithoutTranform]          # guarda las intenciones del chatbot
                             chatbot.codeToStructureChatbot(chatbot, intents)    # convierte el json en un chatbot
                             chatbot.nameTransformed = nameChatbot               # guarda el nombre del chatbot sin caracteres especiales
-                            self.dictChatBots[nameWithoutTranform] = chatbot    # se añade el chatbot a la lista
+                            self.dictChatBots[nameWithoutTranform] = chatbot    # se añade el chatbot como esté en el JSON
 
 
                         if not currentChatbotLoaded :

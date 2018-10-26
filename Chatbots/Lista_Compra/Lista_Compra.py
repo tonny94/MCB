@@ -17,10 +17,13 @@ class CLista_Compra(CChatBot):
 
 	def initializePaths(self):
 		strSplit = (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))).split(os.path.sep)
-		self.name = strSplit[len(strSplit)-1]
+		self.nameTransformed = strSplit[len(strSplit) - 1]
 		self.generalPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-		self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.name+'.json')
-		self.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.name + '_ErrorFile.json')
+		self.jsonPath = os.path.join(os.path.sep,self.generalPath,self.nameTransformed+'.json')
+		with open(self.jsonPath, 'r+', encoding='utf-8') as f:
+			data = json.load(f)
+			self.name = list(data.keys())[0]
+		self.errorFilePath = os.path.join(os.path.sep, self.generalPath, self.nameTransformed + '_ErrorFile.json')
 		if not os.path.isfile(self.errorFilePath):
 			with open(self.errorFilePath, 'w', encoding='utf-8') as f:
 				json.dump({}, f)
