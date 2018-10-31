@@ -178,14 +178,16 @@ class CMetaChatBot(CChatBot):
         :param sentence: Nombre del chatbot
         :return: void
         """
-        if not sentence in self.dictChatBots:
+        existChatbotName = [value for key, value in self.dictChatBots.items() if
+                            sentence.lower() == str(key).lower()]
+        if len(existChatbotName)==0:
             self.output.exec('No existe ese Chatbot.')
         else:
             if not self.currentStructureChatBot is None:
-                self.output.exec('Se ha cambiado "'+ self.currentStructureChatBot.name+ '" por "'+ sentence+ '".')
+                self.output.exec('Se ha cambiado "'+ self.currentStructureChatBot.name+ '" por "'+ existChatbotName[0].name+ '".')
             else:
                 self.output.exec('Ahora "'+ sentence+ '" es el actual Chatbot.')
-            self.currentStructureChatBot = self.dictChatBots[sentence]  # establece el nuevo chatbot
+            self.currentStructureChatBot = existChatbotName[0]  # establece el nuevo chatbot
 
     def printCurrentStructureChatbot(self):
         """
