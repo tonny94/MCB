@@ -1,7 +1,7 @@
 {
     "Lista Compra": [
         {
-            "tag": "finishRunningChatbot",
+            "tag": "salir del chatbot",
             "patterns": [
                 "salir",
                 "salir del chatbot",
@@ -13,7 +13,7 @@
             "action": "finishRunningChatbot"
         },
         {
-            "tag": "saveSentence",
+            "tag": "guardar sentencia",
             "patterns": [
                 "Guardar sentencia",
                 "Salvar sentencia",
@@ -23,7 +23,7 @@
             "action": "saveSentence"
         },
         {
-            "tag": "dontSaveSentence",
+            "tag": "no guardar sentencia",
             "patterns": [
                 "No guardar sentencia",
                 "No salvar sentencia"
@@ -32,7 +32,7 @@
             "action": "dontSaveSentence"
         },
         {
-            "tag": "añadirProducto",
+            "tag": "añadir producto",
             "patterns": [
                 "nuevo producto",
                 "añadir producto",
@@ -49,7 +49,7 @@
             "action": "añadirProducto"
         },
         {
-            "tag": "eliminarProducto",
+            "tag": "eliminar producto",
             "patterns": [
                 "eliminar producto",
                 "eliminar un producto",
@@ -65,7 +65,7 @@
             "action": "eliminarProducto"
         },
         {
-            "tag": "listarProductos",
+            "tag": "listar productos",
             "patterns": [
                 "mostrar productos",
                 "ver lista de la compra",
@@ -80,7 +80,7 @@
             "action": "listarProductos"
         },
         {
-            "tag": "realizarCompra",
+            "tag": "realizar compra",
             "patterns": [
                 "pagar",
                 "terminar compra",
@@ -91,7 +91,7 @@
             "action": "realizarCompra"
         },
         {
-            "tag": "modoDePago",
+            "tag": "modo de pago",
             "patterns": [
                 "escoger forma de pago",
                 "cambiar forma de pago",
@@ -107,7 +107,7 @@
             "action": "modoPago"
         },
         {
-            "tag": "cancelarCompra",
+            "tag": "cancelar compra",
             "patterns": [
                 "no quiero comprar",
                 "eliminar compra",
