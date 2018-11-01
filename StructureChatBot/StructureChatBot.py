@@ -130,6 +130,7 @@ class CStructureChatBot:
         # recorre la lista de acciones para crear sus ficheros
         for action in listActions:
             actionTransformed = self.removeASCII(action)
+            actionTransformed = actionTransformed.replace(' ','')
             nameActionFile = actionTransformed.title()
             nameActionClass = 'C'+actionTransformed.title()
             self.createActions(pathAction,nameActionFile,nameActionClass)        #crea los ficheros .py de cada acción
@@ -202,7 +203,8 @@ class CStructureChatBot:
         :return: string
         """
         str = 'from Abstract.AActionSubclasses.ActionNotLine import ActionNotLine\n'
-        str += 'class ' + nameActionClass + '(ActionNotLine):\n\n'
+        str += 'from Abstract.AActionSubclasses.ActionLine import ActionLine\n'
+        str += 'class ' + nameActionClass + '(ActionLine):\n\n'
         str += '\tdef __init__(self,chatbot):\n'
         str += '\t\tself.chatbot = chatbot\n\n'
         str += '\tdef exec(self,):\n'
