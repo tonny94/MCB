@@ -227,13 +227,4 @@ class CStructureChatBot:
                 chatbot.setCurrentIntent(structureIntent.tag)       # establece la ultima intención como intención actual
             lastIntent += 1
 
-    def listToString(self,list):
-        """
-        Convierte una lista a string sin corchetes.
-        :param list:
-        :return:
-        """
-        stringList = str(list)
-        stringList = stringList[1:-1]
 
-        return stringList

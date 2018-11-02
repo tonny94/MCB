@@ -203,3 +203,14 @@ class CChatBot(object):
         """
         with open(self.errorFilePath, 'r', encoding='utf-8') as json_data:
             self.errorDict = json.load(json_data)
+
+    def listToString(self,list):
+        """
+        Convierte una lista a string sin corchetes.
+        :param list:
+        :return:
+        """
+        stringList = str(list)
+        stringList = stringList[1:-1]
+
+        return stringList
