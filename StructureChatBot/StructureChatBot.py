@@ -133,7 +133,7 @@ class CStructureChatBot:
             actionTransformed = actionTransformed.replace(' ','')
             nameActionFile = actionTransformed.title()
             nameActionClass = 'C'+actionTransformed.title()
-            self.createActions(pathAction,nameActionFile,nameActionClass)        #crea los ficheros .py de cada acción
+            self.createActions(pathAction,nameActionFile,nameActionClass) #crea los ficheros .py de cada acción
 
             #construye el diccionario de acciones
             if lengDict == 1:
@@ -226,3 +226,14 @@ class CStructureChatBot:
             if lastIntent == len(intents):
                 chatbot.setCurrentIntent(structureIntent.tag)       # establece la ultima intención como intención actual
             lastIntent += 1
+
+    def listToString(self,list):
+        """
+        Convierte una lista a string sin corchetes.
+        :param list:
+        :return:
+        """
+        stringList = str(list)
+        stringList = stringList[1:-1]
+
+        return stringList

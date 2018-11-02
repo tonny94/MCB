@@ -5,4 +5,7 @@ class CListarproductos(ActionNotLine):
 		self.chatbot = chatbot
 
 	def exec(self,):
-		self.chatbot.output.exec("La cesta tiene: " + str(self.chatbot.cesta))
+		if self.chatbot.cesta == []:
+			self.chatbot.output.exec("No hay productos en la cesta.")
+		else:
+			self.chatbot.output.exec("La cesta tiene: " + self.chatbot.listToString(self.chatbot.cesta))

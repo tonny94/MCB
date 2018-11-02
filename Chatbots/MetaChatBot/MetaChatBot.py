@@ -208,7 +208,7 @@ class CMetaChatBot(CChatBot):
             self.output.exec('No hay chatbots creados.')
         else:
             result = ", ".join(str(value.name) for key, value in self.dictChatBots.items()) # une los nombres de los chatbots
-            self.output.exec('Los chatbot creados son: [ '+ result+' ]')
+            self.output.exec('Los chatbot creados son: '+ result)
 
     # def printIntents(self):
     #     """

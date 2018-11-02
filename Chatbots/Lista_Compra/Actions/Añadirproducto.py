@@ -13,6 +13,6 @@ class CAnadirproducto(ActionLine):
 		if not (self.checkCancellation(sentence)):
 			if not self.chatbot.isEmpty(sentence):
 				self.chatbot.cesta.append(sentence)
-				self.chatbot.output.exec('Se ha instroducido el producto '+sentence)
+				self.chatbot.output.exec('Se ha instroducido el producto \"'+sentence+'\"')
 			else:
 				self.chatbot.output.exec('No se admiten valores vacíos.')
