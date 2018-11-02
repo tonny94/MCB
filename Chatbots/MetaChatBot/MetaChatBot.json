@@ -1,7 +1,7 @@
 {
     "Meta ChatBot": [
         {
-            "tag": "finishRunningChatbot",
+            "tag": "salir del chatbot",
             "patterns": [
                 "salir",
                 "salir del chatbot",
@@ -13,7 +13,7 @@
             "action": "finishRunningChatbot"
         },
         {
-            "tag": "buildChatBot",
+            "tag": "construir chatbot",
             "patterns": [
                 "construir chatbot",
                 "generar chatbot"
@@ -22,7 +22,7 @@
             "action": "buildChatBot"
         },
         {
-            "tag": "saveSentence",
+            "tag": "guardar sentencia",
             "patterns": [
                 "Guardar sentencia",
                 "Salvar sentencia"
@@ -31,7 +31,7 @@
             "action": "saveSentence"
         },
         {
-            "tag": "dontSaveSentence",
+            "tag": "no guardar sentencia",
             "patterns": [
                 "No salvar sentencia",
                 "No guardar sentencia"
@@ -40,7 +40,7 @@
             "action": "dontSaveSentence"
         },
         {
-            "tag": "startRunningChatbot",
+            "tag": "ejecutar chatbot",
             "patterns": [
                 "ejecutar chatbot",
                 "iniciar chatbot",
@@ -54,7 +54,7 @@
             "action": "startRunningChatbot"
         },
         {
-            "tag": "createChatBot",
+            "tag": "crear chatbot",
             "patterns": [
                 "Añadir chatbot",
                 "Crear chatbot",
@@ -70,7 +70,7 @@
             "action": "createChatBot"
         },
         {
-            "tag": "deleteChatBot",
+            "tag": "eliminar chatbot",
             "patterns": [
                 "Quiero borrar un chatbot",
                 "Quiero eliminar un chatbot",
@@ -84,7 +84,7 @@
             "action": "deleteChatBot"
         },
         {
-            "tag": "listChatBot",
+            "tag": "listar chatbots",
             "patterns": [
                 "Listar chatbots",
                 "Ver todos los chatbots",
@@ -96,7 +96,7 @@
             "action": "listChatBot"
         },
         {
-            "tag": "changeChatBot",
+            "tag": "cambiar de chatbot",
             "patterns": [
                 "Cambiar de chatbot",
                 "Otro chatbot",
@@ -108,7 +108,7 @@
             "action": "changeChatBot"
         },
         {
-            "tag": "showcurrentChatBot",
+            "tag": "mostrar el chatbot actual",
             "patterns": [
                 "Ver chatbot actual",
                 "Actual chatbot",
@@ -121,7 +121,7 @@
             "action": "showcurrentChatBot"
         },
         {
-            "tag": "createIntent",
+            "tag": "crear intención",
             "patterns": [
                 "Añadir una intención",
                 "Crear una nueva intención",
@@ -138,7 +138,7 @@
             "action": "createIntent"
         },
         {
-            "tag": "deleteIntent",
+            "tag": "borrar intención",
             "patterns": [
                 "Quiero borrar una intención",
                 "Quiero eliminar una intención",
@@ -152,7 +152,7 @@
             "action": "deleteIntent"
         },
         {
-            "tag": "listIntent",
+            "tag": "listar intención",
             "patterns": [
                 "Listar intenciones",
                 "Ver todos los intenciones",
@@ -164,7 +164,7 @@
             "action": "listIntent"
         },
         {
-            "tag": "changeIntent",
+            "tag": "cambiar de intención",
             "patterns": [
                 "Cambiar de intención",
                 "Otra intención",
@@ -177,7 +177,7 @@
             "action": "changeIntent"
         },
         {
-            "tag": "showcurrentIntent",
+            "tag": "mostrar la intención actual",
             "patterns": [
                 "Ver intención actual",
                 "Actual intención",
@@ -189,7 +189,7 @@
             "action": "showcurrentIntent"
         },
         {
-            "tag": "createPattern",
+            "tag": "crear patrón",
             "patterns": [
                 "Añadir patrón",
                 "Crear patrón",
@@ -205,7 +205,7 @@
             "action": "createPattern"
         },
         {
-            "tag": "deletePattern",
+            "tag": "borrar patrón",
             "patterns": [
                 "Quiero borrar un patrón",
                 "Quiero eliminar un patrón",
@@ -219,7 +219,7 @@
             "action": "deletePattern"
         },
         {
-            "tag": "listPattern",
+            "tag": "listar patrones",
             "patterns": [
                 "Listar patrones",
                 "Ver todos los patrones",
@@ -231,7 +231,7 @@
             "action": "listPattern"
         },
         {
-            "tag": "createResponse",
+            "tag": "crear respuesta",
             "patterns": [
                 "Añadir respuesta",
                 "Crear respuesta",
@@ -247,7 +247,7 @@
             "action": "createResponse"
         },
         {
-            "tag": "deleteResponse",
+            "tag": "borrar respuesta",
             "patterns": [
                 "Quiero borrar una respuesta",
                 "Quiero eliminar una respuesta",
@@ -261,7 +261,7 @@
             "action": "deleteResponse"
         },
         {
-            "tag": "listResponse",
+            "tag": "listar las respuestas",
             "patterns": [
                 "Listar respuestas",
                 "Ver todas las respuestas",
@@ -272,7 +272,7 @@
             "action": "listResponse"
         },
         {
-            "tag": "createAction",
+            "tag": "crear acción",
             "patterns": [
                 "crear acción",
                 "anadir acción",
@@ -287,7 +287,7 @@
             "action": "createAction"
         },
         {
-            "tag": "deleteAction",
+            "tag": "borrar acción",
             "patterns": [
                 "borrar acción",
                 "eliminar acción",
@@ -298,7 +298,7 @@
             "action": "deleteAction"
         },
         {
-            "tag": "showAction",
+            "tag": "mostrar acción",
             "patterns": [
                 "Mostrar acción",
                 "quiero ver la acción",
